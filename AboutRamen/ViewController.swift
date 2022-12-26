@@ -9,9 +9,8 @@ class ViewController: UIViewController {
         collectionView.delegate = self
         collectionView.backgroundColor = .systemOrange
         title = "어바웃라멘"
-        navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 25)]
-        navigationController?.navigationBar.layer.borderWidth = 1
-        navigationController?.navigationBar.layer.borderColor = UIColor.black.cgColor
+        navigationController?.navigationBar.titleTextAttributes =
+        [NSAttributedString.Key.font:   UIFont(name: "BlackHanSans-Regular", size: 30)]
     }
 }
 
@@ -42,10 +41,14 @@ extension ViewController: UICollectionViewDelegate, UICollectionViewDataSource, 
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let width = collectionView.frame.width
-        let interSpacing: CGFloat = 30
-        let lineCount: CGFloat = 2
-        let totalWidth = (width - (interSpacing * (lineCount - 1))) / lineCount
-        return CGSize(width: totalWidth, height: totalWidth)
+        let height = collectionView.frame.height
+        let widthSpacing: CGFloat = 20
+        let heightSpacing: CGFloat = 60
+        let widthCount: CGFloat = 2
+        let heightCount: CGFloat = 3
+        let totalWidth = (width - (widthSpacing * (widthCount - 1))) / widthCount
+        let totalHeight = (height - (heightSpacing * (heightCount - 1))) / heightCount
+        return CGSize(width: totalWidth, height: totalHeight)
     }
 }
 

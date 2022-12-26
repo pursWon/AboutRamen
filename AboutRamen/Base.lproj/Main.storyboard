@@ -116,7 +116,11 @@
                             <constraint firstItem="TEi-tJ-MrO" firstAttribute="trailing" secondItem="pqo-fC-nOA" secondAttribute="trailing" id="fUQ-mK-aSp"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="어바웃라멘" id="TJU-Ip-SAl"/>
+                    <navigationItem key="navigationItem" title="어바웃라멘" id="TJU-Ip-SAl">
+                        <barButtonItem key="rightBarButtonItem" title="지역 변경" id="gSq-SM-cSp">
+                            <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="collectionView" destination="pqo-fC-nOA" id="4MH-jF-ZCn"/>
                     </connections>
