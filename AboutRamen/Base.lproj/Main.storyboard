@@ -54,14 +54,20 @@
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="EU4-ol-mxy">
                                                     <rect key="frame" x="0.0" y="0.0" width="128" height="128"/>
                                                     <subviews>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="이름" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SD7-7z-pTZ">
-                                                            <rect key="frame" x="4.9999999999999982" y="101.33333333333333" width="31.333333333333329" height="21.666666666666671"/>
-                                                            <fontDescription key="fontDescription" type="system" pointSize="18"/>
-                                                            <nil key="textColor"/>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SD7-7z-pTZ">
+                                                            <rect key="frame" x="2.9999999999999982" y="105" width="31.333333333333329" height="20"/>
+                                                            <attributedString key="attributedText">
+                                                                <fragment content="이름">
+                                                                    <attributes>
+                                                                        <color key="NSColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                                                        <font key="NSFont" size="18" name=".AppleSDGothicNeoI-Heavy"/>
+                                                                    </attributes>
+                                                                </fragment>
+                                                            </attributedString>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="별점" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kBY-XU-6tD">
-                                                            <rect key="frame" x="91.666666666666671" y="5" width="31.333333333333329" height="21"/>
+                                                            <rect key="frame" x="93.666666666666671" y="3" width="31.333333333333329" height="21"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
@@ -81,12 +87,12 @@
                                                         <constraint firstAttribute="trailing" secondItem="s0R-2u-ZOL" secondAttribute="trailing" constant="30" id="3js-3X-tGB"/>
                                                         <constraint firstItem="gbb-gc-4IT" firstAttribute="leading" secondItem="EU4-ol-mxy" secondAttribute="leading" constant="5" id="F55-OH-cyj"/>
                                                         <constraint firstAttribute="bottom" secondItem="s0R-2u-ZOL" secondAttribute="bottom" constant="22" id="XDK-gu-AQB"/>
-                                                        <constraint firstItem="kBY-XU-6tD" firstAttribute="top" secondItem="EU4-ol-mxy" secondAttribute="top" constant="5" id="crw-ym-Iub"/>
+                                                        <constraint firstItem="kBY-XU-6tD" firstAttribute="top" secondItem="EU4-ol-mxy" secondAttribute="top" constant="3" id="crw-ym-Iub"/>
                                                         <constraint firstItem="gbb-gc-4IT" firstAttribute="top" secondItem="EU4-ol-mxy" secondAttribute="top" constant="5" id="eRA-vX-bNt"/>
                                                         <constraint firstItem="s0R-2u-ZOL" firstAttribute="leading" secondItem="EU4-ol-mxy" secondAttribute="leading" constant="30" id="ib5-Gq-xtd"/>
-                                                        <constraint firstAttribute="trailing" secondItem="kBY-XU-6tD" secondAttribute="trailing" constant="5" id="k1Y-UD-mBf"/>
-                                                        <constraint firstAttribute="bottom" secondItem="SD7-7z-pTZ" secondAttribute="bottom" constant="5" id="nUU-ZK-gUs"/>
-                                                        <constraint firstItem="SD7-7z-pTZ" firstAttribute="leading" secondItem="EU4-ol-mxy" secondAttribute="leading" constant="5" id="qlQ-94-rp5"/>
+                                                        <constraint firstAttribute="trailing" secondItem="kBY-XU-6tD" secondAttribute="trailing" constant="3" id="k1Y-UD-mBf"/>
+                                                        <constraint firstAttribute="bottom" secondItem="SD7-7z-pTZ" secondAttribute="bottom" constant="3" id="nUU-ZK-gUs"/>
+                                                        <constraint firstItem="SD7-7z-pTZ" firstAttribute="leading" secondItem="EU4-ol-mxy" secondAttribute="leading" constant="3" id="qlQ-94-rp5"/>
                                                         <constraint firstItem="s0R-2u-ZOL" firstAttribute="top" secondItem="EU4-ol-mxy" secondAttribute="top" constant="22" id="smn-LV-YCa"/>
                                                     </constraints>
                                                 </view>
@@ -117,12 +123,11 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="어바웃라멘" id="TJU-Ip-SAl">
-                        <barButtonItem key="rightBarButtonItem" title="지역 변경" id="gSq-SM-cSp">
-                            <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" title="지역 변경" id="syg-zr-mmE"/>
                     </navigationItem>
                     <connections>
                         <outlet property="collectionView" destination="pqo-fC-nOA" id="4MH-jF-ZCn"/>
+                        <outlet property="regionChangeButton" destination="syg-zr-mmE" id="qe5-60-XdW"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="uf1-YQ-B4C" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

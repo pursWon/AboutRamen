@@ -2,6 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>KAKAO_APP_KEY</key>
+	<string>	d8b066a3dbb0e888b857f37b667d96d2</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>BlackHanSans-Regular.ttf</string>
