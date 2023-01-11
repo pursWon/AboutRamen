@@ -14,28 +14,21 @@
 		D0797D022959913A00B14AC8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D0797D012959913A00B14AC8 /* Assets.xcassets */; };
 		D0797D052959913A00B14AC8 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D0797D032959913A00B14AC8 /* LaunchScreen.storyboard */; };
 		D0797D0D2959936900B14AC8 /* CollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0797D0C2959936900B14AC8 /* CollectionViewCell.swift */; };
+		D0B170C7295D39EA002AD35D /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0B170C6295D39EA002AD35D /* SearchViewController.swift */; };
+		D0B171BE2966D738002AD35D /* SearchViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0B171BD2966D738002AD35D /* SearchViewCell.swift */; };
+		D0B171C0296D6C1A002AD35D /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0B171BF296D6C1A002AD35D /* DetailViewController.swift */; };
+		D0B171C2296EA9E0002AD35D /* StarRatingUISlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0B171C1296EA9E0002AD35D /* StarRatingUISlider.swift */; };
 		D0BB11F82959C7CB001E33A6 /* BlackHanSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D0BB11F72959C7CB001E33A6 /* BlackHanSans-Regular.ttf */; };
-		D0BB1201295AD1D3001E33A6 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0BB1200295AD1D3001E33A6 /* OpenGLES.framework */; };
-		D0BB1205295AD21C001E33A6 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0BB1204295AD21C001E33A6 /* CoreLocation.framework */; };
-		D0BB1206295AD23E001E33A6 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0BB1202295AD1DE001E33A6 /* SystemConfiguration.framework */; };
-		D0BB1208295AD246001E33A6 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0BB1207295AD246001E33A6 /* QuartzCore.framework */; };
-		D0BB120A295AD260001E33A6 /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = D0BB1209295AD257001E33A6 /* libc++.tbd */; };
-		D0BB120C295AD27D001E33A6 /* libxml2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = D0BB120B295AD26E001E33A6 /* libxml2.tbd */; };
-		D0BB120E295AD290001E33A6 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = D0BB120D295AD28A001E33A6 /* libsqlite3.tbd */; };
 		D0BB1214295AD64D001E33A6 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0BB1213295AD64D001E33A6 /* MapViewController.swift */; };
-		D0BB1215295ADF1E001E33A6 /* DaumMap.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0BB120F295AD334001E33A6 /* DaumMap.framework */; };
-		D0BB1216295ADF1E001E33A6 /* DaumMap.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D0BB120F295AD334001E33A6 /* DaumMap.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		D0BB1219295AE024001E33A6 /* DaumMap.embeddedframework in Resources */ = {isa = PBXBuildFile; fileRef = D0BB1218295AE024001E33A6 /* DaumMap.embeddedframework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		D0BB1217295ADF1E001E33A6 /* Embed Frameworks */ = {
+		D0BB121C295AE625001E33A6 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				D0BB1216295ADF1E001E33A6 /* DaumMap.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -52,18 +45,12 @@
 		D0797D042959913A00B14AC8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		D0797D062959913A00B14AC8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D0797D0C2959936900B14AC8 /* CollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewCell.swift; sourceTree = "<group>"; };
+		D0B170C6295D39EA002AD35D /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
+		D0B171BD2966D738002AD35D /* SearchViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewCell.swift; sourceTree = "<group>"; };
+		D0B171BF296D6C1A002AD35D /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
+		D0B171C1296EA9E0002AD35D /* StarRatingUISlider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StarRatingUISlider.swift; sourceTree = "<group>"; };
 		D0BB11F72959C7CB001E33A6 /* BlackHanSans-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "BlackHanSans-Regular.ttf"; sourceTree = "<group>"; };
-		D0BB11FC295ACF00001E33A6 /* Kakao_Map_Bridge_Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Kakao_Map_Bridge_Header.h; sourceTree = "<group>"; };
-		D0BB1200295AD1D3001E33A6 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
-		D0BB1202295AD1DE001E33A6 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
-		D0BB1204295AD21C001E33A6 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
-		D0BB1207295AD246001E33A6 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
-		D0BB1209295AD257001E33A6 /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
-		D0BB120B295AD26E001E33A6 /* libxml2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libxml2.tbd; path = usr/lib/libxml2.tbd; sourceTree = SDKROOT; };
-		D0BB120D295AD28A001E33A6 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
-		D0BB120F295AD334001E33A6 /* DaumMap.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = DaumMap.framework; path = ../Downloads/IOS_DaumMap_SDK_1.4.0/lib/DaumMap.embeddedframework/DaumMap.framework; sourceTree = "<group>"; };
 		D0BB1213295AD64D001E33A6 /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
-		D0BB1218295AE024001E33A6 /* DaumMap.embeddedframework */ = {isa = PBXFileReference; lastKnownFileType = folder; name = DaumMap.embeddedframework; path = ../../Downloads/IOS_DaumMap_SDK_1.4.0/lib/DaumMap.embeddedframework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -71,14 +58,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D0BB1208295AD246001E33A6 /* QuartzCore.framework in Frameworks */,
-				D0BB120A295AD260001E33A6 /* libc++.tbd in Frameworks */,
-				D0BB1215295ADF1E001E33A6 /* DaumMap.framework in Frameworks */,
-				D0BB120E295AD290001E33A6 /* libsqlite3.tbd in Frameworks */,
-				D0BB1205295AD21C001E33A6 /* CoreLocation.framework in Frameworks */,
-				D0BB120C295AD27D001E33A6 /* libxml2.tbd in Frameworks */,
-				D0BB1206295AD23E001E33A6 /* SystemConfiguration.framework in Frameworks */,
-				D0BB1201295AD1D3001E33A6 /* OpenGLES.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -88,9 +67,9 @@
 		D0797CEC2959913900B14AC8 = {
 			isa = PBXGroup;
 			children = (
+				D0B171BC2966D46C002AD35D /* Resource */,
 				D0797CF72959913900B14AC8 /* AboutRamen */,
 				D0797CF62959913900B14AC8 /* Products */,
-				D0BB11FF295AD1D3001E33A6 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -105,20 +84,45 @@
 		D0797CF72959913900B14AC8 /* AboutRamen */ = {
 			isa = PBXGroup;
 			children = (
-				D0BB1218295AE024001E33A6 /* DaumMap.embeddedframework */,
 				D0797CF82959913900B14AC8 /* AppDelegate.swift */,
 				D0797CFA2959913900B14AC8 /* SceneDelegate.swift */,
-				D0797CFC2959913900B14AC8 /* ViewController.swift */,
-				D0797D0C2959936900B14AC8 /* CollectionViewCell.swift */,
-				D0BB1213295AD64D001E33A6 /* MapViewController.swift */,
-				D0797CFE2959913900B14AC8 /* Main.storyboard */,
-				D0797D012959913A00B14AC8 /* Assets.xcassets */,
-				D0797D032959913A00B14AC8 /* LaunchScreen.storyboard */,
+				D0B171BA2966D449002AD35D /* Controller */,
+				D0B171BB2966D460002AD35D /* View */,
 				D0797D062959913A00B14AC8 /* Info.plist */,
-				D0BB11FC295ACF00001E33A6 /* Kakao_Map_Bridge_Header.h */,
 				D0BB11F92959C7FF001E33A6 /* Fonts */,
 			);
 			path = AboutRamen;
+			sourceTree = "<group>";
+		};
+		D0B171BA2966D449002AD35D /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				D0797CFC2959913900B14AC8 /* ViewController.swift */,
+				D0BB1213295AD64D001E33A6 /* MapViewController.swift */,
+				D0B170C6295D39EA002AD35D /* SearchViewController.swift */,
+				D0B171BF296D6C1A002AD35D /* DetailViewController.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		D0B171BB2966D460002AD35D /* View */ = {
+			isa = PBXGroup;
+			children = (
+				D0797D0C2959936900B14AC8 /* CollectionViewCell.swift */,
+				D0B171BD2966D738002AD35D /* SearchViewCell.swift */,
+				D0B171C1296EA9E0002AD35D /* StarRatingUISlider.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		D0B171BC2966D46C002AD35D /* Resource */ = {
+			isa = PBXGroup;
+			children = (
+				D0797CFE2959913900B14AC8 /* Main.storyboard */,
+				D0797D012959913A00B14AC8 /* Assets.xcassets */,
+				D0797D032959913A00B14AC8 /* LaunchScreen.storyboard */,
+			);
+			path = Resource;
 			sourceTree = "<group>";
 		};
 		D0BB11F92959C7FF001E33A6 /* Fonts */ = {
@@ -127,21 +131,6 @@
 				D0BB11F72959C7CB001E33A6 /* BlackHanSans-Regular.ttf */,
 			);
 			path = Fonts;
-			sourceTree = "<group>";
-		};
-		D0BB11FF295AD1D3001E33A6 /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				D0BB120D295AD28A001E33A6 /* libsqlite3.tbd */,
-				D0BB120B295AD26E001E33A6 /* libxml2.tbd */,
-				D0BB1209295AD257001E33A6 /* libc++.tbd */,
-				D0BB1207295AD246001E33A6 /* QuartzCore.framework */,
-				D0BB1204295AD21C001E33A6 /* CoreLocation.framework */,
-				D0BB1202295AD1DE001E33A6 /* SystemConfiguration.framework */,
-				D0BB120F295AD334001E33A6 /* DaumMap.framework */,
-				D0BB1200295AD1D3001E33A6 /* OpenGLES.framework */,
-			);
-			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -154,7 +143,7 @@
 				D0797CF12959913900B14AC8 /* Sources */,
 				D0797CF22959913900B14AC8 /* Frameworks */,
 				D0797CF32959913900B14AC8 /* Resources */,
-				D0BB1217295ADF1E001E33A6 /* Embed Frameworks */,
+				D0BB121C295AE625001E33A6 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -203,7 +192,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D0BB1219295AE024001E33A6 /* DaumMap.embeddedframework in Resources */,
 				D0BB11F82959C7CB001E33A6 /* BlackHanSans-Regular.ttf in Resources */,
 				D0797D052959913A00B14AC8 /* LaunchScreen.storyboard in Resources */,
 				D0797D022959913A00B14AC8 /* Assets.xcassets in Resources */,
@@ -218,11 +206,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D0B170C7295D39EA002AD35D /* SearchViewController.swift in Sources */,
+				D0B171BE2966D738002AD35D /* SearchViewCell.swift in Sources */,
 				D0797CFD2959913900B14AC8 /* ViewController.swift in Sources */,
 				D0797CF92959913900B14AC8 /* AppDelegate.swift in Sources */,
 				D0797D0D2959936900B14AC8 /* CollectionViewCell.swift in Sources */,
 				D0BB1214295AD64D001E33A6 /* MapViewController.swift in Sources */,
 				D0797CFB2959913900B14AC8 /* SceneDelegate.swift in Sources */,
+				D0B171C0296D6C1A002AD35D /* DetailViewController.swift in Sources */,
+				D0B171C2296EA9E0002AD35D /* StarRatingUISlider.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -386,9 +378,10 @@
 				PRODUCT_BUNDLE_IDENTIFIER = stu.inu.201802766.AboutRamen;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_OBJC_BRIDGING_HEADER = /Users/macbookair/AboutRamen/AboutRamen/Kakao_Map_Bridge_Header.h;
+				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_WORKSPACE = YES;
 			};
 			name = Debug;
 		};
@@ -416,9 +409,10 @@
 				PRODUCT_BUNDLE_IDENTIFIER = stu.inu.201802766.AboutRamen;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_OBJC_BRIDGING_HEADER = /Users/macbookair/AboutRamen/AboutRamen/Kakao_Map_Bridge_Header.h;
+				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_WORKSPACE = YES;
 			};
 			name = Release;
 		};
