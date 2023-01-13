@@ -21,17 +21,7 @@ class ViewController: UIViewController {
         if let navigationBar = self.navigationController?.navigationBar {
             navigationBar.titleTextAttributes = [NSAttributedString.Key.font : UIFont(name: "BlackHanSans-Regular", size: 30)!]
         }
-        // if let navigationBar = self.navigationController?.navigationBar {
-        //     let leftFrame = CGRect(x: 10, y: 0, width: navigationBar.frame.width/6, height: navigationBar.frame.height)
-        //     let label = UILabel(frame: leftFrame)
-        //     label.text = "현재 지역"
-        //     label.font = UIFont.init(name: "BlackHanSans-Regular", size: 18)
-        //
-        //     navigationBar.titleTextAttributes =  [NSAttributedString.Key.font : UIFont(name: "BlackHanSans-Regular", size: 30)!]
-        //     navigationBar.addSubview(label)
-        //
-        //     }
-        }
+    }
     
     func setUpCollectionView() {
         collectionView.dataSource = self
@@ -55,7 +45,6 @@ extension ViewController: UICollectionViewDelegate, UICollectionViewDataSource, 
         cell.nameLabel.textAlignment = .center
         cell.nameLabel.font = UIFont.boldSystemFont(ofSize: 22)
         cell.nameLabel.sizeToFit()
-        
         cell.starLabel.font = UIFont.boldSystemFont(ofSize: 20)
         
         return cell
@@ -75,7 +64,6 @@ extension ViewController: UICollectionViewDelegate, UICollectionViewDataSource, 
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard let detailVC = self.storyboard?.instantiateViewController(withIdentifier: "DetailViewController") as? DetailViewController else { return }
-        navigationController?.navigationItem.backBarButtonItem?.tintColor = UIColor.systemMint
         navigationController?.pushViewController(detailVC, animated: true)
     }
 }
