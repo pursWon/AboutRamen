@@ -4,8 +4,8 @@
 <dict>
 	<key>UIAppFonts</key>
 	<array>
-		<string>Recipekorea.ttf</string>
 		<string>BlackHanSans-Regular.ttf</string>
+		<string>Recipekorea.ttf</string>
 	</array>
 	<key>UIApplicationSceneManifest</key>
 	<dict>

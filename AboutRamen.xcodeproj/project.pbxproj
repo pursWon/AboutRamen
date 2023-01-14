@@ -15,6 +15,8 @@
 		D01307B3296FF1BF00672422 /* ReviewListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01307B2296FF1BF00672422 /* ReviewListCell.swift */; };
 		D01307B5296FFB1900672422 /* MyRamenListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01307B4296FFB1900672422 /* MyRamenListViewController.swift */; };
 		D01307B7296FFB8E00672422 /* MyRamenListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01307B6296FFB8E00672422 /* MyRamenListCell.swift */; };
+		D013084C2972747800672422 /* BlackHanSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D013084B2972747800672422 /* BlackHanSans-Regular.ttf */; };
+		D013084E2972748300672422 /* Recipekorea.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D013084D2972748300672422 /* Recipekorea.ttf */; };
 		D0797CF92959913900B14AC8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0797CF82959913900B14AC8 /* AppDelegate.swift */; };
 		D0797CFB2959913900B14AC8 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0797CFA2959913900B14AC8 /* SceneDelegate.swift */; };
 		D0797CFD2959913900B14AC8 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0797CFC2959913900B14AC8 /* ViewController.swift */; };
@@ -28,8 +30,6 @@
 		D0B171C2296EA9E0002AD35D /* StarRatingUISlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0B171C1296EA9E0002AD35D /* StarRatingUISlider.swift */; };
 		D0B171C4296ED964002AD35D /* MyListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0B171C3296ED964002AD35D /* MyListViewController.swift */; };
 		D0B171C6296EF4C5002AD35D /* MyListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0B171C5296EF4C5002AD35D /* MyListCell.swift */; };
-		D0BB11F82959C7CB001E33A6 /* BlackHanSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D0BB11F72959C7CB001E33A6 /* BlackHanSans-Regular.ttf */; };
-		D0BB1214295AD64D001E33A6 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0BB1213295AD64D001E33A6 /* MapViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -52,9 +52,10 @@
 		D01307AE296FEE8800672422 /* BadListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = BadListCell.swift; path = AboutRamen/View/BadListCell.swift; sourceTree = SOURCE_ROOT; };
 		D01307B0296FF19200672422 /* ReviewListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewListViewController.swift; sourceTree = "<group>"; };
 		D01307B2296FF1BF00672422 /* ReviewListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewListCell.swift; sourceTree = "<group>"; };
-		D01307B4296FFB1900672422 /* MyRamenListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MyRamenListViewController.swift; path = AboutRamen/Controller/MyRamenListViewController.swift; sourceTree = SOURCE_ROOT; };
+		D01307B4296FFB1900672422 /* MyRamenListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MyRamenListViewController.swift; path = AboutRamen/Controller/ListTab/MyRamenListViewController.swift; sourceTree = SOURCE_ROOT; };
 		D01307B6296FFB8E00672422 /* MyRamenListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyRamenListCell.swift; sourceTree = "<group>"; };
-		D01307DC2970F2F900672422 /* Recipekorea.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Recipekorea.ttf; sourceTree = "<group>"; };
+		D013084B2972747800672422 /* BlackHanSans-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "BlackHanSans-Regular.ttf"; sourceTree = "<group>"; };
+		D013084D2972748300672422 /* Recipekorea.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Recipekorea.ttf; sourceTree = "<group>"; };
 		D0797CF52959913900B14AC8 /* AboutRamen.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AboutRamen.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D0797CF82959913900B14AC8 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D0797CFA2959913900B14AC8 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -70,8 +71,6 @@
 		D0B171C1296EA9E0002AD35D /* StarRatingUISlider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StarRatingUISlider.swift; sourceTree = "<group>"; };
 		D0B171C3296ED964002AD35D /* MyListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyListViewController.swift; sourceTree = "<group>"; };
 		D0B171C5296EF4C5002AD35D /* MyListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MyListCell.swift; path = AboutRamen/View/MyListCell.swift; sourceTree = SOURCE_ROOT; };
-		D0BB11F72959C7CB001E33A6 /* BlackHanSans-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "BlackHanSans-Regular.ttf"; sourceTree = "<group>"; };
-		D0BB1213295AD64D001E33A6 /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -85,6 +84,35 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		D013084F29727CF300672422 /* HomeTab */ = {
+			isa = PBXGroup;
+			children = (
+				D0797CFC2959913900B14AC8 /* ViewController.swift */,
+				D0B171BF296D6C1A002AD35D /* DetailViewController.swift */,
+			);
+			path = HomeTab;
+			sourceTree = "<group>";
+		};
+		D013085029727D3F00672422 /* ListTab */ = {
+			isa = PBXGroup;
+			children = (
+				D0B171C3296ED964002AD35D /* MyListViewController.swift */,
+				D01307A8296FE0EB00672422 /* GoodListViewController.swift */,
+				D01307AC296FEE6200672422 /* BadListViewController.swift */,
+				D01307B0296FF19200672422 /* ReviewListViewController.swift */,
+				D01307B4296FFB1900672422 /* MyRamenListViewController.swift */,
+			);
+			path = ListTab;
+			sourceTree = "<group>";
+		};
+		D013085129727D5400672422 /* SearchTab */ = {
+			isa = PBXGroup;
+			children = (
+				D0B170C6295D39EA002AD35D /* SearchViewController.swift */,
+			);
+			path = SearchTab;
+			sourceTree = "<group>";
+		};
 		D0797CEC2959913900B14AC8 = {
 			isa = PBXGroup;
 			children = (
@@ -118,15 +146,9 @@
 		D0B171BA2966D449002AD35D /* Controller */ = {
 			isa = PBXGroup;
 			children = (
-				D0797CFC2959913900B14AC8 /* ViewController.swift */,
-				D0BB1213295AD64D001E33A6 /* MapViewController.swift */,
-				D0B170C6295D39EA002AD35D /* SearchViewController.swift */,
-				D0B171BF296D6C1A002AD35D /* DetailViewController.swift */,
-				D0B171C3296ED964002AD35D /* MyListViewController.swift */,
-				D01307A8296FE0EB00672422 /* GoodListViewController.swift */,
-				D01307AC296FEE6200672422 /* BadListViewController.swift */,
-				D01307B0296FF19200672422 /* ReviewListViewController.swift */,
-				D01307B4296FFB1900672422 /* MyRamenListViewController.swift */,
+				D013084F29727CF300672422 /* HomeTab */,
+				D013085129727D5400672422 /* SearchTab */,
+				D013085029727D3F00672422 /* ListTab */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -153,14 +175,15 @@
 				D0797D012959913A00B14AC8 /* Assets.xcassets */,
 				D0797D032959913A00B14AC8 /* LaunchScreen.storyboard */,
 			);
-			path = Resource;
+			name = Resource;
+			path = AboutRamen/Resource;
 			sourceTree = "<group>";
 		};
 		D0BB11F92959C7FF001E33A6 /* Fonts */ = {
 			isa = PBXGroup;
 			children = (
-				D0BB11F72959C7CB001E33A6 /* BlackHanSans-Regular.ttf */,
-				D01307DC2970F2F900672422 /* Recipekorea.ttf */,
+				D013084B2972747800672422 /* BlackHanSans-Regular.ttf */,
+				D013084D2972748300672422 /* Recipekorea.ttf */,
 			);
 			path = Fonts;
 			sourceTree = "<group>";
@@ -224,8 +247,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D0BB11F82959C7CB001E33A6 /* BlackHanSans-Regular.ttf in Resources */,
+				D013084C2972747800672422 /* BlackHanSans-Regular.ttf in Resources */,
 				D0797D052959913A00B14AC8 /* LaunchScreen.storyboard in Resources */,
+				D013084E2972748300672422 /* Recipekorea.ttf in Resources */,
 				D0797D022959913A00B14AC8 /* Assets.xcassets in Resources */,
 				D0797D002959913900B14AC8 /* Main.storyboard in Resources */,
 			);
@@ -252,7 +276,6 @@
 				D0797CF92959913900B14AC8 /* AppDelegate.swift in Sources */,
 				D0797D0D2959936900B14AC8 /* CollectionViewCell.swift in Sources */,
 				D01307B7296FFB8E00672422 /* MyRamenListCell.swift in Sources */,
-				D0BB1214295AD64D001E33A6 /* MapViewController.swift in Sources */,
 				D01307B5296FFB1900672422 /* MyRamenListViewController.swift in Sources */,
 				D0797CFB2959913900B14AC8 /* SceneDelegate.swift in Sources */,
 				D0B171C0296D6C1A002AD35D /* DetailViewController.swift in Sources */,

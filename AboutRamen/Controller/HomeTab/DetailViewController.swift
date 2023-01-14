@@ -15,37 +15,42 @@ class DetailViewController: UIViewController {
     @IBOutlet var ratingLabel: UILabel!
     @IBOutlet weak var starSlider: UISlider!
     @IBOutlet weak var starStackView: UIStackView!
+    @IBOutlet var pictureView: UIView!
     @IBOutlet var thumbsUpButton: UIButton!
-    
+    @IBOutlet var pictureImageViewOne: UIImageView!
+    @IBOutlet var pictureImageViewTwo: UIImageView!
     
     // MARK: - View Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         setUpBorder()
         setUpBackgroundColor()
-        storeLabel.font = UIFont.boldSystemFont(ofSize: 40)
+        storeLabel.font = UIFont.boldSystemFont(ofSize: 25)
+        
     }
     
     func setUpBorder() {
-        locationLabel.layer.addBorder([.right], color: UIColor.black, width: 2.0)
-        addressView.layer.addBorder([.top, .bottom], color: .black, width: 2.0)
-        numberView.layer.addBorder([.bottom], color: .black, width: 2.0)
-        timeView.layer.addBorder([.bottom], color: .black, width: 2.0)
-        addressLabel.layer.addBorder([.left], color: .black, width: 2.0)
-        numberLabel.layer.addBorder([.left], color: .black, width: 2.0)
-        timeLabel.layer.addBorder([.left], color: .black, width: 2.0)
-        buttonsView.layer.borderWidth = 2.0
-        buttonsView.layer.borderColor = UIColor.black.cgColor
-        buttonsView.layer.cornerRadius = 10
-        ratingLabel.layer.borderWidth = 2.0
-        ratingLabel.layer.borderColor = UIColor.black.cgColor
-        ratingLabel.layer.cornerRadius = 10
+        let views: [UIView] = [addressView, numberView, timeView, pictureView]
+        views.forEach {
+            $0.layer.borderWidth = 2
+            $0.layer.borderColor = UIColor.black.cgColor
+        }
+        
+        pictureImageViewOne.layer.addBorder([.right], color: .black, width: 2)
+        
+        let others: [UIView] = [buttonsView, ratingLabel]
+        others.forEach {
+            $0.layer.borderWidth = 2
+            $0.layer.borderColor = UIColor.black.cgColor
+            $0.layer.cornerRadius = 10
+        }
     }
     
     func setUpBackgroundColor() {
-        addressLabel.backgroundColor = .systemOrange
-        numberLabel.backgroundColor = .systemOrange
-        timeLabel.backgroundColor = .systemOrange
+        let labels: [UILabel] = [addressLabel, numberLabel, timeLabel]
+        labels.forEach {
+            $0.backgroundColor = .systemOrange
+        }
     }
     // MARK: - Actions
     @IBAction func onDragStarSlider(_ sender: UISlider) {
