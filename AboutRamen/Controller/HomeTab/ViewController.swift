@@ -7,14 +7,14 @@ class ViewController: UIViewController {
     @IBOutlet weak var regionChangeButton: UIBarButtonItem!
     @IBOutlet var myLocationLabel: UILabel!
     // MARK: - Properties
-    let url: String = "https://dapi.kakao.com/v2/local/search/keyword.json?query=%EB%9D%BC%EB%A9%98&x=126.8468194&y=37.29851944&radius=7000&page=1"
+    let url: String = "https://dapi.kakao.com/v2/local/search/keyword.json"
     var ramenList: [Information] = []
     // MARK: - ViewLifeCycle
     override func viewDidLoad() {
         super.viewDidLoad()
         setUpCollectionView()
         setUpNavigationBar()
-        getRamenInformation()
+        getAlamofire(url: url)
     }
     
     func setUpNavigationBar() {
@@ -38,40 +38,29 @@ class ViewController: UIViewController {
     }
     
     func getAlamofire(url: String) {
+        let headers: HTTPHeaders = [
+            "Authorization" : "KakaoAK d8b066a3dbb0e888b857f37b667d96d2"
+        ]
         
-    }
-    
-    
-    
-    func getRamenInformation() {
-        guard let url = URL(string: url) else { return }
-        var request = URLRequest(url: url)
-        request.httpMethod = "GET"
-        request.setValue("KakaoAK d8b066a3dbb0e888b857f37b667d96d2", forHTTPHeaderField: "Authorization")
+        let parameters: [String : Any] = [
+            "query" : "라멘",
+            "x" : "128.5941667",
+            "y" : "38.204275",
+            "radius" : 7000,
+            "page" : 2
+        ]
         
-        let dataTask = URLSession.shared.dataTask(with: request) { data, response, error in
-            guard let data = data else { return }
-            guard let response = response as? HTTPURLResponse else { return }
-            guard error == nil else { return }
+        AF.request(url, method: .get, parameters: parameters ,headers: headers).responseDecodable(of: RamenStore.self) {
+            response in
+            debugPrint(response.value)
             
-            switch response.statusCode {
-            case 200:
-                let data = try? JSONDecoder().decode(RamenStore.self, from: data)
-                
-                if let data = data {
-                    self.ramenList = data.documents
-                    DispatchQueue.main.async {
-                        self.collectionView.reloadData()
-                    }
-                } else {
-                    print("파싱 실패!")
+            if let data = response.value {
+                self.ramenList = data.documents
+                DispatchQueue.main.async {
+                    self.collectionView.reloadData()
                 }
-                
-            default:
-                print("데이터 연결 실패!")
             }
         }
-        dataTask.resume()
     }
 }
 // MARK: - Collecion View
