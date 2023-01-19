@@ -77,7 +77,7 @@ extension ViewController: UICollectionViewDelegate, UICollectionViewDataSource, 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectionViewCell", for: indexPath) as? CollectionViewCell else { return UICollectionViewCell() }
         let ramenData = ramenList[indexPath.row]
-        
+        print(ramenData)
         cell.layer.borderColor = UIColor.black.cgColor
         cell.layer.borderWidth = 3
         cell.layer.cornerRadius = 10
