@@ -14,14 +14,3 @@ class RegionPickerController: UIViewController {
     }
 }
 
-extension RegionPickerController: UIPickerViewDelegate, UIPickerViewDataSource {
-    func numberOfComponents(in pickerView: UIPickerView) -> Int {
-        return 2
-    }
-    
-    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return
-    }
-    
-    
-}

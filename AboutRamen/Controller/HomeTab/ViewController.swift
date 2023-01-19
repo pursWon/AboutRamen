@@ -1,4 +1,5 @@
 import UIKit
+import Alamofire
 
 class ViewController: UIViewController {
     // MARK: - UI
@@ -35,6 +36,12 @@ class ViewController: UIViewController {
         collectionView.delegate = self
         collectionView.backgroundColor = .systemOrange
     }
+    
+    func getAlamofire(url: String) {
+        
+    }
+    
+    
     
     func getRamenInformation() {
         guard let url = URL(string: url) else { return }
