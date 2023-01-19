@@ -1,7 +1,7 @@
 import UIKit
 
 class DetailViewController: UIViewController {
-    // MARK: - Properties
+    // MARK: - UI
     @IBOutlet var storeLabel: UILabel!
     @IBOutlet var locationLabel: UILabel!
     @IBOutlet var distanceLabel: UILabel!
@@ -16,17 +16,19 @@ class DetailViewController: UIViewController {
     @IBOutlet weak var starSlider: UISlider!
     @IBOutlet weak var starStackView: UIStackView!
     @IBOutlet var pictureView: UIView!
-    @IBOutlet var thumbsUpButton: UIButton!
     @IBOutlet var pictureImageViewOne: UIImageView!
     @IBOutlet var pictureImageViewTwo: UIImageView!
     
+    // MARK: - Properties
+    var index: Int = 0
+    var information: [Information] = []
     // MARK: - View Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         setUpBorder()
         setUpBackgroundColor()
+        setUpLableText()
         storeLabel.font = UIFont.boldSystemFont(ofSize: 25)
-        
     }
     
     func setUpBorder() {
@@ -52,15 +54,51 @@ class DetailViewController: UIViewController {
             $0.backgroundColor = .systemOrange
         }
     }
+    
+    func setUpLableText() {
+        storeLabel.text = information[index].place_name
+        distanceLabel.text = "\(information[index].distance)m"
+        addressLabel.text = information[index].road_address_name
+        numberLabel.text = information[index].phone
+    }
     // MARK: - Actions
     @IBAction func onDragStarSlider(_ sender: UISlider) {
-        let floatValue = floor(sender.value * 10) / 10
+        let floatValue = (floor(sender.value * 10) / 10)
         print(floatValue)
+        var value: Float = 0
+        
+        switch floatValue {
+        case 0:
+            value = 0
+        case 0.1...0.5:
+            value = 0.5
+        case 0.6...1.0:
+            value = 1.0
+        case 1.1...1.5:
+            value = 1.5
+        case 1.6...2.0:
+            value = 2.0
+        case 2.1...2.5:
+            value = 2.5
+        case 2.6...3:
+            value = 3.0
+        case 3.1...3.5:
+            value = 3.5
+        case 3.6...4.0:
+            value = 4.0
+        case 4.1...4.5:
+            value = 4.5
+        case 4.5...5.0:
+            value = 5.0
+        default:
+        fatalError()
+        }
+        
         for index in 1...5 {
             if let starImage = view.viewWithTag(index) as? UIImageView {
-                if Float(index) <= floatValue {
+                if Float(index) <= value {
                     starImage.image = UIImage(named: "별 한개")
-                } else if (Float(index) - floatValue) <= 0.5 {
+                } else if (Float(index) - value) <= 0.5 {
                     starImage.image = UIImage(named: "별 반개")
                 } else {
                     starImage.image = UIImage(named: "빈 별")
@@ -68,7 +106,7 @@ class DetailViewController: UIViewController {
             }
         }
         ratingLabel.font = UIFont.boldSystemFont(ofSize: 15)
-        ratingLabel.text = String("가게 평점 : \(floatValue)")
+        ratingLabel.text = String("가게 평점 : \(value)")
     }
 }
 

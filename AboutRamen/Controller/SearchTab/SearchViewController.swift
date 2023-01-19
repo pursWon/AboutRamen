@@ -17,7 +17,7 @@ class SearchViewController: UIViewController {
     
     func setUpSearchController() {
         let searchController = UISearchController()
-        searchController.searchBar.placeholder = "검색어를 입력해주세요."
+        searchController.searchBar.placeholder = "지역명 혹은 가게 이름을 입력해주세요"
         searchController.searchResultsUpdater = self
         searchController.hidesNavigationBarDuringPresentation = true
         

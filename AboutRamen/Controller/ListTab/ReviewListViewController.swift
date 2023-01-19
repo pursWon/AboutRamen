@@ -7,7 +7,7 @@ class ReviewListViewController: UIViewController, UITableViewDelegate, UITableVi
     override func viewDidLoad() {
         super.viewDidLoad()
         setUpTableView()
-        navigationController?.navigationBar.backgroundColor = .systemOrange
+        view.backgroundColor = .systemOrange
     }
     
     func setUpTableView() {

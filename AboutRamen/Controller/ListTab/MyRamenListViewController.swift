@@ -7,7 +7,7 @@ class MyRamenListViewController: UIViewController, UITableViewDelegate, UITableV
     override func viewDidLoad() {
         super.viewDidLoad()
         setUpTableView()
-        navigationController?.navigationBar.backgroundColor = .systemOrange
+        view.backgroundColor = .systemOrange
     }
     
     func setUpTableView() {

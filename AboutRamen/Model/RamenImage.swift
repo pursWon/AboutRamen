@@ -1,8 +1,9 @@
-//
-//  RamenImage.swift
-//  AboutRamen
-//
-//  Created by MacBook Air on 2023/01/17.
-//
-
 import Foundation
+
+struct RamenImage: Decodable {
+    let documents: [Image]
+}
+
+struct Image: Decodable {
+    let image_url: String
+}

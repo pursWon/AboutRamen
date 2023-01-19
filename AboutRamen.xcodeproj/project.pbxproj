@@ -17,6 +17,9 @@
 		D01307B7296FFB8E00672422 /* MyRamenListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01307B6296FFB8E00672422 /* MyRamenListCell.swift */; };
 		D013084C2972747800672422 /* BlackHanSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D013084B2972747800672422 /* BlackHanSans-Regular.ttf */; };
 		D013084E2972748300672422 /* Recipekorea.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D013084D2972748300672422 /* Recipekorea.ttf */; };
+		D01308532976699100672422 /* RamenStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01308522976699000672422 /* RamenStore.swift */; };
+		D01308562976B4B000672422 /* RamenImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01308552976B4AF00672422 /* RamenImage.swift */; };
+		D013087A2977C9E600672422 /* RegionPickerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01308792977C9E600672422 /* RegionPickerController.swift */; };
 		D0797CF92959913900B14AC8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0797CF82959913900B14AC8 /* AppDelegate.swift */; };
 		D0797CFB2959913900B14AC8 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0797CFA2959913900B14AC8 /* SceneDelegate.swift */; };
 		D0797CFD2959913900B14AC8 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0797CFC2959913900B14AC8 /* ViewController.swift */; };
@@ -56,6 +59,9 @@
 		D01307B6296FFB8E00672422 /* MyRamenListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyRamenListCell.swift; sourceTree = "<group>"; };
 		D013084B2972747800672422 /* BlackHanSans-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "BlackHanSans-Regular.ttf"; sourceTree = "<group>"; };
 		D013084D2972748300672422 /* Recipekorea.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Recipekorea.ttf; sourceTree = "<group>"; };
+		D01308522976699000672422 /* RamenStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RamenStore.swift; sourceTree = "<group>"; };
+		D01308552976B4AF00672422 /* RamenImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RamenImage.swift; sourceTree = "<group>"; };
+		D01308792977C9E600672422 /* RegionPickerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegionPickerController.swift; sourceTree = "<group>"; };
 		D0797CF52959913900B14AC8 /* AboutRamen.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AboutRamen.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D0797CF82959913900B14AC8 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D0797CFA2959913900B14AC8 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -89,6 +95,7 @@
 			children = (
 				D0797CFC2959913900B14AC8 /* ViewController.swift */,
 				D0B171BF296D6C1A002AD35D /* DetailViewController.swift */,
+				D01308792977C9E600672422 /* RegionPickerController.swift */,
 			);
 			path = HomeTab;
 			sourceTree = "<group>";
@@ -113,6 +120,15 @@
 			path = SearchTab;
 			sourceTree = "<group>";
 		};
+		D0130854297669A100672422 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				D01308522976699000672422 /* RamenStore.swift */,
+				D01308552976B4AF00672422 /* RamenImage.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
 		D0797CEC2959913900B14AC8 = {
 			isa = PBXGroup;
 			children = (
@@ -135,6 +151,7 @@
 			children = (
 				D0797CF82959913900B14AC8 /* AppDelegate.swift */,
 				D0797CFA2959913900B14AC8 /* SceneDelegate.swift */,
+				D0130854297669A100672422 /* Model */,
 				D0B171BA2966D449002AD35D /* Controller */,
 				D0B171BB2966D460002AD35D /* View */,
 				D0797D062959913A00B14AC8 /* Info.plist */,
@@ -262,11 +279,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D01308532976699100672422 /* RamenStore.swift in Sources */,
 				D01307AF296FEE8800672422 /* BadListCell.swift in Sources */,
 				D01307AD296FEE6200672422 /* BadListViewController.swift in Sources */,
 				D01307B3296FF1BF00672422 /* ReviewListCell.swift in Sources */,
 				D0B171C6296EF4C5002AD35D /* MyListCell.swift in Sources */,
+				D01308562976B4B000672422 /* RamenImage.swift in Sources */,
 				D01307AB296FE13D00672422 /* GoodListCell.swift in Sources */,
+				D013087A2977C9E600672422 /* RegionPickerController.swift in Sources */,
 				D0B170C7295D39EA002AD35D /* SearchViewController.swift in Sources */,
 				D0B171BE2966D738002AD35D /* SearchViewCell.swift in Sources */,
 				D01307B1296FF19200672422 /* ReviewListViewController.swift in Sources */,

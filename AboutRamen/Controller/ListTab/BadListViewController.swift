@@ -7,7 +7,7 @@ class BadListViewController: UIViewController, UITableViewDelegate, UITableViewD
     override func viewDidLoad() {
         super.viewDidLoad()
         setUpTableView()
-        navigationController?.navigationBar.backgroundColor = .systemOrange
+        view.backgroundColor = .systemOrange
     }
     
     func setUpTableView() {

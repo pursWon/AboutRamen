@@ -7,6 +7,7 @@ class GoodListViewController: UIViewController, UITableViewDelegate, UITableView
     override func viewDidLoad() {
         super.viewDidLoad()
         setUpTableView()
+        view.backgroundColor = .systemOrange
         navigationController?.navigationBar.backgroundColor = .systemOrange
     }
     
