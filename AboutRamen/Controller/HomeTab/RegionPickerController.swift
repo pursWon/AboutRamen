@@ -1,6 +1,6 @@
 import UIKit
 
-class RegionPickerController: UIViewController {
+class RegionPickerController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource {
     // MARK: - UI
     @IBOutlet var pickerView: UIView!
     @IBOutlet var cityPicker: UIPickerView!
@@ -10,7 +10,8 @@ class RegionPickerController: UIViewController {
     @IBOutlet var regionSelectButton: UIButton!
     // MARK: - Properties
     let regionData = RegionData()
-    
+    var selectedCity: String = ""
+    var selectedGu: String = ""
     // MARK: - View Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,14 +32,8 @@ class RegionPickerController: UIViewController {
         
         myReionLabel.layer.cornerRadius = 10
     }
-    
-    @IBAction func regionSelectButton(_ sender: UIButton) {
-        
-    }
-}
 
 // MARK: - Picker
-extension RegionPickerController: UIPickerViewDelegate, UIPickerViewDataSource {
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
     }
@@ -78,6 +73,7 @@ extension RegionPickerController: UIPickerViewDelegate, UIPickerViewDataSource {
     }
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        
         if pickerView == cityPicker {
             return regionData.cities[row]
         } else if cityPicker.selectedRow(inComponent: 0) == 0 {
@@ -114,16 +110,57 @@ extension RegionPickerController: UIPickerViewDelegate, UIPickerViewDataSource {
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         if pickerView == cityPicker {
             guPicker.reloadAllComponents()
+        } else if cityPicker.selectedRow(inComponent: 0) == 0 {
+            selectedCity = regionData.cities[0]
+            selectedGu = regionData.seoul[row]
+        } else if cityPicker.selectedRow(inComponent: 0) == 1 {
+            selectedCity = regionData.cities[1]
+            selectedGu = regionData.gangwon[row]
+        } else if cityPicker.selectedRow(inComponent: 0) == 2 {
+            selectedCity = regionData.cities[2]
+            selectedGu = regionData.gyeonggi[row]
+        } else if cityPicker.selectedRow(inComponent: 0) == 3 {
+            selectedCity = regionData.cities[3]
+            selectedGu = regionData.gyeongsang[row]
+        } else if cityPicker.selectedRow(inComponent: 0) == 4 {
+            selectedCity = regionData.cities[4]
+            selectedGu = regionData.gwangju[row]
+        } else if cityPicker.selectedRow(inComponent: 0) == 5 {
+            selectedCity = regionData.cities[5]
+            selectedGu = regionData.daegu[row]
+        } else if cityPicker.selectedRow(inComponent: 0) == 6 {
+            selectedCity = regionData.cities[6]
+            selectedGu = regionData.daejeon[row]
+        } else if cityPicker.selectedRow(inComponent: 0) == 7 {
+            selectedCity = regionData.cities[7]
+            selectedGu = regionData.busan[row]
+        } else if cityPicker.selectedRow(inComponent: 0) == 8 {
+            selectedCity = regionData.cities[8]
+            selectedGu = regionData.ulsan[row]
+        } else if cityPicker.selectedRow(inComponent: 0) == 9 {
+            selectedCity = regionData.cities[9]
+            selectedGu = regionData.incheon[row]
+        } else if cityPicker.selectedRow(inComponent: 0) == 10 {
+            selectedCity = regionData.cities[10]
+            selectedGu = regionData.jeolla[row]
+        } else if cityPicker.selectedRow(inComponent: 0) == 11 {
+            selectedCity = regionData.cities[11]
+            selectedGu = regionData.chungcheong[row]
+        } else if cityPicker.selectedRow(inComponent: 0) == 12 {
+            selectedCity = regionData.cities[12]
+            selectedGu = regionData.jeju[row]
         }
     }
-    
-    
     
     func pickerView(_ pickerView: UIPickerView, rowHeightForComponent component: Int) -> CGFloat {
         return 50
     }
     
+    @IBAction func selectedButton(_ sender: UIButton) {
+        
+    }
+    
+    
     
 }
-
 

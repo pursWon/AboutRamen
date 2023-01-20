@@ -1,7 +1,7 @@
 import UIKit
 import Alamofire
 
-class ViewController: UIViewController {
+class HomeViewController: UIViewController {
     // MARK: - UI
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var regionChangeButton: UIBarButtonItem!
@@ -9,6 +9,8 @@ class ViewController: UIViewController {
     // MARK: - Properties
     let url: String = "https://dapi.kakao.com/v2/local/search/keyword.json"
     var ramenList: [Information] = []
+    var city: String = ""
+    var gu: String = ""
     // MARK: - ViewLifeCycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -70,7 +72,7 @@ class ViewController: UIViewController {
     
 }
 // MARK: - Collecion View
-extension ViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout
+extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout
 {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return ramenList.count
