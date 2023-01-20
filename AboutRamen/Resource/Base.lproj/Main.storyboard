@@ -161,7 +161,11 @@
                     </view>
                     <tabBarItem key="tabBarItem" title="홈" image="house" catalog="system" selectedImage="house" id="L7l-E6-V5N"/>
                     <navigationItem key="navigationItem" title="어바웃라멘" id="TJU-Ip-SAl">
-                        <barButtonItem key="rightBarButtonItem" title="지역 변경" id="syg-zr-mmE"/>
+                        <barButtonItem key="rightBarButtonItem" title="지역 변경" id="syg-zr-mmE">
+                            <connections>
+                                <action selector="regionChangeButton:" destination="q9u-x7-bDn" id="mE4-7s-qHf"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <connections>
                         <outlet property="collectionView" destination="pqo-fC-nOA" id="4MH-jF-ZCn"/>
@@ -595,13 +599,13 @@
                                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="3" translatesAutoresizingMaskIntoConstraints="NO" id="RQQ-kb-ejP">
                                                     <rect key="frame" x="50.000000000000014" y="-1.6666666666666679" width="180.33333333333337" height="43.666666666666671"/>
                                                     <subviews>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="가게 이름" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aq3-R3-mri">
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="가게 이름" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aq3-R3-mri">
                                                             <rect key="frame" x="0.0" y="0.0" width="180.33333333333334" height="20.333333333333332"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="주소" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Rey-Nj-dIb">
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="주소" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Rey-Nj-dIb">
                                                             <rect key="frame" x="0.0" y="23.333333333333336" width="180.33333333333334" height="20.333333333333336"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                             <nil key="textColor"/>
@@ -1041,14 +1045,14 @@
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="SearchViewCell" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="SearchViewCell" id="lu7-8f-HnG" customClass="SearchViewCell" customModule="AboutRamen" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="44.666666030883789" width="375" height="21.333333969116211"/>
+                                <rect key="frame" x="0.0" y="44.666666030883789" width="375" height="21"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="lu7-8f-HnG" id="BGA-KM-SDo">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="21.333333969116211"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="21"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="라멘" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BGn-Yi-GIz">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="21.333333333333332"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="21"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
@@ -1101,21 +1105,67 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <pickerView contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="S9g-tA-zpv">
-                                <rect key="frame" x="96" y="311" width="182" height="162"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
-                                <connections>
-                                    <outlet property="dataSource" destination="18G-As-Pou" id="2gU-MQ-iUf"/>
-                                    <outlet property="delegate" destination="18G-As-Pou" id="ge3-lX-Rhu"/>
-                                </connections>
-                            </pickerView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UxI-cz-180">
+                                <rect key="frame" x="0.0" y="88" width="375" height="690"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="나의 지역 " textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1IK-nU-eMM">
+                                        <rect key="frame" x="70" y="540" width="235" height="30"/>
+                                        <color key="backgroundColor" systemColor="systemYellowColor"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="30" id="pFf-Km-Xhn"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="Oyh-y3-B6X">
+                                        <rect key="frame" x="0.0" y="146" width="375" height="244"/>
+                                        <subviews>
+                                            <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="S9g-tA-zpv">
+                                                <rect key="frame" x="0.0" y="0.0" width="187.66666666666666" height="244"/>
+                                                <color key="backgroundColor" red="1" green="0.71260461129999997" blue="0.3550941339" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                                <connections>
+                                                    <outlet property="dataSource" destination="18G-As-Pou" id="2gU-MQ-iUf"/>
+                                                    <outlet property="delegate" destination="18G-As-Pou" id="ge3-lX-Rhu"/>
+                                                </connections>
+                                            </pickerView>
+                                            <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dOs-VF-TDJ">
+                                                <rect key="frame" x="187.66666666666663" y="0.0" width="187.33333333333337" height="244"/>
+                                                <color key="backgroundColor" systemColor="systemOrangeColor"/>
+                                                <connections>
+                                                    <outlet property="dataSource" destination="18G-As-Pou" id="mLo-DT-98w"/>
+                                                    <outlet property="delegate" destination="18G-As-Pou" id="vVm-8h-veE"/>
+                                                </connections>
+                                            </pickerView>
+                                        </subviews>
+                                    </stackView>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="bottom" secondItem="1IK-nU-eMM" secondAttribute="bottom" constant="120" id="3Hl-fl-4Mn"/>
+                                    <constraint firstAttribute="bottom" secondItem="Oyh-y3-B6X" secondAttribute="bottom" constant="300" id="Nri-Mm-O2J"/>
+                                    <constraint firstItem="Oyh-y3-B6X" firstAttribute="leading" secondItem="UxI-cz-180" secondAttribute="leading" id="UcI-Q9-1qA"/>
+                                    <constraint firstAttribute="trailing" secondItem="Oyh-y3-B6X" secondAttribute="trailing" id="ZSj-uM-Kxr"/>
+                                    <constraint firstAttribute="trailing" secondItem="1IK-nU-eMM" secondAttribute="trailing" constant="70" id="as9-2A-ABC"/>
+                                    <constraint firstItem="1IK-nU-eMM" firstAttribute="leading" secondItem="UxI-cz-180" secondAttribute="leading" constant="70" id="bZI-Yq-8pH"/>
+                                    <constraint firstItem="Oyh-y3-B6X" firstAttribute="top" secondItem="UxI-cz-180" secondAttribute="top" constant="146" id="g17-Zb-ZoH"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="y31-F9-Opy"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="UxI-cz-180" firstAttribute="leading" secondItem="y31-F9-Opy" secondAttribute="leading" id="39b-M5-qlR"/>
+                            <constraint firstItem="UxI-cz-180" firstAttribute="trailing" secondItem="y31-F9-Opy" secondAttribute="trailing" id="XIJ-b6-dcx"/>
+                            <constraint firstItem="y31-F9-Opy" firstAttribute="bottom" secondItem="UxI-cz-180" secondAttribute="bottom" id="hz0-AJ-X23"/>
+                            <constraint firstItem="UxI-cz-180" firstAttribute="top" secondItem="y31-F9-Opy" secondAttribute="top" id="tNn-yA-EU5"/>
+                        </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="cdk-Jz-Ffc"/>
+                    <navigationItem key="navigationItem" title="지역 변경 " id="cdk-Jz-Ffc"/>
                     <connections>
                         <outlet property="cityPicker" destination="S9g-tA-zpv" id="qea-wZ-yUz"/>
+                        <outlet property="guPicker" destination="dOs-VF-TDJ" id="Uuq-1G-d9I"/>
+                        <outlet property="regionStackView" destination="Oyh-y3-B6X" id="5fi-cm-6cR"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="caJ-rE-kLf" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -1163,6 +1213,9 @@
         </systemColor>
         <systemColor name="systemOrangeColor">
             <color red="1" green="0.58431372549019611" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+        <systemColor name="systemYellowColor">
+            <color red="1" green="0.80000000000000004" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

@@ -62,6 +62,12 @@ class ViewController: UIViewController {
             }
         }
     }
+    
+    @IBAction func regionChangeButton(_ sender: UIBarButtonItem) {
+        guard let regionPickerVC = self.storyboard?.instantiateViewController(withIdentifier: "RegionPickerController") as? RegionPickerController else { return }
+        navigationController?.pushViewController(regionPickerVC, animated: true)
+    }
+    
 }
 // MARK: - Collecion View
 extension ViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout
