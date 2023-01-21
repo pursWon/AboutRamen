@@ -54,7 +54,7 @@
         <!--HomeViewController-->
         <scene sceneID="Gtu-Cn-vrl">
             <objects>
-                <viewController storyboardIdentifier="ViewController" title="HomeViewController" id="q9u-x7-bDn" customClass="HomeViewController" customModule="AboutRamen" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="HomeViewController" title="HomeViewController" id="q9u-x7-bDn" customClass="HomeViewController" customModule="AboutRamen" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="LaS-nJ-oaX">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -1045,14 +1045,14 @@
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="SearchViewCell" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="SearchViewCell" id="lu7-8f-HnG" customClass="SearchViewCell" customModule="AboutRamen" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="44.666666030883789" width="375" height="21"/>
+                                <rect key="frame" x="0.0" y="44.666666030883789" width="375" height="20.666666030883789"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="lu7-8f-HnG" id="BGA-KM-SDo">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="21"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="20.666666030883789"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="라멘" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BGn-Yi-GIz">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="21"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="20.666666666666668"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
@@ -1143,7 +1143,7 @@
                                         <state key="normal" title="Button"/>
                                         <buttonConfiguration key="configuration" style="plain" title="지역 선택 "/>
                                         <connections>
-                                            <action selector="selectedButton:" destination="18G-As-Pou" eventType="touchUpInside" id="RjU-dQ-RMG"/>
+                                            <action selector="selectButton:" destination="18G-As-Pou" eventType="touchUpInside" id="02y-Xx-pa5"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -1187,7 +1187,6 @@
                         <outlet property="guPicker" destination="dOs-VF-TDJ" id="Uuq-1G-d9I"/>
                         <outlet property="myReionLabel" destination="1IK-nU-eMM" id="HCK-oc-7X8"/>
                         <outlet property="pickerView" destination="UxI-cz-180" id="jM3-Ks-jV1"/>
-                        <outlet property="regionSelectButton" destination="1Re-p1-3ak" id="Z8j-rP-vbr"/>
                         <outlet property="regionStackView" destination="Oyh-y3-B6X" id="5fi-cm-6cR"/>
                     </connections>
                 </viewController>

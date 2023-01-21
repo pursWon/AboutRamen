@@ -1,7 +1,7 @@
 import UIKit
 import Alamofire
 
-class HomeViewController: UIViewController {
+class HomeViewController: UIViewController, SampleProtocol {
     // MARK: - UI
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var regionChangeButton: UIBarButtonItem!
@@ -9,8 +9,7 @@ class HomeViewController: UIViewController {
     // MARK: - Properties
     let url: String = "https://dapi.kakao.com/v2/local/search/keyword.json"
     var ramenList: [Information] = []
-    var city: String = ""
-    var gu: String = ""
+    var region: String = ""
     // MARK: - ViewLifeCycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -18,6 +17,11 @@ class HomeViewController: UIViewController {
         setUpNavigationBar()
         getAlamofire(url: url)
     }
+    
+    func sendData(data: String) {
+        myLocationLabel.text = data
+    }
+    
     
     func setUpNavigationBar() {
         title = "어바웃라멘"
@@ -67,6 +71,7 @@ class HomeViewController: UIViewController {
     
     @IBAction func regionChangeButton(_ sender: UIBarButtonItem) {
         guard let regionPickerVC = self.storyboard?.instantiateViewController(withIdentifier: "RegionPickerController") as? RegionPickerController else { return }
+        regionPickerVC.delegate = self
         navigationController?.pushViewController(regionPickerVC, animated: true)
     }
     

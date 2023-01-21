@@ -1,5 +1,9 @@
 import UIKit
 
+protocol SampleProtocol {
+    func sendData(data: String)
+}
+
 class RegionPickerController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource {
     // MARK: - UI
     @IBOutlet var pickerView: UIView!
@@ -12,6 +16,7 @@ class RegionPickerController: UIViewController, UIPickerViewDelegate, UIPickerVi
     let regionData = RegionData()
     var selectedCity: String = ""
     var selectedGu: String = ""
+    var delegate: SampleProtocol?
     // MARK: - View Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -150,17 +155,19 @@ class RegionPickerController: UIViewController, UIPickerViewDelegate, UIPickerVi
             selectedCity = regionData.cities[12]
             selectedGu = regionData.jeju[row]
         }
+        
+        delegate?.sendData(data: "\(selectedCity) \(selectedGu)")
     }
     
     func pickerView(_ pickerView: UIPickerView, rowHeightForComponent component: Int) -> CGFloat {
         return 50
     }
     
-    @IBAction func selectedButton(_ sender: UIButton) {
-        
+    @IBAction func selectButton(_ sender: UIButton) {
+        self.navigationController?.popViewController(animated: true)
     }
     
-    
+   
     
 }
 
