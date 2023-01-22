@@ -74,7 +74,6 @@ class HomeViewController: UIViewController, SampleProtocol {
         regionPickerVC.delegate = self
         navigationController?.pushViewController(regionPickerVC, animated: true)
     }
-    
 }
 // MARK: - Collecion View
 extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout

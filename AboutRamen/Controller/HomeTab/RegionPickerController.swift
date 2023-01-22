@@ -10,18 +10,19 @@ class RegionPickerController: UIViewController, UIPickerViewDelegate, UIPickerVi
     @IBOutlet var cityPicker: UIPickerView!
     @IBOutlet var guPicker: UIPickerView!
     @IBOutlet var regionStackView: UIStackView!
-    @IBOutlet var myReionLabel: UILabel!
     @IBOutlet var regionSelectButton: UIButton!
     // MARK: - Properties
     let regionData = RegionData()
+    var delegate: SampleProtocol?
     var selectedCity: String = ""
     var selectedGu: String = ""
-    var delegate: SampleProtocol?
+    
     // MARK: - View Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemOrange
         setUpBorder()
+        delegate?.sendData(data: "\(regionData.cities[0]) \(regionData.seoul[0])")
     }
     
     override func didReceiveMemoryWarning() {
@@ -29,15 +30,14 @@ class RegionPickerController: UIViewController, UIPickerViewDelegate, UIPickerVi
     }
     
     func setUpBorder() {
-        let views: [UIView] = [regionStackView, myReionLabel]
+        let views: [UIView] = [regionStackView, regionSelectButton]
         views.forEach { view in
             view.layer.borderWidth = 2
             view.layer.borderColor = UIColor.black.cgColor
         }
         
-        myReionLabel.layer.cornerRadius = 10
+        regionSelectButton.layer.cornerRadius = 10
     }
-
 // MARK: - Picker
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
@@ -166,8 +166,6 @@ class RegionPickerController: UIViewController, UIPickerViewDelegate, UIPickerVi
     @IBAction func selectButton(_ sender: UIButton) {
         self.navigationController?.popViewController(animated: true)
     }
-    
-   
-    
 }
+
 
