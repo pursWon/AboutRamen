@@ -11,26 +11,28 @@ class HomeViewController: UIViewController, SampleProtocol, LngLgtProtocol {
     var ramenList: [Information] = []
     var region: String = ""
     let regionData = RegionData()
+    var myLngLgt: (Double, Double) = (127.0495556, 37.514575)
     // MARK: - ViewLifeCycle
     override func viewDidLoad() {
         super.viewDidLoad()
         setUpCollectionView()
         setUpNavigationBar()
-        getAlamofire(url: url)
+        getAlamofire(url: url, lnglgt: myLngLgt)
+        myLocationLabel.text = "서울시 강남구"
     }
     
     func sendData(data: String) {
         myLocationLabel.text = data
     }
     
-    
     func sendLngLgt(lnglgt: (Double, Double)) {
-        RegionData.myLgtLat = lnglgt
+        myLngLgt = lnglgt
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        print(RegionData.myLgtLat)
+        getAlamofire(url: url, lnglgt: myLngLgt)
     }
+    
     
     func setUpNavigationBar() {
         title = "어바웃라멘"
@@ -52,18 +54,18 @@ class HomeViewController: UIViewController, SampleProtocol, LngLgtProtocol {
         collectionView.backgroundColor = .systemOrange
     }
 
-    func getAlamofire(url: String) {
+    func getAlamofire(url: String, lnglgt: (Double, Double)) {
         
-        print(RegionData.myLgtLat)
         let headers: HTTPHeaders = [
             "Authorization" : "KakaoAK d8b066a3dbb0e888b857f37b667d96d2"
         ]
         
         let parameters: [String : Any] = [
             "query" : "라멘",
-            "x" : "\(RegionData.myLgtLat.0)",
-            "y" : "\(RegionData.myLgtLat.1)",
+            "x" : "\(lnglgt.0)",
+            "y" : "\(lnglgt.1)",
             "radius" : 7000,
+            "size" : 15
         ]
         
         AF.request(url, method: .get, parameters: parameters ,headers: headers).responseDecodable(of: RamenStore.self) {

@@ -35,13 +35,11 @@ class RegionPickerController: UIViewController, UIPickerViewDelegate, UIPickerVi
     }
     
     func setUpBorder() {
-        let views: [UIView] = [regionStackView, regionSelectButton]
+        let views: [UIView] = [regionStackView]
         views.forEach { view in
             view.layer.borderWidth = 2
             view.layer.borderColor = UIColor.black.cgColor
         }
-        
-        regionSelectButton.layer.cornerRadius = 10
     }
 // MARK: - Picker
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
@@ -174,10 +172,6 @@ class RegionPickerController: UIViewController, UIPickerViewDelegate, UIPickerVi
     
     func pickerView(_ pickerView: UIPickerView, rowHeightForComponent component: Int) -> CGFloat {
         return 50
-    }
-    
-    @IBAction func selectButton(_ sender: UIButton) {
-        self.navigationController?.popViewController(animated: true)
     }
 }
 

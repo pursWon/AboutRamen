@@ -599,13 +599,13 @@
                                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="3" translatesAutoresizingMaskIntoConstraints="NO" id="RQQ-kb-ejP">
                                                     <rect key="frame" x="50.000000000000014" y="-1.6666666666666679" width="180.33333333333337" height="43.666666666666671"/>
                                                     <subviews>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="가게 이름" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aq3-R3-mri">
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="가게 이름" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aq3-R3-mri">
                                                             <rect key="frame" x="0.0" y="0.0" width="180.33333333333334" height="20.333333333333332"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="주소" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Rey-Nj-dIb">
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="주소" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Rey-Nj-dIb">
                                                             <rect key="frame" x="0.0" y="23.333333333333336" width="180.33333333333334" height="20.333333333333336"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                             <nil key="textColor"/>
@@ -1045,14 +1045,14 @@
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="SearchViewCell" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="SearchViewCell" id="lu7-8f-HnG" customClass="SearchViewCell" customModule="AboutRamen" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="44.666666030883789" width="375" height="20.666666030883789"/>
+                                <rect key="frame" x="0.0" y="44.666666030883789" width="375" height="21"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="lu7-8f-HnG" id="BGA-KM-SDo">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="20.666666030883789"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="21"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="라멘" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BGn-Yi-GIz">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="20.666666666666668"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="21"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
@@ -1128,22 +1128,11 @@
                                         </subviews>
                                         <color key="backgroundColor" systemColor="systemOrangeColor"/>
                                     </stackView>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1Re-p1-3ak">
-                                        <rect key="frame" x="120" y="450" width="135" height="31"/>
-                                        <state key="normal" title="Button"/>
-                                        <buttonConfiguration key="configuration" style="plain" title="지역 선택 "/>
-                                        <connections>
-                                            <action selector="selectButton:" destination="18G-As-Pou" eventType="touchUpInside" id="02y-Xx-pa5"/>
-                                        </connections>
-                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" red="1" green="0.71260461129999997" blue="0.3550941339" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 <constraints>
-                                    <constraint firstItem="1Re-p1-3ak" firstAttribute="leading" secondItem="UxI-cz-180" secondAttribute="leading" constant="120" id="Gyp-H9-xMV"/>
-                                    <constraint firstItem="1Re-p1-3ak" firstAttribute="centerX" secondItem="UxI-cz-180" secondAttribute="centerX" id="L2K-LV-q6P"/>
                                     <constraint firstAttribute="bottom" secondItem="Oyh-y3-B6X" secondAttribute="bottom" constant="300" id="Nri-Mm-O2J"/>
                                     <constraint firstItem="Oyh-y3-B6X" firstAttribute="leading" secondItem="UxI-cz-180" secondAttribute="leading" id="UcI-Q9-1qA"/>
-                                    <constraint firstItem="1Re-p1-3ak" firstAttribute="top" secondItem="UxI-cz-180" secondAttribute="top" constant="450" id="XHA-lW-qrx"/>
                                     <constraint firstAttribute="trailing" secondItem="Oyh-y3-B6X" secondAttribute="trailing" id="ZSj-uM-Kxr"/>
                                     <constraint firstItem="Oyh-y3-B6X" firstAttribute="top" secondItem="UxI-cz-180" secondAttribute="top" constant="146" id="g17-Zb-ZoH"/>
                                 </constraints>
@@ -1155,7 +1144,6 @@
                             <constraint firstItem="UxI-cz-180" firstAttribute="leading" secondItem="y31-F9-Opy" secondAttribute="leading" id="39b-M5-qlR"/>
                             <constraint firstItem="UxI-cz-180" firstAttribute="trailing" secondItem="y31-F9-Opy" secondAttribute="trailing" id="XIJ-b6-dcx"/>
                             <constraint firstItem="y31-F9-Opy" firstAttribute="bottom" secondItem="UxI-cz-180" secondAttribute="bottom" id="hz0-AJ-X23"/>
-                            <constraint firstItem="y31-F9-Opy" firstAttribute="trailing" secondItem="1Re-p1-3ak" secondAttribute="trailing" constant="120" id="ohD-uD-qLK"/>
                             <constraint firstItem="UxI-cz-180" firstAttribute="top" secondItem="y31-F9-Opy" secondAttribute="top" id="tNn-yA-EU5"/>
                         </constraints>
                     </view>
@@ -1164,7 +1152,6 @@
                         <outlet property="cityPicker" destination="S9g-tA-zpv" id="qea-wZ-yUz"/>
                         <outlet property="guPicker" destination="dOs-VF-TDJ" id="Uuq-1G-d9I"/>
                         <outlet property="pickerView" destination="UxI-cz-180" id="jM3-Ks-jV1"/>
-                        <outlet property="regionSelectButton" destination="1Re-p1-3ak" id="qpP-Ly-pLT"/>
                         <outlet property="regionStackView" destination="Oyh-y3-B6X" id="5fi-cm-6cR"/>
                     </connections>
                 </viewController>
