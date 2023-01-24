@@ -1,23 +1,27 @@
 import UIKit
 import Alamofire
 
-class HomeViewController: UIViewController, SampleProtocol, LngLgtProtocol {
+class HomeViewController: UIViewController, SampleProtocol, LngLatProtocol {
     // MARK: - UI
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var regionChangeButton: UIBarButtonItem!
     @IBOutlet var myLocationLabel: UILabel!
     // MARK: - Properties
     let url: String = "https://dapi.kakao.com/v2/local/search/keyword.json"
+    let imageUrl: String = "https://dapi.kakao.com/v2/search/image"
     var ramenList: [Information] = []
+    var ramenImage: [Image] = []
+    var ramenCellImage: String = ""
+    var ramenCellImages: [String] = []
     var region: String = ""
     let regionData = RegionData()
-    var myLngLgt: (Double, Double) = (127.0495556, 37.514575)
+    var myLngLat: (Double, Double) = (127.0495556, 37.514575)
     // MARK: - ViewLifeCycle
     override func viewDidLoad() {
         super.viewDidLoad()
         setUpCollectionView()
         setUpNavigationBar()
-        getAlamofire(url: url, lnglgt: myLngLgt)
+        getAlamofire(url: url, lnglat: myLngLat)
         myLocationLabel.text = "서울시 강남구"
     }
     
@@ -25,12 +29,12 @@ class HomeViewController: UIViewController, SampleProtocol, LngLgtProtocol {
         myLocationLabel.text = data
     }
     
-    func sendLngLgt(lnglgt: (Double, Double)) {
-        myLngLgt = lnglgt
+    func sendLngLgt(lnglat: (Double, Double)) {
+        myLngLat = lnglat
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        getAlamofire(url: url, lnglgt: myLngLgt)
+        getAlamofire(url: url, lnglat: myLngLat)
     }
     
     
@@ -53,8 +57,8 @@ class HomeViewController: UIViewController, SampleProtocol, LngLgtProtocol {
         collectionView.delegate = self
         collectionView.backgroundColor = .systemOrange
     }
-
-    func getAlamofire(url: String, lnglgt: (Double, Double)) {
+    
+    func getAlamofire(url: String, lnglat: (Double, Double)) {
         
         let headers: HTTPHeaders = [
             "Authorization" : "KakaoAK d8b066a3dbb0e888b857f37b667d96d2"
@@ -62,18 +66,42 @@ class HomeViewController: UIViewController, SampleProtocol, LngLgtProtocol {
         
         let parameters: [String : Any] = [
             "query" : "라멘",
-            "x" : "\(lnglgt.0)",
-            "y" : "\(lnglgt.1)",
+            "x" : "\(lnglat.0)",
+            "y" : "\(lnglat.1)",
             "radius" : 7000,
             "size" : 15
         ]
         
         AF.request(url, method: .get, parameters: parameters ,headers: headers).responseDecodable(of: RamenStore.self) {
             response in
-            debugPrint(response.value)
+            debugPrint("response.value : \(response.value)")
             
             if let data = response.value {
                 self.ramenList = data.documents
+                DispatchQueue.main.async {
+                    self.collectionView.reloadData()
+                }
+            }
+        }
+    }
+    
+    func getRamenImage(imageURL: String ,query: String) {
+    
+        let headers: HTTPHeaders = [
+            "Authorization" : "KakaoAK d8b066a3dbb0e888b857f37b667d96d2"
+        ]
+        
+        let parameters: [String : Any] = [
+            "query" : query
+        ]
+    
+        AF.request(imageUrl, method: .get, parameters: parameters, headers: headers).responseDecodable(of: RamenImage.self) {
+            response in
+            
+            if let dataImage = response.value {
+                self.ramenImage = dataImage.documents
+                self.ramenCellImage = self.ramenImage[0].image_url
+                self.ramenCellImages.append(self.ramenCellImage)
                 DispatchQueue.main.async {
                     self.collectionView.reloadData()
                 }
@@ -97,8 +125,9 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectionViewCell", for: indexPath) as? CollectionViewCell else { return UICollectionViewCell() }
+        
         let ramenData = ramenList[indexPath.row]
-        print(ramenData)
+        
         cell.layer.borderColor = UIColor.black.cgColor
         cell.layer.borderWidth = 3
         cell.layer.cornerRadius = 10
@@ -109,6 +138,11 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
         
         cell.nameLabel.text = ramenData.place_name
         cell.distanceLabel.text = "\(ramenData.distance) m"
+        
+        // if let imageURL = URL(string: ramenCellImages[indexPath.row]),
+        //    let imageData = try? Data(contentsOf: imageURL) {
+        //     cell.ramenImageView.image = UIImage(data: imageData)
+        // }
         
         return cell
     }

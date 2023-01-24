@@ -1045,14 +1045,14 @@
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="SearchViewCell" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="SearchViewCell" id="lu7-8f-HnG" customClass="SearchViewCell" customModule="AboutRamen" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="44.666666030883789" width="375" height="21"/>
+                                <rect key="frame" x="0.0" y="44.666666030883789" width="375" height="21.333333969116211"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="lu7-8f-HnG" id="BGA-KM-SDo">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="21"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="21.333333969116211"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="라멘" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BGn-Yi-GIz">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="21"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="21.333333333333332"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>

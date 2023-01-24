@@ -4,8 +4,8 @@ protocol SampleProtocol {
     func sendData(data: String)
 }
 
-protocol LngLgtProtocol {
-    func sendLngLgt(lnglgt: (Double, Double))
+protocol LngLatProtocol {
+    func sendLngLgt(lnglat: (Double, Double))
 }
 
 class RegionPickerController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource {
@@ -18,10 +18,10 @@ class RegionPickerController: UIViewController, UIPickerViewDelegate, UIPickerVi
     // MARK: - Properties
     let regionData = RegionData()
     var delegate: SampleProtocol?
-    var delegateLngLgt: LngLgtProtocol?
+    var delegateLngLgt: LngLatProtocol?
     var selectedCity: String = ""
     var selectedGu: String = ""
-    var lnglgt: (Double, Double) = (0, 0)
+    var lnglat: (Double, Double) = (0, 0)
     // MARK: - View Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -163,11 +163,11 @@ class RegionPickerController: UIViewController, UIPickerViewDelegate, UIPickerVi
         
         for i in regionData.LngLat {
             if i.key.contains("\(selectedCity) \(selectedGu)") {
-                lnglgt = i.value
+                lnglat = i.value
             }
         }
         
-        delegateLngLgt?.sendLngLgt(lnglgt: lnglgt)
+        delegateLngLgt?.sendLngLgt(lnglat: lnglat)
     }
     
     func pickerView(_ pickerView: UIPickerView, rowHeightForComponent component: Int) -> CGFloat {
