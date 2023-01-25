@@ -1,7 +1,7 @@
 import UIKit
 
-protocol SampleProtocol {
-    func sendData(data: String)
+protocol RegionDataProtocol {
+    func sendRegionData(city: String, gu: String)
 }
 
 protocol LngLatProtocol {
@@ -14,10 +14,9 @@ class RegionPickerController: UIViewController, UIPickerViewDelegate, UIPickerVi
     @IBOutlet var cityPicker: UIPickerView!
     @IBOutlet var guPicker: UIPickerView!
     @IBOutlet var regionStackView: UIStackView!
-    @IBOutlet var regionSelectButton: UIButton!
     // MARK: - Properties
     let regionData = RegionData()
-    var delegate: SampleProtocol?
+    var delegate: RegionDataProtocol?
     var delegateLngLgt: LngLatProtocol?
     var selectedCity: String = ""
     var selectedGu: String = ""
@@ -27,7 +26,7 @@ class RegionPickerController: UIViewController, UIPickerViewDelegate, UIPickerVi
         super.viewDidLoad()
         view.backgroundColor = .systemOrange
         setUpBorder()
-        delegate?.sendData(data: "\(regionData.cities[0]) \(regionData.seoul[0])")
+        delegate?.sendRegionData(city: "서울시", gu: "강남구")
     }
     
     override func didReceiveMemoryWarning() {
@@ -159,7 +158,7 @@ class RegionPickerController: UIViewController, UIPickerViewDelegate, UIPickerVi
             selectedGu = regionData.jeju[row]
         }
         
-        delegate?.sendData(data: "\(selectedCity) \(selectedGu)")
+        delegate?.sendRegionData(city: selectedCity, gu: selectedGu)
         
         for i in regionData.LngLat {
             if i.key.contains("\(selectedCity) \(selectedGu)") {

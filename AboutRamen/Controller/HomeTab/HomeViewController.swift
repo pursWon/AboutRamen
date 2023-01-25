@@ -1,7 +1,7 @@
 import UIKit
 import Alamofire
 
-class HomeViewController: UIViewController, SampleProtocol, LngLatProtocol {
+class HomeViewController: UIViewController, RegionDataProtocol, LngLatProtocol {
     // MARK: - UI
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var regionChangeButton: UIBarButtonItem!
@@ -25,8 +25,8 @@ class HomeViewController: UIViewController, SampleProtocol, LngLatProtocol {
         myLocationLabel.text = "서울시 강남구"
     }
     
-    func sendData(data: String) {
-        myLocationLabel.text = data
+    func sendRegionData(city: String, gu: String) {
+        myLocationLabel.text = "\(city) \(gu)"
     }
     
     func sendLngLgt(lnglat: (Double, Double)) {
