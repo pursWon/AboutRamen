@@ -22,12 +22,14 @@ class DetailViewController: UIViewController {
     // MARK: - Properties
     var index: Int = 0
     var information: [Information] = []
+    var searchIndex: Int = 0
+    var searchStoreText: String = ""
     // MARK: - View Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         setUpBorder()
         setUpBackgroundColor()
-        setUpLableText()
+        setUpLableText2()
         storeLabel.font = UIFont.boldSystemFont(ofSize: 25)
     }
     
@@ -61,6 +63,14 @@ class DetailViewController: UIViewController {
         addressLabel.text = information[index].road_address_name
         numberLabel.text = information[index].phone
     }
+    
+    func setUpLableText2() {
+        storeLabel.text = searchStoreText
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        setUpLableText2()
+    }
     // MARK: - Actions
     @IBAction func onDragStarSlider(_ sender: UISlider) {
         let floatValue = (floor(sender.value * 10) / 10)
@@ -91,7 +101,7 @@ class DetailViewController: UIViewController {
         case 4.5...5.0:
             value = 5.0
         default:
-        fatalError()
+            fatalError()
         }
         
         for index in 1...5 {
@@ -105,6 +115,7 @@ class DetailViewController: UIViewController {
                 }
             }
         }
+        
         ratingLabel.font = UIFont.boldSystemFont(ofSize: 15)
         ratingLabel.text = String("가게 평점 : \(value)")
     }
