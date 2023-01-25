@@ -3,7 +3,6 @@ import UIKit
 class DetailViewController: UIViewController {
     // MARK: - UI
     @IBOutlet var storeLabel: UILabel!
-    @IBOutlet var locationLabel: UILabel!
     @IBOutlet var distanceLabel: UILabel!
     @IBOutlet var addressView: UIView!
     @IBOutlet var numberView: UIView!
@@ -30,7 +29,12 @@ class DetailViewController: UIViewController {
         setUpBorder()
         setUpBackgroundColor()
         setUpLableText()
-        storeLabel.font = UIFont.boldSystemFont(ofSize: 21)
+        storeLabel.font = UIFont.boldSystemFont(ofSize: 23)
+    }
+    
+    @IBAction func reviewButton(_ sender: UIButton) {
+        guard let reviewVC = self.storyboard?.instantiateViewController(withIdentifier: "ReviewViewController") as? ReviewViewController else { return }
+        navigationController?.pushViewController(reviewVC, animated: true)
     }
     
     func setUpBorder() {
@@ -68,7 +72,6 @@ class DetailViewController: UIViewController {
     // MARK: - Actions
     @IBAction func onDragStarSlider(_ sender: UISlider) {
         let floatValue = (floor(sender.value * 10) / 10)
-        print(floatValue)
         var value: Float = 0
         
         switch floatValue {
@@ -140,3 +143,5 @@ extension CALayer {
         }
     }
 }
+
+
