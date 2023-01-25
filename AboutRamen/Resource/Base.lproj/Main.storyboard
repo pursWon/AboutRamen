@@ -676,7 +676,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="가게 이름" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="loG-hU-rhL">
-                                <rect key="frame" x="20" y="308" width="225" height="60"/>
+                                <rect key="frame" x="20" y="308" width="315" height="60"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="60" id="fKn-3b-3Zb"/>
                                 </constraints>
@@ -987,7 +987,7 @@
                             <constraint firstItem="GbZ-YJ-Fp5" firstAttribute="top" secondItem="loG-hU-rhL" secondAttribute="bottom" constant="10" id="QZ6-mJ-x1E"/>
                             <constraint firstItem="qsH-YN-FXm" firstAttribute="leading" secondItem="efA-Ql-MSb" secondAttribute="leading" constant="20" id="R0l-1N-Td2"/>
                             <constraint firstItem="efA-Ql-MSb" firstAttribute="trailing" secondItem="Mft-MG-uRn" secondAttribute="trailing" constant="210" id="RpF-c6-1Ue"/>
-                            <constraint firstItem="efA-Ql-MSb" firstAttribute="trailing" secondItem="loG-hU-rhL" secondAttribute="trailing" constant="130" id="Skx-Jd-pYA"/>
+                            <constraint firstItem="efA-Ql-MSb" firstAttribute="trailing" secondItem="loG-hU-rhL" secondAttribute="trailing" constant="40" id="Skx-Jd-pYA"/>
                             <constraint firstItem="S8n-Rr-xnL" firstAttribute="trailing" secondItem="efA-Ql-MSb" secondAttribute="trailing" id="SqR-ml-7uc"/>
                             <constraint firstItem="DiA-Dm-7ou" firstAttribute="centerY" secondItem="WYR-4Q-mNg" secondAttribute="centerY" id="X7y-Ig-YTf"/>
                             <constraint firstItem="tmS-ad-nhT" firstAttribute="top" secondItem="33g-R5-wEu" secondAttribute="bottom" id="bPM-SX-GzW"/>

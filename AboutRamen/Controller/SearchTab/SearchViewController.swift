@@ -36,6 +36,10 @@ class SearchViewController: UIViewController {
         searchTableView.backgroundColor = .white
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        navigationController?.navigationBar.backgroundColor = .white
+    }
+    
     func getStoreName(lng: Double, lat: Double) {
         let headers: HTTPHeaders = [
             "Authorization" : "KakaoAK d8b066a3dbb0e888b857f37b667d96d2"

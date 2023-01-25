@@ -29,7 +29,7 @@ class DetailViewController: UIViewController {
         setUpBorder()
         setUpBackgroundColor()
         setUpLableText()
-        storeLabel.font = UIFont.boldSystemFont(ofSize: 25)
+        storeLabel.font = UIFont.boldSystemFont(ofSize: 21)
     }
     
     func setUpBorder() {
