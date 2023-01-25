@@ -34,6 +34,13 @@ class DetailViewController: UIViewController {
     
     @IBAction func reviewButton(_ sender: UIButton) {
         guard let reviewVC = self.storyboard?.instantiateViewController(withIdentifier: "ReviewViewController") as? ReviewViewController else { return }
+        
+        let backButton = UIBarButtonItem(title: "가게 정보", style: .plain, target: self, action: nil)
+        let attributes = [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 16)]
+        
+        self.navigationItem.backBarButtonItem = backButton
+        self.navigationItem.backBarButtonItem?.tintColor = .black
+        backButton.setTitleTextAttributes(attributes, for: .normal)
         navigationController?.pushViewController(reviewVC, animated: true)
     }
     

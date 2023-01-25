@@ -132,9 +132,16 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
                 detailVC.index = i
             }
         }
-        searchTabBar.isEnabled = hidesBottomBarWhenPushed
-        self.navigationController?.pushViewController(detailVC, animated: true)
+        
+        let backButton = UIBarButtonItem(title: "가게 검색", style: .plain, target: self, action: nil)
+        let attributes = [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 16)]
+        
+        navigationItem.backBarButtonItem = backButton
+        navigationItem.backBarButtonItem?.tintColor = .black
+        navigationItem.backBarButtonItem?.setTitleTextAttributes(attributes, for: .normal)
+        
         self.navigationController?.navigationBar.backgroundColor = .systemOrange
+        self.navigationController?.pushViewController(detailVC, animated: true)
     }
 }
 

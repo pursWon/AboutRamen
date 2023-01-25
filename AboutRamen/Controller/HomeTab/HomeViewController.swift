@@ -40,14 +40,13 @@ class HomeViewController: UIViewController, RegionDataProtocol, LngLatProtocol {
         getAlamofire(url: url, lnglat: myLngLat)
     }
     
-    
     func setUpNavigationBar() {
         title = "어바웃라멘"
         view.backgroundColor = .systemOrange
-        regionChangeButton.tintColor = .black
         
         let attributes = [NSAttributedString.Key.font: UIFont(name: "BlackHanSans-Regular", size: 20)!]
         regionChangeButton.setTitleTextAttributes(attributes, for: .normal)
+        
         if let navigationBar = self.navigationController?.navigationBar {
             navigationBar.titleTextAttributes = [NSAttributedString.Key.font : UIFont(name: "BlackHanSans-Regular", size: 30)!]
         }
@@ -117,9 +116,17 @@ class HomeViewController: UIViewController, RegionDataProtocol, LngLatProtocol {
         
         regionPickerVC.delegate = self
         regionPickerVC.delegateLngLgt = self
+        
+        let backButton = UIBarButtonItem(title: "HOME", style: .plain, target: self, action: nil)
+        let attributes = [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 16)]
+        
+        self.navigationItem.backBarButtonItem = backButton
+        self.navigationItem.backBarButtonItem?.tintColor = .black
+        backButton.setTitleTextAttributes(attributes, for: .normal)
         navigationController?.pushViewController(regionPickerVC, animated: true)
     }
 }
+
 // MARK: - Collecion View
 extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout
 {
@@ -163,9 +170,14 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
         guard let detailVC = self.storyboard?.instantiateViewController(withIdentifier: "DetailViewController") as? DetailViewController else { return }
         detailVC.index = indexPath.row
         detailVC.information = ramenList
+        
+        let backButton = UIBarButtonItem(title: "HOME", style: .plain, target: self, action: nil)
+        let attributes = [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 16)]
+        
+        self.navigationItem.backBarButtonItem = backButton
+        self.navigationItem.backBarButtonItem?.tintColor = .black
+        backButton.setTitleTextAttributes(attributes, for: .normal)
+        
         navigationController?.pushViewController(detailVC, animated: true)
     }
 }
-
-
-

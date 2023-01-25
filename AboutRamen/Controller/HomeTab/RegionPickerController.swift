@@ -21,13 +21,15 @@ class RegionPickerController: UIViewController {
     var delegateLngLgt: LngLatProtocol?
     var selectedCity: String = ""
     var selectedGu: String = ""
-    var lnglat: (Double, Double) = (0, 0)
+    var lnglat: (Double, Double) = (0,0)
     
     // MARK: - View Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         
         view.backgroundColor = .systemOrange
+        let attributes = [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 100)]
+        navigationController?.navigationBar.backItem?.backBarButtonItem?.setTitleTextAttributes(attributes, for: .normal)
         setUpBorder()
         delegate?.sendRegionData(city: "서울시", gu: "강남구")
     }
