@@ -6,9 +6,11 @@ class MyListViewController: UIViewController, UITableViewDelegate, UITableViewDa
     // MARK: - Properties
     let listNameArray: [String] = ["좋아요 목록", "싫어요 목록", "평가 목록", "나의 라멘 가게"]
     var iconImages: [UIImage] = []
+    
     // MARK: - View Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         addIconImages()
         setUptableView()
         view.backgroundColor = .systemOrange

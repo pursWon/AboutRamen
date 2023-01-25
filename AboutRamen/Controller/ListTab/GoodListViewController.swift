@@ -3,9 +3,11 @@ import UIKit
 class GoodListViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     // MARK: - UI
     @IBOutlet var goodListTableView: UITableView!
+    
     // MARK: - Properties
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         setUpTableView()
         view.backgroundColor = .systemOrange
         navigationController?.navigationBar.backgroundColor = .systemOrange
@@ -15,6 +17,7 @@ class GoodListViewController: UIViewController, UITableViewDelegate, UITableView
         goodListTableView.delegate = self
         goodListTableView.dataSource = self
     }
+    
     // MARK: - TableView
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 1

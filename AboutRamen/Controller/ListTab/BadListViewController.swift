@@ -3,9 +3,11 @@ import UIKit
 class BadListViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     // MARK: - UI
     @IBOutlet var badListTableView: UITableView!
+    
     // MARK: - View Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         setUpTableView()
         view.backgroundColor = .systemOrange
     }
@@ -14,6 +16,7 @@ class BadListViewController: UIViewController, UITableViewDelegate, UITableViewD
         badListTableView.dataSource = self
         badListTableView.delegate = self
     }
+    
     // MARK: - TableView
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 1

@@ -6,6 +6,7 @@ class SearchViewController: UIViewController {
     @IBOutlet var searchTableView: UITableView!
     @IBOutlet var introduceLabel: UILabel!
     @IBOutlet var searchTabBar: UITabBarItem!
+    
     // MARK: - Properties
     let url: String = "https://dapi.kakao.com/v2/local/search/keyword.json"
     let regionData = RegionData()
@@ -19,11 +20,14 @@ class SearchViewController: UIViewController {
         let searchController = self.navigationItem.searchController
         let isActive = searchController?.isActive ?? false
         let isSearchBarHasText = searchController?.searchBar.text?.isEmpty == false
+        
         return isActive && isSearchBarHasText
     }
+    
     // MARK: - ViewLifeCycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         navigationController?.navigationBar.backgroundColor = .white
         setUpSearchController()
         setUpTableView()
@@ -86,6 +90,7 @@ class SearchViewController: UIViewController {
         searchTableView.delegate = self
     }
 }
+
 // MARK: - SearchViewController
 extension SearchViewController: UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
@@ -95,6 +100,7 @@ extension SearchViewController: UISearchResultsUpdating {
         self.searchTableView.reloadData()
     }
 }
+
 // MARK: - TableView
 extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

@@ -6,6 +6,7 @@ class HomeViewController: UIViewController, RegionDataProtocol, LngLatProtocol {
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var regionChangeButton: UIBarButtonItem!
     @IBOutlet var myLocationLabel: UILabel!
+    
     // MARK: - Properties
     let url: String = "https://dapi.kakao.com/v2/local/search/keyword.json"
     let imageUrl: String = "https://dapi.kakao.com/v2/search/image"
@@ -16,9 +17,11 @@ class HomeViewController: UIViewController, RegionDataProtocol, LngLatProtocol {
     var region: String = ""
     let regionData = RegionData()
     var myLngLat: (Double, Double) = (127.0495556, 37.514575)
+    
     // MARK: - ViewLifeCycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         setUpCollectionView()
         setUpNavigationBar()
         getAlamofire(url: url, lnglat: myLngLat)
@@ -111,6 +114,7 @@ class HomeViewController: UIViewController, RegionDataProtocol, LngLatProtocol {
     
     @IBAction func regionChangeButton(_ sender: UIBarButtonItem) {
         guard let regionPickerVC = self.storyboard?.instantiateViewController(withIdentifier: "RegionPickerController") as? RegionPickerController else { return }
+        
         regionPickerVC.delegate = self
         regionPickerVC.delegateLngLgt = self
         navigationController?.pushViewController(regionPickerVC, animated: true)
@@ -138,12 +142,7 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
         
         cell.nameLabel.text = ramenData.place_name
         cell.distanceLabel.text = "\(ramenData.distance) m"
-        
-        // if let imageURL = URL(string: ramenCellImages[indexPath.row]),
-        //    let imageData = try? Data(contentsOf: imageURL) {
-        //     cell.ramenImageView.image = UIImage(data: imageData)
-        // }
-        
+      
         return cell
     }
     
@@ -156,6 +155,7 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
         let heightCount: CGFloat = 3
         let totalWidth = (width - (widthSpacing * (widthCount - 1))) / widthCount
         let totalHeight = (height - (heightSpacing * (heightCount - 1))) / heightCount
+        
         return CGSize(width: totalWidth, height: totalHeight)
     }
     

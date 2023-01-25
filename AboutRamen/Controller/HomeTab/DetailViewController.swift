@@ -26,6 +26,7 @@ class DetailViewController: UIViewController {
     // MARK: - View Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         setUpBorder()
         setUpBackgroundColor()
         setUpLableText()
@@ -64,9 +65,6 @@ class DetailViewController: UIViewController {
         print(information[index].place_name)
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        
-    }
     // MARK: - Actions
     @IBAction func onDragStarSlider(_ sender: UISlider) {
         let floatValue = (floor(sender.value * 10) / 10)

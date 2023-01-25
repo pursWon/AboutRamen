@@ -8,12 +8,13 @@ protocol LngLatProtocol {
     func sendLngLgt(lnglat: (Double, Double))
 }
 
-class RegionPickerController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource {
+class RegionPickerController: UIViewController {
     // MARK: - UI
     @IBOutlet var pickerView: UIView!
     @IBOutlet var cityPicker: UIPickerView!
     @IBOutlet var guPicker: UIPickerView!
     @IBOutlet var regionStackView: UIStackView!
+    
     // MARK: - Properties
     let regionData = RegionData()
     var delegate: RegionDataProtocol?
@@ -21,9 +22,11 @@ class RegionPickerController: UIViewController, UIPickerViewDelegate, UIPickerVi
     var selectedCity: String = ""
     var selectedGu: String = ""
     var lnglat: (Double, Double) = (0, 0)
+    
     // MARK: - View Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         view.backgroundColor = .systemOrange
         setUpBorder()
         delegate?.sendRegionData(city: "서울시", gu: "강남구")
@@ -35,12 +38,16 @@ class RegionPickerController: UIViewController, UIPickerViewDelegate, UIPickerVi
     
     func setUpBorder() {
         let views: [UIView] = [regionStackView]
+        
         views.forEach { view in
             view.layer.borderWidth = 2
             view.layer.borderColor = UIColor.black.cgColor
         }
     }
-// MARK: - Picker
+}
+
+extension RegionPickerController: UIPickerViewDelegate, UIPickerViewDataSource {
+    // MARK: - Picker
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
     }
@@ -173,5 +180,3 @@ class RegionPickerController: UIViewController, UIPickerViewDelegate, UIPickerVi
         return 50
     }
 }
-
-
