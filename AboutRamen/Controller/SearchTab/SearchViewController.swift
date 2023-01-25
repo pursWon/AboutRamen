@@ -4,6 +4,8 @@ import Alamofire
 class SearchViewController: UIViewController {
     // MARK: - UI
     @IBOutlet var searchTableView: UITableView!
+    @IBOutlet var introduceLabel: UILabel!
+    @IBOutlet var searchTabBar: UITabBarItem!
     // MARK: - Properties
     let url: String = "https://dapi.kakao.com/v2/local/search/keyword.json"
     let regionData = RegionData()
@@ -22,14 +24,16 @@ class SearchViewController: UIViewController {
     // MARK: - ViewLifeCycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationController?.navigationBar.backgroundColor = .systemOrange
+        navigationController?.navigationBar.backgroundColor = .white
         setUpSearchController()
         setUpTableView()
-        view.backgroundColor = .systemOrange
+        view.backgroundColor = .white
         navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font : UIFont(name: "Recipekorea", size: 20)!]
         for i in regionData.LngLat {
             getStoreName(lng: i.value.0, lat: i.value.1)
         }
+        introduceLabel.font = .boldSystemFont(ofSize: 15)
+        searchTableView.backgroundColor = .white
     }
     
     func getStoreName(lng: Double, lat: Double) {
@@ -111,10 +115,16 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let detailVC = self.storyboard?.instantiateViewController(withIdentifier: "DetailViewController") as? DetailViewController else { return }
-        // 검색해서 눌러서 나오는 가게 이름의 텍스트를 detailVC로 보내서 가게 이름으로 지정한다.
-        detailVC.searchStoreText = storeNameArray[indexPath.row]
         
+        for i in 0..<ramenList.count {
+            if filterArray[indexPath.row] == ramenList[i].place_name {
+                detailVC.information = ramenList
+                detailVC.index = i
+            }
+        }
+        searchTabBar.isEnabled = hidesBottomBarWhenPushed
         self.navigationController?.pushViewController(detailVC, animated: true)
+        self.navigationController?.navigationBar.backgroundColor = .systemOrange
     }
 }
 

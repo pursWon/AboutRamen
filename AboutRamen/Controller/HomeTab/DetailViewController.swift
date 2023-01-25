@@ -23,13 +23,12 @@ class DetailViewController: UIViewController {
     var index: Int = 0
     var information: [Information] = []
     var searchIndex: Int = 0
-    var searchStoreText: String = ""
     // MARK: - View Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         setUpBorder()
         setUpBackgroundColor()
-        setUpLableText2()
+        setUpLableText()
         storeLabel.font = UIFont.boldSystemFont(ofSize: 25)
     }
     
@@ -62,14 +61,11 @@ class DetailViewController: UIViewController {
         distanceLabel.text = "\(information[index].distance)m"
         addressLabel.text = information[index].road_address_name
         numberLabel.text = information[index].phone
-    }
-    
-    func setUpLableText2() {
-        storeLabel.text = searchStoreText
+        print(information[index].place_name)
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        setUpLableText2()
+        
     }
     // MARK: - Actions
     @IBAction func onDragStarSlider(_ sender: UISlider) {
