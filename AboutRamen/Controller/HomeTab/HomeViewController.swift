@@ -117,7 +117,7 @@ class HomeViewController: UIViewController, RegionDataProtocol, LngLatProtocol {
         regionPickerVC.delegate = self
         regionPickerVC.delegateLngLgt = self
         
-        let backButton = UIBarButtonItem(title: "HOME", style: .plain, target: self, action: nil)
+        let backButton = UIBarButtonItem(title: "홈", style: .plain, target: self, action: nil)
         let attributes = [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 16)]
         
         self.navigationItem.backBarButtonItem = backButton
@@ -171,7 +171,7 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
         detailVC.index = indexPath.row
         detailVC.information = ramenList
         
-        let backButton = UIBarButtonItem(title: "HOME", style: .plain, target: self, action: nil)
+        let backButton = UIBarButtonItem(title: "홈", style: .plain, target: self, action: nil)
         let attributes = [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 16)]
         
         self.navigationItem.backBarButtonItem = backButton
