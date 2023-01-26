@@ -1,6 +1,6 @@
 import UIKit
 
-class DetailViewController: UIViewController {
+class DetailViewController: UIViewController, ReviewCompleteProtocol {
     // MARK: - UI
     @IBOutlet var storeLabel: UILabel!
     @IBOutlet var distanceLabel: UILabel!
@@ -36,7 +36,8 @@ class DetailViewController: UIViewController {
     var hatePressed: Bool = true
     var reviewPressed: Bool = true
     var myListPressed: Bool = true
-    
+    var reviewText: String = "리뷰하기"
+    var reviewImage: UIImage = UIImage(named: "평가하기")!
     // MARK: - View Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -46,6 +47,13 @@ class DetailViewController: UIViewController {
         setUpLableText()
         setUpTabImageView()
         storeLabel.font = UIFont.boldSystemFont(ofSize: 23)
+        reviewLabel.text = reviewText
+        reviewImageView.image = reviewImage
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        reviewLabel.text = reviewText
+        reviewImageView.image = reviewImage
     }
     
     func setUpBorder() {
@@ -125,6 +133,7 @@ class DetailViewController: UIViewController {
     @objc func reviewMark() {
         guard let reviewVC = self.storyboard?.instantiateViewController(withIdentifier: "ReviewViewController") as? ReviewViewController else { return }
         
+        reviewVC.delegate = self
         let backButton = UIBarButtonItem(title: "가게 정보", style: .plain, target: self, action: nil)
         let attributes = [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 16)]
         
@@ -146,6 +155,10 @@ class DetailViewController: UIViewController {
         }
     }
     
+    func sendReview(labelText: String, image: UIImage) {
+        reviewText = labelText
+        reviewImage = image
+    }
     // MARK: - Actions
     @IBAction func onDragStarSlider(_ sender: UISlider) {
         let floatValue = (floor(sender.value * 10) / 10)

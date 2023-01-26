@@ -1,8 +1,15 @@
 import UIKit
 
+protocol ReviewCompleteProtocol {
+    func sendReview(labelText: String, image: UIImage)
+}
+
 class ReviewViewController: UIViewController {
     // MARK: - UI
     @IBOutlet var reviewTextView: UITextView!
+    
+    //MARK: - Properties
+    var delegate: ReviewCompleteProtocol?
     // MARK: - View Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -10,6 +17,7 @@ class ReviewViewController: UIViewController {
         
         setUpTextViewBorder()
         setUpNavigationBarButton()
+        
     }
     
     func setUpTextViewBorder() {
@@ -24,9 +32,14 @@ class ReviewViewController: UIViewController {
         self.navigationItem.rightBarButtonItem = completeButton
         self.navigationItem.rightBarButtonItem?.tintColor = .black
         completeButton.setTitleTextAttributes(attributes, for: .normal)
-       
+        completeButton.action = #selector(completeButtonAction)
+        completeButton.target = self
     }
     
     // MARK: - Actions
-
+    @objc func completeButtonAction() {
+        delegate?.sendReview(labelText: "리뷰 완료", image: UIImage(named: "평가하기 리스트버전")!)
+        
+        navigationController?.popViewController(animated: true)
+    }
 }
