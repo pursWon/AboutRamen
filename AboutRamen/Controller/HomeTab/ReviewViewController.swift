@@ -24,6 +24,7 @@ class ReviewViewController: UIViewController {
         self.navigationItem.rightBarButtonItem = completeButton
         self.navigationItem.rightBarButtonItem?.tintColor = .black
         completeButton.setTitleTextAttributes(attributes, for: .normal)
+       
     }
     
     // MARK: - Actions

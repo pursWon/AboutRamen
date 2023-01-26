@@ -18,10 +18,25 @@ class DetailViewController: UIViewController {
     @IBOutlet var pictureImageViewOne: UIImageView!
     @IBOutlet var pictureImageViewTwo: UIImageView!
     
+    @IBOutlet var goodImageView: UIImageView!
+    @IBOutlet var hateImageView: UIImageView!
+    @IBOutlet var reviewImageView: UIImageView!
+    @IBOutlet var myListAddImageView: UIImageView!
+    
+    @IBOutlet var goodLabel: UILabel!
+    @IBOutlet var hateLabel: UILabel!
+    @IBOutlet var reviewLabel: UILabel!
+    @IBOutlet var myListLabel: UILabel!
+    
     // MARK: - Properties
     var index: Int = 0
     var information: [Information] = []
     var searchIndex: Int = 0
+    var goodPressed: Bool = true
+    var hatePressed: Bool = true
+    var reviewPressed: Bool = true
+    var myListPressed: Bool = true
+    
     // MARK: - View Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,19 +44,8 @@ class DetailViewController: UIViewController {
         setUpBorder()
         setUpBackgroundColor()
         setUpLableText()
+        setUpTabImageView()
         storeLabel.font = UIFont.boldSystemFont(ofSize: 23)
-    }
-    
-    @IBAction func reviewButton(_ sender: UIButton) {
-        guard let reviewVC = self.storyboard?.instantiateViewController(withIdentifier: "ReviewViewController") as? ReviewViewController else { return }
-        
-        let backButton = UIBarButtonItem(title: "가게 정보", style: .plain, target: self, action: nil)
-        let attributes = [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 16)]
-        
-        self.navigationItem.backBarButtonItem = backButton
-        self.navigationItem.backBarButtonItem?.tintColor = .black
-        backButton.setTitleTextAttributes(attributes, for: .normal)
-        navigationController?.pushViewController(reviewVC, animated: true)
     }
     
     func setUpBorder() {
@@ -74,6 +78,72 @@ class DetailViewController: UIViewController {
         addressLabel.text = information[index].road_address_name
         numberLabel.text = information[index].phone
         print(information[index].place_name)
+    }
+    
+    func setUpTabImageView() {
+        let goodTabGesture = UITapGestureRecognizer(target: self, action: #selector(goodMark))
+        goodImageView.addGestureRecognizer(goodTabGesture)
+        goodImageView.isUserInteractionEnabled = true
+        
+        let hateTabGesture = UITapGestureRecognizer(target: self, action: #selector(hateMark))
+        hateImageView.addGestureRecognizer(hateTabGesture)
+        hateImageView.isUserInteractionEnabled = true
+        
+        let reviewTabGesture = UITapGestureRecognizer(target: self, action: #selector(reviewMark))
+        reviewImageView.addGestureRecognizer(reviewTabGesture)
+        reviewImageView.isUserInteractionEnabled = true
+        
+        let addTabGesture = UITapGestureRecognizer(target: self, action: #selector(addMyListMark))
+        myListAddImageView.addGestureRecognizer(addTabGesture)
+        myListAddImageView.isUserInteractionEnabled = true
+    }
+    
+    @objc func goodMark() {
+        if goodPressed == true {
+            goodImageView.image = UIImage(named: "엄지 척 누른 상태")
+            goodLabel.text = "좋아요 취소"
+            goodPressed = false
+        } else if goodPressed == false {
+            goodImageView.image = UIImage(named: "엄지 척")
+            goodLabel.text = "좋아요"
+            goodPressed = true
+        }
+    }
+    
+    @objc func hateMark() {
+        if hatePressed == true {
+            hateImageView.image = UIImage(named: "엄지 아래 누른 상태")
+            hateLabel.text = "싫어요 취소"
+            hatePressed = false
+        } else if hatePressed == false {
+            hateImageView.image = UIImage(named: "엄지 아래")
+            hateLabel.text = "싫어요"
+            hatePressed = true
+        }
+    }
+    
+    @objc func reviewMark() {
+        guard let reviewVC = self.storyboard?.instantiateViewController(withIdentifier: "ReviewViewController") as? ReviewViewController else { return }
+        
+        let backButton = UIBarButtonItem(title: "가게 정보", style: .plain, target: self, action: nil)
+        let attributes = [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 16)]
+        
+        self.navigationItem.backBarButtonItem = backButton
+        self.navigationItem.backBarButtonItem?.tintColor = .black
+        backButton.setTitleTextAttributes(attributes, for: .normal)
+        navigationController?.pushViewController(reviewVC, animated: true)
+    }
+    
+    @objc func addMyListMark() {
+        if myListPressed == true {
+            myListAddImageView.image = UIImage(named: "마이 리스트 누른 후")
+            myListLabel.text = "추가하기 취소"
+            myListPressed = false
+        } else if myListPressed == false {
+            myListAddImageView.image = UIImage(named: "마이 리스트 누르기 전")
+            myListLabel.text = "추가하기"
+            myListPressed = true
+        }
     }
     
     // MARK: - Actions
@@ -124,6 +194,8 @@ class DetailViewController: UIViewController {
         ratingLabel.text = String("가게 평점 : \(value)")
     }
 }
+
+
 
 extension CALayer {
     func addBorder(_ arr_edge: [UIRectEdge], color: UIColor, width: CGFloat) {

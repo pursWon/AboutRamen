@@ -70,8 +70,9 @@ class HomeViewController: UIViewController, RegionDataProtocol, LngLatProtocol {
             "query" : "라멘",
             "x" : "\(lnglat.0)",
             "y" : "\(lnglat.1)",
-            "radius" : 7000,
-            "size" : 15
+            "radius" : 10000,
+            "size" : 15,
+            "page" : 1
         ]
         
         AF.request(url, method: .get, parameters: parameters ,headers: headers).responseDecodable(of: RamenStore.self) {
@@ -144,7 +145,7 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
         cell.layer.cornerRadius = 10
         
         cell.nameLabel.textAlignment = .center
-        cell.nameLabel.font = .boldSystemFont(ofSize: 15)
+        cell.nameLabel.font = .boldSystemFont(ofSize: 12)
         cell.starLabel.font = .boldSystemFont(ofSize: 15)
         
         cell.nameLabel.text = ramenData.place_name
