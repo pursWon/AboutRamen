@@ -38,6 +38,7 @@ class DetailViewController: UIViewController, ReviewCompleteProtocol {
     var myListPressed: Bool = true
     var reviewText: String = "리뷰하기"
     var reviewImage: UIImage = UIImage(named: "평가하기")!
+    
     // MARK: - View Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -54,6 +55,7 @@ class DetailViewController: UIViewController, ReviewCompleteProtocol {
     override func viewWillAppear(_ animated: Bool) {
         reviewLabel.text = reviewText
         reviewImageView.image = reviewImage
+        print(reviewPressed)
     }
     
     func setUpBorder() {
@@ -140,6 +142,7 @@ class DetailViewController: UIViewController, ReviewCompleteProtocol {
         self.navigationItem.backBarButtonItem = backButton
         self.navigationItem.backBarButtonItem?.tintColor = .black
         backButton.setTitleTextAttributes(attributes, for: .normal)
+        
         navigationController?.pushViewController(reviewVC, animated: true)
     }
     
@@ -155,10 +158,12 @@ class DetailViewController: UIViewController, ReviewCompleteProtocol {
         }
     }
     
-    func sendReview(labelText: String, image: UIImage) {
+    func sendReview(labelText: String, image: UIImage, sendReviewPressed: Bool) {
         reviewText = labelText
         reviewImage = image
+        reviewPressed = sendReviewPressed
     }
+    
     // MARK: - Actions
     @IBAction func onDragStarSlider(_ sender: UISlider) {
         let floatValue = (floor(sender.value * 10) / 10)
@@ -207,8 +212,6 @@ class DetailViewController: UIViewController, ReviewCompleteProtocol {
         ratingLabel.text = String("\(value)")
     }
 }
-
-
 
 extension CALayer {
     func addBorder(_ arr_edge: [UIRectEdge], color: UIColor, width: CGFloat) {

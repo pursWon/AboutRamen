@@ -1,7 +1,7 @@
 import UIKit
 
 protocol ReviewCompleteProtocol {
-    func sendReview(labelText: String, image: UIImage)
+    func sendReview(labelText: String, image: UIImage, sendReviewPressed: Bool)
 }
 
 class ReviewViewController: UIViewController {
@@ -17,7 +17,6 @@ class ReviewViewController: UIViewController {
         
         setUpTextViewBorder()
         setUpNavigationBarButton()
-        
     }
     
     func setUpTextViewBorder() {
@@ -38,7 +37,7 @@ class ReviewViewController: UIViewController {
     
     // MARK: - Actions
     @objc func completeButtonAction() {
-        delegate?.sendReview(labelText: "리뷰 완료", image: UIImage(named: "평가하기 리스트버전")!)
+        delegate?.sendReview(labelText: "리뷰 완료", image: UIImage(named: "평가하기 리스트버전")!, sendReviewPressed: false)
         
         navigationController?.popViewController(animated: true)
     }
