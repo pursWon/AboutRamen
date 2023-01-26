@@ -191,7 +191,7 @@ class DetailViewController: UIViewController {
         }
         
         ratingLabel.font = UIFont.boldSystemFont(ofSize: 15)
-        ratingLabel.text = String("가게 평점 : \(value)")
+        ratingLabel.text = String("\(value)")
     }
 }
 
