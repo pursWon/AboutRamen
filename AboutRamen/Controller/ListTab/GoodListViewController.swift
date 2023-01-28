@@ -4,7 +4,7 @@ class GoodListViewController: UIViewController, UITableViewDelegate, UITableView
     // MARK: - UI
     @IBOutlet var goodListTableView: UITableView!
     
-    // MARK: - Properties
+    // MARK: - View Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -26,6 +26,13 @@ class GoodListViewController: UIViewController, UITableViewDelegate, UITableView
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = goodListTableView.dequeueReusableCell(withIdentifier: "GoodListCell", for: indexPath) as?
                 GoodListCell else { return UITableViewCell() }
+        
+        let goodDataList = GoodListData.goodListArray
+        
+        cell.storeLabel.text = goodDataList[indexPath.row].storeName
+        cell.addressLabel.text = goodDataList[indexPath.row].addressName
+        cell.ratingLabel.text = goodDataList[indexPath.row].rating
+        
         return cell
     }
     

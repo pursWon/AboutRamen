@@ -10,6 +10,7 @@ class ReviewViewController: UIViewController {
     
     //MARK: - Properties
     var delegate: ReviewCompleteProtocol?
+    
     // MARK: - View Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()

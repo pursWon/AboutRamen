@@ -55,7 +55,6 @@ class DetailViewController: UIViewController, ReviewCompleteProtocol {
     override func viewWillAppear(_ animated: Bool) {
         reviewLabel.text = reviewText
         reviewImageView.image = reviewImage
-        print(reviewPressed)
     }
     
     func setUpBorder() {
@@ -87,7 +86,6 @@ class DetailViewController: UIViewController, ReviewCompleteProtocol {
         distanceLabel.text = "\(information[index].distance)m"
         addressLabel.text = information[index].road_address_name
         numberLabel.text = information[index].phone
-        print(information[index].place_name)
     }
     
     func setUpTabImageView() {
@@ -112,7 +110,17 @@ class DetailViewController: UIViewController, ReviewCompleteProtocol {
         if goodPressed == true {
             goodImageView.image = UIImage(named: "엄지 척 누른 상태")
             goodLabel.text = "좋아요 취소"
-            goodPressed = false
+            
+            if let rating = ratingLabel.text {
+                goodPressed = false
+                let goodListData = GoodListData(storeName: information[index].place_name, addressName: information[index].road_address_name, rating: rating, pressed: goodPressed, distance: information[index].distance, phone: information[index].phone)
+                GoodListData.goodListArray.append(goodListData)
+            } else {
+                goodPressed = false
+                let goodListData = GoodListData(storeName: information[index].place_name, addressName: information[index].road_address_name, rating: "0.0", pressed: goodPressed, distance: information[index].distance, phone: information[index].phone)
+                GoodListData.goodListArray.append(goodListData)
+            }
+            
         } else if goodPressed == false {
             goodImageView.image = UIImage(named: "엄지 척")
             goodLabel.text = "좋아요"
@@ -136,6 +144,7 @@ class DetailViewController: UIViewController, ReviewCompleteProtocol {
         guard let reviewVC = self.storyboard?.instantiateViewController(withIdentifier: "ReviewViewController") as? ReviewViewController else { return }
         
         reviewVC.delegate = self
+        
         let backButton = UIBarButtonItem(title: "가게 정보", style: .plain, target: self, action: nil)
         let attributes = [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 16)]
         
@@ -233,6 +242,7 @@ extension CALayer {
             default:
                 break
             }
+            
             border.backgroundColor = color.cgColor;
             self.addSublayer(border)
         }

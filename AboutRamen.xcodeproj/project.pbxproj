@@ -23,6 +23,7 @@
 		D01308C529799D6200672422 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = D01308C429799D6200672422 /* Alamofire */; };
 		D01308C7297A4EA100672422 /* RegionData.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01308C6297A4EA100672422 /* RegionData.swift */; };
 		D0459DB6298121D700FFE9E3 /* ReviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0459DB5298121D700FFE9E3 /* ReviewViewController.swift */; };
+		D0459DD82982DBF500FFE9E3 /* GoodListData.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0459DD72982DBF500FFE9E3 /* GoodListData.swift */; };
 		D0797CF92959913900B14AC8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0797CF82959913900B14AC8 /* AppDelegate.swift */; };
 		D0797CFB2959913900B14AC8 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0797CFA2959913900B14AC8 /* SceneDelegate.swift */; };
 		D0797CFD2959913900B14AC8 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0797CFC2959913900B14AC8 /* HomeViewController.swift */; };
@@ -67,6 +68,7 @@
 		D01308792977C9E600672422 /* RegionPickerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegionPickerController.swift; sourceTree = "<group>"; };
 		D01308C6297A4EA100672422 /* RegionData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegionData.swift; sourceTree = "<group>"; };
 		D0459DB5298121D700FFE9E3 /* ReviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewViewController.swift; sourceTree = "<group>"; };
+		D0459DD72982DBF500FFE9E3 /* GoodListData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoodListData.swift; sourceTree = "<group>"; };
 		D0797CF52959913900B14AC8 /* AboutRamen.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AboutRamen.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D0797CF82959913900B14AC8 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D0797CFA2959913900B14AC8 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -133,6 +135,7 @@
 				D01308522976699000672422 /* RamenStore.swift */,
 				D01308552976B4AF00672422 /* RamenImage.swift */,
 				D01308C6297A4EA100672422 /* RegionData.swift */,
+				D0459DD72982DBF500FFE9E3 /* GoodListData.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -305,6 +308,7 @@
 				D0B170C7295D39EA002AD35D /* SearchViewController.swift in Sources */,
 				D0B171BE2966D738002AD35D /* SearchViewCell.swift in Sources */,
 				D01307B1296FF19200672422 /* ReviewListViewController.swift in Sources */,
+				D0459DD82982DBF500FFE9E3 /* GoodListData.swift in Sources */,
 				D01307A9296FE0EB00672422 /* GoodListViewController.swift in Sources */,
 				D0B171C4296ED964002AD35D /* MyListViewController.swift in Sources */,
 				D0797CFD2959913900B14AC8 /* HomeViewController.swift in Sources */,
