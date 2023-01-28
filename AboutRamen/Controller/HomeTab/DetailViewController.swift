@@ -1,6 +1,15 @@
 import UIKit
 
-class DetailViewController: UIViewController, ReviewCompleteProtocol {
+enum ReviewState: String {
+    case yet = "리뷰하기"
+    case done = "리뷰완료"
+}
+
+protocol ReviewCompleteProtocol {
+    func sendReview(state: ReviewState, image: UIImage, sendReviewPressed: Bool)
+}
+
+class DetailViewController: UIViewController {
     // MARK: - UI
     @IBOutlet var storeLabel: UILabel!
     @IBOutlet var distanceLabel: UILabel!
@@ -32,12 +41,12 @@ class DetailViewController: UIViewController, ReviewCompleteProtocol {
     var index: Int = 0
     var information: [Information] = []
     var searchIndex: Int = 0
-    var goodPressed: Bool = true
-    var hatePressed: Bool = true
-    var reviewPressed: Bool = true
-    var myListPressed: Bool = true
-    var reviewText: String = "리뷰하기"
+    var isGoodPressed: Bool = true
+    var isHatePressed: Bool = true
+    var isReviewPressed: Bool = true
+    var isMyListPressed: Bool = true
     var reviewImage: UIImage = UIImage(named: "평가하기")!
+    var reviewState: ReviewState = .yet
     
     // MARK: - View Life Cycle
     override func viewDidLoad() {
@@ -48,12 +57,12 @@ class DetailViewController: UIViewController, ReviewCompleteProtocol {
         setUpLableText()
         setUpTabImageView()
         storeLabel.font = UIFont.boldSystemFont(ofSize: 23)
-        reviewLabel.text = reviewText
+        reviewLabel.text = reviewState.rawValue
         reviewImageView.image = reviewImage
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        reviewLabel.text = reviewText
+        reviewLabel.text = reviewState.rawValue
         reviewImageView.image = reviewImage
     }
     
@@ -107,36 +116,36 @@ class DetailViewController: UIViewController, ReviewCompleteProtocol {
     }
     
     @objc func goodMark() {
-        if goodPressed == true {
+        if isGoodPressed == true {
             goodImageView.image = UIImage(named: "엄지 척 누른 상태")
             goodLabel.text = "좋아요 취소"
             
             if let rating = ratingLabel.text {
-                goodPressed = false
-                let goodListData = GoodListData(storeName: information[index].place_name, addressName: information[index].road_address_name, rating: rating, pressed: goodPressed, distance: information[index].distance, phone: information[index].phone)
+                isGoodPressed = false
+                let goodListData = GoodListData(storeName: information[index].place_name, addressName: information[index].road_address_name, rating: rating, pressed: isGoodPressed, distance: information[index].distance, phone: information[index].phone)
                 GoodListData.goodListArray.append(goodListData)
             } else {
-                goodPressed = false
-                let goodListData = GoodListData(storeName: information[index].place_name, addressName: information[index].road_address_name, rating: "0.0", pressed: goodPressed, distance: information[index].distance, phone: information[index].phone)
+                isGoodPressed = false
+                let goodListData = GoodListData(storeName: information[index].place_name, addressName: information[index].road_address_name, rating: "0.0", pressed: isGoodPressed, distance: information[index].distance, phone: information[index].phone)
                 GoodListData.goodListArray.append(goodListData)
             }
             
-        } else if goodPressed == false {
+        } else if isGoodPressed == false {
             goodImageView.image = UIImage(named: "엄지 척")
             goodLabel.text = "좋아요"
-            goodPressed = true
+            isGoodPressed = true
         }
     }
     
     @objc func hateMark() {
-        if hatePressed == true {
+        if isHatePressed == true {
             hateImageView.image = UIImage(named: "엄지 아래 누른 상태")
             hateLabel.text = "싫어요 취소"
-            hatePressed = false
-        } else if hatePressed == false {
+            isHatePressed = false
+        } else if isHatePressed == false {
             hateImageView.image = UIImage(named: "엄지 아래")
             hateLabel.text = "싫어요"
-            hatePressed = true
+            isHatePressed = true
         }
     }
     
@@ -156,21 +165,15 @@ class DetailViewController: UIViewController, ReviewCompleteProtocol {
     }
     
     @objc func addMyListMark() {
-        if myListPressed == true {
+        if isMyListPressed == true {
             myListAddImageView.image = UIImage(named: "마이 리스트 누른 후")
             myListLabel.text = "추가하기 취소"
-            myListPressed = false
-        } else if myListPressed == false {
+            isMyListPressed = false
+        } else if isMyListPressed == false {
             myListAddImageView.image = UIImage(named: "마이 리스트 누르기 전")
             myListLabel.text = "추가하기"
-            myListPressed = true
+            isMyListPressed = true
         }
-    }
-    
-    func sendReview(labelText: String, image: UIImage, sendReviewPressed: Bool) {
-        reviewText = labelText
-        reviewImage = image
-        reviewPressed = sendReviewPressed
     }
     
     // MARK: - Actions
@@ -249,4 +252,11 @@ extension CALayer {
     }
 }
 
-
+// MARK - ReviewCompleteProtocol
+extension DetailViewController: ReviewCompleteProtocol {
+    func sendReview(state: ReviewState, image: UIImage, sendReviewPressed: Bool) {
+        reviewState = state
+        reviewImage = image
+        isReviewPressed = sendReviewPressed
+    }
+}

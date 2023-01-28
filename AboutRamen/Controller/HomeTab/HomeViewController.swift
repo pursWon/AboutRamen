@@ -1,7 +1,16 @@
 import UIKit
 import Alamofire
 
-class HomeViewController: UIViewController, RegionDataProtocol, LngLatProtocol {
+// TODO: 프로토콜 이름 변경해볼것!
+protocol LngLatProtocol {
+    func sendCurrentLocation(lnglat: (Double, Double))
+}
+
+protocol RegionDataProtocol {
+    func sendRegionData(city: String, gu: String)
+}
+
+class HomeViewController: UIViewController {
     // MARK: - UI
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var regionChangeButton: UIBarButtonItem!
@@ -10,14 +19,16 @@ class HomeViewController: UIViewController, RegionDataProtocol, LngLatProtocol {
     // MARK: - Properties
     let url: String = "https://dapi.kakao.com/v2/local/search/keyword.json"
     let imageUrl: String = "https://dapi.kakao.com/v2/search/image"
-    var ramenList: [Information] = []
-    var ramenImage: [Image] = []
-    var ramenCellImage: String = ""
-    var ramenCellImages: [String] = []
-    var region: String = ""
     let regionData = RegionData()
-    var myLngLat: (Double, Double) = (127.0495556, 37.514575)
+    /// API를 통해서 가져온 라멘집 리스트 정보를 담고 있는 배열
+    var ramenList: [Information] = []
+    /// 라멘집의 x,y 좌표를 통해 가져온 라멘집 이미지 배열
+    var ramenImages: [Image] = []
+    /// 라멘집 이미지들의 image_url 값들의 배열
+    var ramenCellImages: [String] = []
+    var currentLocation: (long: Double, lat: Double) = (127.0495556, 37.514575)
     var storeNames: [String] = []
+    
     // MARK: - ViewLifeCycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,20 +39,13 @@ class HomeViewController: UIViewController, RegionDataProtocol, LngLatProtocol {
         
         setUpCollectionView()
         setUpNavigationBar()
-        getAlamofire(url: url, lnglat: myLngLat)
+        getAlamofire(url: url, lnglat: currentLocation)
         myLocationLabel.text = "서울시 강남구"
     }
     
-    func sendRegionData(city: String, gu: String) {
-        myLocationLabel.text = "\(city) \(gu)"
-    }
-    
-    func sendLngLgt(lnglat: (Double, Double)) {
-        myLngLat = lnglat
-    }
     
     override func viewWillAppear(_ animated: Bool) {
-        getAlamofire(url: url, lnglat: myLngLat)
+        getAlamofire(url: url, lnglat: currentLocation)
     }
     
     func setUpNavigationBar() {
@@ -63,36 +67,33 @@ class HomeViewController: UIViewController, RegionDataProtocol, LngLatProtocol {
         collectionView.delegate = self
         collectionView.backgroundColor = .systemOrange
     }
-    
+    // TODO: 변수명 수정하기
     func getAlamofire(url: String, lnglat: (Double, Double)) {
+        let headers: HTTPHeaders = ["Authorization": "KakaoAK d8b066a3dbb0e888b857f37b667d96d2"]
         
-        let headers: HTTPHeaders = [
-            "Authorization" : "KakaoAK d8b066a3dbb0e888b857f37b667d96d2"
-        ]
-        
-        let parameters: [String : Any] = [
+        let parameters: [String: Any] = [
             "query" : "라멘",
-            "x" : "\(lnglat.0)",
-            "y" : "\(lnglat.1)",
-            "radius" : 10000,
-            "size" : 15,
-            "page" : 1
+            "x": "\(lnglat.0)",
+            "y": "\(lnglat.1)",
+            "radius": 10000,
+            "size": 15,
+            "page": 1
         ]
         
-        AF.request(url, method: .get, parameters: parameters ,headers: headers).responseDecodable(of: RamenStore.self) {
-            response in
+        AF.request(url, method: .get, parameters: parameters, headers: headers).responseDecodable(of: RamenStore.self) { response in
             // debugPrint("response.value : \(response.value)")
             
             if let data = response.value {
                 self.ramenList = data.documents
+                
                 for index in 0..<self.ramenList.count {
                     self.storeNames.append(self.ramenList[index].place_name)
                 }
-                print("카 : \(self.storeNames.count)")
                 
                 for name in self.storeNames {
                     self.getRamenImage(imageURL: url, query: name)
                 }
+                
                 DispatchQueue.main.async {
                     self.collectionView.reloadData()
                 }
@@ -101,22 +102,14 @@ class HomeViewController: UIViewController, RegionDataProtocol, LngLatProtocol {
     }
 
     func getRamenImage(imageURL: String, query: String) {
+        let headers: HTTPHeaders = ["Authorization": "KakaoAK d8b066a3dbb0e888b857f37b667d96d2"]
+        let parameters: [String : Any] = ["query": query]
         
-        let headers: HTTPHeaders = [
-            "Authorization" : "KakaoAK d8b066a3dbb0e888b857f37b667d96d2"
-        ]
-        
-        let parameters: [String : Any] = [
-            "query" : query
-        ]
-        
-        AF.request(imageUrl, method: .get, parameters: parameters, headers: headers).responseDecodable(of: RamenImage.self) {
-            response in
-            
+        AF.request(imageUrl, method: .get, parameters: parameters, headers: headers).responseDecodable(of: RamenImage.self) { response in
             if let dataImage = response.value {
-                self.ramenImage = dataImage.documents
-                self.ramenCellImage = self.ramenImage[2].image_url
-                self.ramenCellImages.append(self.ramenCellImage)
+                self.ramenImages = dataImage.documents
+                self.ramenCellImages.append(self.ramenImages[2].image_url)
+                
                 DispatchQueue.main.async {
                     self.collectionView.reloadData()
                 }
@@ -141,17 +134,13 @@ class HomeViewController: UIViewController, RegionDataProtocol, LngLatProtocol {
 }
 
 // MARK: - Collecion View
-extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout
-{
+extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        
         return ramenList.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectionViewCell", for: indexPath) as? CollectionViewCell else { return UICollectionViewCell() }
-        
         let ramenData = ramenList[indexPath.row]
         
         cell.layer.borderColor = UIColor.black.cgColor
@@ -165,6 +154,7 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
         cell.nameLabel.text = ramenData.place_name
         cell.distanceLabel.text = "\(ramenData.distance) m"
         
+        // TODO: 가게 이미지를 가져오고 싶은데, 에러가 남. 해결할 것.
         // if let imageURL = URL(string: ramenCellImages[indexPath.row]),
         //    let imageData = try? Data(contentsOf: imageURL) {
         //     cell.ramenImageView.image = UIImage(data: imageData)
@@ -199,5 +189,19 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
         backButton.setTitleTextAttributes(attributes, for: .normal)
         
         navigationController?.pushViewController(detailVC, animated: true)
+    }
+}
+
+// MARK: - RegionProtocol
+extension HomeViewController: RegionDataProtocol {
+    func sendRegionData(city: String, gu: String) {
+        myLocationLabel.text = "\(city) \(gu)"
+    }
+}
+
+// MARK: - LngLatProtocol
+extension HomeViewController: LngLatProtocol {
+    func sendCurrentLocation(lnglat: (Double, Double)) {
+        currentLocation = lnglat
     }
 }

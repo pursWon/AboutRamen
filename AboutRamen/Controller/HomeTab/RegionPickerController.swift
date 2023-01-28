@@ -1,13 +1,5 @@
 import UIKit
 
-protocol RegionDataProtocol {
-    func sendRegionData(city: String, gu: String)
-}
-
-protocol LngLatProtocol {
-    func sendLngLgt(lnglat: (Double, Double))
-}
-
 class RegionPickerController: UIViewController {
     // MARK: - UI
     @IBOutlet var pickerView: UIView!
@@ -175,7 +167,7 @@ extension RegionPickerController: UIPickerViewDelegate, UIPickerViewDataSource {
             }
         }
         
-        delegateLngLgt?.sendLngLgt(lnglat: lnglat)
+        delegateLngLgt?.sendCurrentLocation(lnglat: lnglat)
     }
     
     func pickerView(_ pickerView: UIPickerView, rowHeightForComponent component: Int) -> CGFloat {
