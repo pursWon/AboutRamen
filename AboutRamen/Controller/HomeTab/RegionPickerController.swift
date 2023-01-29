@@ -9,8 +9,8 @@ class RegionPickerController: UIViewController {
     
     // MARK: - Properties
     let regionData = RegionData()
-    var delegate: RegionDataProtocol?
-    var delegateLngLgt: LngLatProtocol?
+    var delegateRegion: RegionDataProtocol?
+    var delegateLocation: LocationDataProtocol?
     var selectedCity: String = ""
     var selectedGu: String = ""
     var lnglat: (Double, Double) = (0,0)
@@ -23,7 +23,7 @@ class RegionPickerController: UIViewController {
         let attributes = [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 100)]
         navigationController?.navigationBar.backItem?.backBarButtonItem?.setTitleTextAttributes(attributes, for: .normal)
         setUpBorder()
-        delegate?.sendRegionData(city: "서울시", gu: "강남구")
+        delegateRegion?.sendRegionData(city: "서울시", gu: "강남구")
     }
     
     override func didReceiveMemoryWarning() {
@@ -159,7 +159,7 @@ extension RegionPickerController: UIPickerViewDelegate, UIPickerViewDataSource {
             selectedGu = regionData.jeju[row]
         }
         
-        delegate?.sendRegionData(city: selectedCity, gu: selectedGu)
+        delegateRegion?.sendRegionData(city: selectedCity, gu: selectedGu)
         
         for i in regionData.LngLat {
             if i.key.contains("\(selectedCity) \(selectedGu)") {
@@ -167,7 +167,7 @@ extension RegionPickerController: UIPickerViewDelegate, UIPickerViewDataSource {
             }
         }
         
-        delegateLngLgt?.sendCurrentLocation(lnglat: lnglat)
+        delegateLocation?.sendCurrentLocation(lnglat: lnglat)
     }
     
     func pickerView(_ pickerView: UIPickerView, rowHeightForComponent component: Int) -> CGFloat {

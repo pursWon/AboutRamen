@@ -2,7 +2,7 @@ import UIKit
 import Alamofire
 
 // TODO: 프로토콜 이름 변경해볼것!
-protocol LngLatProtocol {
+protocol LocationDataProtocol {
     func sendCurrentLocation(lnglat: (Double, Double))
 }
 
@@ -39,10 +39,8 @@ class HomeViewController: UIViewController {
         
         setUpCollectionView()
         setUpNavigationBar()
-        getAlamofire(url: url, lnglat: currentLocation)
         myLocationLabel.text = "서울시 강남구"
     }
-    
     
     override func viewWillAppear(_ animated: Bool) {
         getAlamofire(url: url, lnglat: currentLocation)
@@ -69,6 +67,7 @@ class HomeViewController: UIViewController {
     }
     // TODO: 변수명 수정하기
     func getAlamofire(url: String, lnglat: (Double, Double)) {
+        print("시작")
         let headers: HTTPHeaders = ["Authorization": "KakaoAK d8b066a3dbb0e888b857f37b667d96d2"]
         
         let parameters: [String: Any] = [
@@ -87,18 +86,23 @@ class HomeViewController: UIViewController {
                 self.ramenList = data.documents
                 
                 for index in 0..<self.ramenList.count {
+                    print("for문 도는 중...")
                     self.storeNames.append(self.ramenList[index].place_name)
                 }
                 
+                print("for문 끝")
                 for name in self.storeNames {
+                    print("getRamenImage 호출중")
                     self.getRamenImage(imageURL: url, query: name)
                 }
                 
                 DispatchQueue.main.async {
+                    print("컬렉션 뷰 갱신")
                     self.collectionView.reloadData()
                 }
             }
         }
+        print("끝")
     }
 
     func getRamenImage(imageURL: String, query: String) {
@@ -120,8 +124,8 @@ class HomeViewController: UIViewController {
     @IBAction func regionChangeButton(_ sender: UIBarButtonItem) {
         guard let regionPickerVC = self.storyboard?.instantiateViewController(withIdentifier: "RegionPickerController") as? RegionPickerController else { return }
         
-        regionPickerVC.delegate = self
-        regionPickerVC.delegateLngLgt = self
+        regionPickerVC.delegateRegion = self
+        regionPickerVC.delegateLocation = self
         
         let backButton = UIBarButtonItem(title: "홈", style: .plain, target: self, action: nil)
         let attributes = [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 16)]
@@ -200,7 +204,7 @@ extension HomeViewController: RegionDataProtocol {
 }
 
 // MARK: - LngLatProtocol
-extension HomeViewController: LngLatProtocol {
+extension HomeViewController: LocationDataProtocol {
     func sendCurrentLocation(lnglat: (Double, Double)) {
         currentLocation = lnglat
     }

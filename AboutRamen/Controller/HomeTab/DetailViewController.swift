@@ -116,7 +116,8 @@ class DetailViewController: UIViewController {
     }
     
     @objc func goodMark() {
-        if isGoodPressed == true {
+        // TODO: 조건문 수정하기
+        if isGoodPressed {
             goodImageView.image = UIImage(named: "엄지 척 누른 상태")
             goodLabel.text = "좋아요 취소"
             
@@ -130,19 +131,23 @@ class DetailViewController: UIViewController {
                 GoodListData.goodListArray.append(goodListData)
             }
             
-        } else if isGoodPressed == false {
+        } else {
             goodImageView.image = UIImage(named: "엄지 척")
             goodLabel.text = "좋아요"
             isGoodPressed = true
         }
     }
     
+    // !isHatePressed
+    // isHatePressed == false
+    // 둘이 같음
+    
     @objc func hateMark() {
-        if isHatePressed == true {
+        if isHatePressed {
             hateImageView.image = UIImage(named: "엄지 아래 누른 상태")
             hateLabel.text = "싫어요 취소"
             isHatePressed = false
-        } else if isHatePressed == false {
+        } else {
             hateImageView.image = UIImage(named: "엄지 아래")
             hateLabel.text = "싫어요"
             isHatePressed = true
