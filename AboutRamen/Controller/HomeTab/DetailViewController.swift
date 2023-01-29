@@ -170,11 +170,11 @@ class DetailViewController: UIViewController {
     }
     
     @objc func addMyListMark() {
-        if isMyListPressed == true {
+        if isMyListPressed {
             myListAddImageView.image = UIImage(named: "마이 리스트 누른 후")
             myListLabel.text = "추가하기 취소"
             isMyListPressed = false
-        } else if isMyListPressed == false {
+        } else {
             myListAddImageView.image = UIImage(named: "마이 리스트 누르기 전")
             myListLabel.text = "추가하기"
             isMyListPressed = true
