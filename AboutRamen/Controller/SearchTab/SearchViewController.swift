@@ -36,9 +36,19 @@ class SearchViewController: UIViewController {
         setUpSearchController()
         setUpTableView()
         
-        for LngLat in regionData.LngLat {
-            getStoreName(lng: LngLat.value.0, lat: LngLat.value.1)
+        let regionList = RegionData.list
+        
+        for region in regionList {
+            let guList = region.guList
+            
+            for gu in guList {
+                getStoreName(lng: gu.location.long, lat: gu.location.lat)
+            }
         }
+        
+        // for LngLat in regionData.LngLat {
+        //     getStoreName(lng: LngLat.value.0, lat: LngLat.value.1)
+        // }
 
         }
     
