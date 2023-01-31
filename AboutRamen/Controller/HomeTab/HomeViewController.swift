@@ -94,7 +94,7 @@ class HomeViewController: UIViewController {
             let params: [String: Any] = ["query": name]
             AF.request(imageUrl, method: .get, parameters: params, headers: headers).responseDecodable(of: RamenImage.self) { response in
                 if let dataImage = response.value {
-                    self.imageUrlList.append(dataImage.documents[2].image_url)
+                    self.imageUrlList.append(dataImage.documents[0].image_url)
                 }
                 
                 DispatchQueue.main.async {
