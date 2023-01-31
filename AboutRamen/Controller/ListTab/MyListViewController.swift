@@ -17,6 +17,8 @@ class MyListViewController: UIViewController, UITableViewDelegate, UITableViewDa
         navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font : UIFont(name: "Recipekorea", size: 20)!]
     }
     
+    // TODO: Image 이름에 공백이 없어야함, 이미지 이름은 영어로 지어야함
+    // TODO: 이미지 없을 수도 있으므로, 강제 언랩핑을 하지 않고 시스템 이미지를 하나 지정해줄 것.
     func addIconImages() {
         iconImages.append(UIImage(named: "엄지 척 리스트버전")!)
         iconImages.append(UIImage(named: "엄지 아래 리스트버전")!)
