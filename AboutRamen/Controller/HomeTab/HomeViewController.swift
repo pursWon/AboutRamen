@@ -1,5 +1,6 @@
 import UIKit
 import Alamofire
+import Kingfisher
 
 // TODO: 프로토콜 이름 변경해볼것!
 protocol LocationDataProtocol {
@@ -22,10 +23,8 @@ class HomeViewController: UIViewController {
     let regionData = RegionData()
     /// API를 통해서 가져온 라멘집 리스트 정보를 담고 있는 배열
     var ramenList: [Information] = []
-    /// 라멘집의 x,y 좌표를 통해 가져온 라멘집 이미지 배열
-    var ramenImages: [Image] = []
     /// 라멘집 이미지들의 image_url 값들의 배열
-    var ramenCellImages: [String] = []
+    var imageUrlList: [String] = []
     var currentLocation: (long: Double, lat: Double) = (127.0495556, 37.514575)
     var storeNames: [String] = []
     
@@ -43,7 +42,7 @@ class HomeViewController: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        getAlamofire(url: url, lnglat: currentLocation)
+        getRamenData(url: url, lnglat: currentLocation)
     }
     
     func setUpNavigationBar() {
@@ -66,8 +65,7 @@ class HomeViewController: UIViewController {
         collectionView.backgroundColor = .systemOrange
     }
     // TODO: 변수명 수정하기
-    func getAlamofire(url: String, lnglat: (Double, Double)) {
-        print("시작")
+    func getRamenData(url: String, lnglat: (Double, Double)) {
         let headers: HTTPHeaders = ["Authorization": "KakaoAK d8b066a3dbb0e888b857f37b667d96d2"]
         
         let parameters: [String: Any] = [
@@ -80,39 +78,28 @@ class HomeViewController: UIViewController {
         ]
         
         AF.request(url, method: .get, parameters: parameters, headers: headers).responseDecodable(of: RamenStore.self) { response in
-            // debugPrint("response.value : \(response.value)")
-            
             if let data = response.value {
                 self.ramenList = data.documents
                 
                 for index in 0..<self.ramenList.count {
-                    print("for문 도는 중...")
                     self.storeNames.append(self.ramenList[index].place_name)
                 }
                 
-                print("for문 끝")
-                for name in self.storeNames {
-                    print("getRamenImage 호출중")
-                    self.getRamenImage(imageURL: url, query: name)
-                }
-                
                 DispatchQueue.main.async {
-                    print("컬렉션 뷰 갱신")
-                    self.collectionView.reloadData()
+                    self.getRamenImages()
                 }
             }
         }
-        print("끝")
     }
-
-    func getRamenImage(imageURL: String, query: String) {
+    
+    func getRamenImages() {
         let headers: HTTPHeaders = ["Authorization": "KakaoAK d8b066a3dbb0e888b857f37b667d96d2"]
-        let parameters: [String : Any] = ["query": query]
-        
-        AF.request(imageUrl, method: .get, parameters: parameters, headers: headers).responseDecodable(of: RamenImage.self) { response in
-            if let dataImage = response.value {
-                self.ramenImages = dataImage.documents
-                self.ramenCellImages.append(self.ramenImages[2].image_url)
+        for name in storeNames {
+            let params: [String: Any] = ["query": name]
+            AF.request(imageUrl, method: .get, parameters: params, headers: headers).responseDecodable(of: RamenImage.self) { response in
+                if let dataImage = response.value {
+                    self.imageUrlList.append(dataImage.documents[2].image_url)
+                }
                 
                 DispatchQueue.main.async {
                     self.collectionView.reloadData()
@@ -158,11 +145,10 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
         cell.nameLabel.text = ramenData.place_name
         cell.distanceLabel.text = "\(ramenData.distance) m"
         
-        // TODO: 가게 이미지를 가져오고 싶은데, 에러가 남. 해결할 것.
-        // if let imageURL = URL(string: ramenCellImages[indexPath.row]),
-        //    let imageData = try? Data(contentsOf: imageURL) {
-        //     cell.ramenImageView.image = UIImage(data: imageData)
-        // }
+        if imageUrlList.count == ramenList.count {
+            let url = URL(string: imageUrlList[indexPath.row])
+            cell.ramenImageView.kf.setImage(with: url)
+        }
         
         return cell
     }
