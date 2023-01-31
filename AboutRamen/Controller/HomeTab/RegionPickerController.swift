@@ -18,8 +18,9 @@ class RegionPickerController: UIViewController {
     /// 구, 군이름 데이터를 담을 변수
     var selectedGu: String = ""
     /// 경도, 위도 데이터를 담을 변수
-    var lnglat: (Double, Double) = (0,0)
+    var longlat: (Double, Double) = (0,0)
     
+    let list = RegionData.list
     // MARK: - View Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -44,7 +45,7 @@ class RegionPickerController: UIViewController {
         }
     }
 }
-
+// TODO: 수정된 RegionData 기반으로 picker 데이터 수정해보기 
 extension RegionPickerController: UIPickerViewDelegate, UIPickerViewDataSource {
     // MARK: - PickerView
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
@@ -53,33 +54,33 @@ extension RegionPickerController: UIPickerViewDelegate, UIPickerViewDataSource {
     
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
         if pickerView == cityPicker {
-            return regionData.cities.count
+            return list.count
         } else if cityPicker.selectedRow(inComponent: 0) == 0 {
-            return regionData.seoul.count
+            return list[0].guList.count
         } else if cityPicker.selectedRow(inComponent: 0) == 1 {
-            return regionData.gangwon.count
+            return list[1].guList.count
         } else if cityPicker.selectedRow(inComponent: 0) == 2 {
-            return regionData.gyeonggi.count
+            return list[2].guList.count
         } else if cityPicker.selectedRow(inComponent: 0) == 3 {
-            return regionData.gyeongsang.count
+            return list[3].guList.count
         } else if cityPicker.selectedRow(inComponent: 0) == 4 {
-            return regionData.gwangju.count
+            return list[4].guList.count
         } else if cityPicker.selectedRow(inComponent: 0) == 5 {
-            return regionData.daegu.count
+            return list[5].guList.count
         } else if cityPicker.selectedRow(inComponent: 0) == 6 {
-            return regionData.daejeon.count
+            return list[6].guList.count
         } else if cityPicker.selectedRow(inComponent: 0) == 7 {
-            return regionData.busan.count
+            return list[7].guList.count
         } else if cityPicker.selectedRow(inComponent: 0) == 8 {
-            return regionData.ulsan.count
+            return list[8].guList.count
         } else if cityPicker.selectedRow(inComponent: 0) == 9 {
-            return regionData.incheon.count
+            return list[9].guList.count
         } else if cityPicker.selectedRow(inComponent: 0) == 10 {
-            return regionData.jeolla.count
+            return list[10].guList.count
         } else if cityPicker.selectedRow(inComponent: 0) == 11 {
-            return regionData.chungcheong.count
+            return list[11].guList.count
         } else if cityPicker.selectedRow(inComponent: 0) == 12 {
-            return regionData.jeju.count
+            return list[12].guList.count
         }
         
         return 0
@@ -87,33 +88,33 @@ extension RegionPickerController: UIPickerViewDelegate, UIPickerViewDataSource {
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         if pickerView == cityPicker {
-            return regionData.cities[row]
+            return list[row].city.rawValue
         } else if cityPicker.selectedRow(inComponent: 0) == 0 {
-            return regionData.seoul[row]
+            return list[0].guList[row].gu
         } else if cityPicker.selectedRow(inComponent: 0) == 1 {
-            return regionData.gangwon[row]
+            return list[1].guList[row].gu
         } else if cityPicker.selectedRow(inComponent: 0) == 2 {
-            return regionData.gyeonggi[row]
+            return list[2].guList[row].gu
         } else if cityPicker.selectedRow(inComponent: 0) == 3 {
-            return regionData.gyeongsang[row]
+            return list[3].guList[row].gu
         } else if cityPicker.selectedRow(inComponent: 0) == 4 {
-            return regionData.gwangju[row]
+            return list[4].guList[row].gu
         } else if cityPicker.selectedRow(inComponent: 0) == 5 {
-            return regionData.daegu[row]
+            return list[5].guList[row].gu
         } else if cityPicker.selectedRow(inComponent: 0) == 6 {
-            return regionData.daejeon[row]
+            return list[6].guList[row].gu
         } else if cityPicker.selectedRow(inComponent: 0) == 7 {
-            return regionData.busan[row]
+            return list[7].guList[row].gu
         } else if cityPicker.selectedRow(inComponent: 0) == 8 {
-            return regionData.ulsan[row]
+            return list[8].guList[row].gu
         } else if cityPicker.selectedRow(inComponent: 0) == 9 {
-            return regionData.incheon[row]
+            return list[9].guList[row].gu
         } else if cityPicker.selectedRow(inComponent: 0) == 10 {
-            return regionData.jeolla[row]
+            return list[10].guList[row].gu
         } else if cityPicker.selectedRow(inComponent: 0) == 11 {
-            return regionData.chungcheong[row]
+            return list[11].guList[row].gu
         } else if cityPicker.selectedRow(inComponent: 0) == 12 {
-            return regionData.jeju[row]
+            return list[12].guList[row].gu
         }
         
         return nil
@@ -123,55 +124,59 @@ extension RegionPickerController: UIPickerViewDelegate, UIPickerViewDataSource {
         if pickerView == cityPicker {
             guPicker.reloadAllComponents()
         } else if cityPicker.selectedRow(inComponent: 0) == 0 {
-            selectedCity = regionData.cities[0]
-            selectedGu = regionData.seoul[row]
+            selectedCity = list[0].city.rawValue
+            selectedGu = list[0].guList[row].gu
         } else if cityPicker.selectedRow(inComponent: 0) == 1 {
-            selectedCity = regionData.cities[1]
-            selectedGu = regionData.gangwon[row]
+            selectedCity = list[1].city.rawValue
+            selectedGu = list[1].guList[row].gu
         } else if cityPicker.selectedRow(inComponent: 0) == 2 {
-            selectedCity = regionData.cities[2]
-            selectedGu = regionData.gyeonggi[row]
+            selectedCity = list[2].city.rawValue
+            selectedGu = list[2].guList[row].gu
         } else if cityPicker.selectedRow(inComponent: 0) == 3 {
-            selectedCity = regionData.cities[3]
-            selectedGu = regionData.gyeongsang[row]
+            selectedCity = list[3].city.rawValue
+            selectedGu = list[3].guList[row].gu
         } else if cityPicker.selectedRow(inComponent: 0) == 4 {
-            selectedCity = regionData.cities[4]
-            selectedGu = regionData.gwangju[row]
+            selectedCity = list[4].city.rawValue
+            selectedGu = list[4].guList[row].gu
         } else if cityPicker.selectedRow(inComponent: 0) == 5 {
-            selectedCity = regionData.cities[5]
-            selectedGu = regionData.daegu[row]
+            selectedCity = list[5].city.rawValue
+            selectedGu = list[5].guList[row].gu
         } else if cityPicker.selectedRow(inComponent: 0) == 6 {
-            selectedCity = regionData.cities[6]
-            selectedGu = regionData.daejeon[row]
+            selectedCity = list[6].city.rawValue
+            selectedGu = list[6].guList[row].gu
         } else if cityPicker.selectedRow(inComponent: 0) == 7 {
-            selectedCity = regionData.cities[7]
-            selectedGu = regionData.busan[row]
+            selectedCity = list[7].city.rawValue
+            selectedGu = list[7].guList[row].gu
         } else if cityPicker.selectedRow(inComponent: 0) == 8 {
-            selectedCity = regionData.cities[8]
-            selectedGu = regionData.ulsan[row]
+            selectedCity = list[8].city.rawValue
+            selectedGu = list[8].guList[row].gu
         } else if cityPicker.selectedRow(inComponent: 0) == 9 {
-            selectedCity = regionData.cities[9]
-            selectedGu = regionData.incheon[row]
+            selectedCity = list[9].city.rawValue
+            selectedGu = list[9].guList[row].gu
         } else if cityPicker.selectedRow(inComponent: 0) == 10 {
-            selectedCity = regionData.cities[10]
-            selectedGu = regionData.jeolla[row]
+            selectedCity = list[10].city.rawValue
+            selectedGu = list[10].guList[row].gu
         } else if cityPicker.selectedRow(inComponent: 0) == 11 {
-            selectedCity = regionData.cities[11]
-            selectedGu = regionData.chungcheong[row]
+            selectedCity = list[11].city.rawValue
+            selectedGu = list[11].guList[row].gu
         } else if cityPicker.selectedRow(inComponent: 0) == 12 {
-            selectedCity = regionData.cities[12]
-            selectedGu = regionData.jeju[row]
+            selectedCity = list[12].city.rawValue
+            selectedGu = list[12].guList[row].gu
         }
         
         delegateRegion?.sendRegionData(city: selectedCity, gu: selectedGu)
         
-        for LngLat in regionData.LngLat {
-            if LngLat.key.contains("\(selectedCity) \(selectedGu)") {
-                lnglat = LngLat.value
+        for region in list {
+            if selectedCity == region.city.rawValue {
+                for index in 0..<region.guList.count {
+                    if selectedGu == region.guList[index].gu {
+                        longlat = region.guList[index].location
+                    }
+                }
             }
         }
         
-        delegateLocation?.sendCurrentLocation(lnglat: lnglat)
+        delegateLocation?.sendCurrentLocation(lnglat: longlat)
     }
     
     func pickerView(_ pickerView: UIPickerView, rowHeightForComponent component: Int) -> CGFloat {
