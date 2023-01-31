@@ -151,7 +151,7 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
         cell.layer.borderWidth = 3
         cell.layer.cornerRadius = 10
         
-        cell.nameLabel.textAlignment = .center
+        cell.nameLabel.textAlignment = .left
         cell.nameLabel.font = .boldSystemFont(ofSize: 12)
         cell.starLabel.font = .boldSystemFont(ofSize: 15)
         

@@ -9,10 +9,15 @@ class RegionPickerController: UIViewController {
     
     // MARK: - Properties
     let regionData = RegionData()
+    /// 지역명 프로토콜 변수
     var delegateRegion: RegionDataProtocol?
+    /// 경도, 위도 프로토콜 변수
     var delegateLocation: LocationDataProtocol?
+    /// 도시 이름 데이터를 담을 변수
     var selectedCity: String = ""
+    /// 구, 군이름 데이터를 담을 변수
     var selectedGu: String = ""
+    /// 경도, 위도 데이터를 담을 변수
     var lnglat: (Double, Double) = (0,0)
     
     // MARK: - View Life Cycle
@@ -41,7 +46,7 @@ class RegionPickerController: UIViewController {
 }
 
 extension RegionPickerController: UIPickerViewDelegate, UIPickerViewDataSource {
-    // MARK: - Picker
+    // MARK: - PickerView
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
     }
@@ -81,7 +86,6 @@ extension RegionPickerController: UIPickerViewDelegate, UIPickerViewDataSource {
     }
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        
         if pickerView == cityPicker {
             return regionData.cities[row]
         } else if cityPicker.selectedRow(inComponent: 0) == 0 {
@@ -161,9 +165,9 @@ extension RegionPickerController: UIPickerViewDelegate, UIPickerViewDataSource {
         
         delegateRegion?.sendRegionData(city: selectedCity, gu: selectedGu)
         
-        for i in regionData.LngLat {
-            if i.key.contains("\(selectedCity) \(selectedGu)") {
-                lnglat = i.value
+        for LngLat in regionData.LngLat {
+            if LngLat.key.contains("\(selectedCity) \(selectedGu)") {
+                lnglat = LngLat.value
             }
         }
         

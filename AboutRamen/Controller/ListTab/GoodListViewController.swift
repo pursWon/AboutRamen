@@ -9,6 +9,10 @@ class GoodListViewController: UIViewController, UITableViewDelegate, UITableView
         super.viewDidLoad()
         
         setUpTableView()
+        setUpNavigationBar()
+    }
+    
+    func setUpNavigationBar() {
         view.backgroundColor = .systemOrange
         navigationController?.navigationBar.backgroundColor = .systemOrange
     }
@@ -24,8 +28,8 @@ class GoodListViewController: UIViewController, UITableViewDelegate, UITableView
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = goodListTableView.dequeueReusableCell(withIdentifier: "GoodListCell", for: indexPath) as?
-                GoodListCell else { return UITableViewCell() }
+        guard let cell = goodListTableView.dequeueReusableCell(withIdentifier: "GoodListCell", for: indexPath)
+                as? GoodListCell else { return UITableViewCell() }
         
         let goodDataList = GoodListData.goodListArray
         
