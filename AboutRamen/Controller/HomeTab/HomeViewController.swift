@@ -31,10 +31,6 @@ class HomeViewController: UIViewController {
     // MARK: - ViewLifeCycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        // for문에서 store로 ramenList를 돌면서 storeNames 문자열 배열에 store에 내포된 인스턴스인 place_name을 추가해준다.
-        // 이러면 컬렉션뷰에 띄워주는 가게이름들을 storeNames 문자열 배열에 저장한 것이다.
-        // 그리고 for문에서 index가 첫번째 순서부터 storeNames가 가지고 있는 객체 수의 마지막 순서까지 돌면서 (0부터 최대 14까지 -> 가게 이름은 최대 15개까지 나오므로)
-        // 가게이름이 15개가 나왔다면 0부터 14번까지 index에 넣으면서 getRamenImage 함수를 실행시켜준다.
         
         setUpCollectionView()
         setUpNavigationBar()
