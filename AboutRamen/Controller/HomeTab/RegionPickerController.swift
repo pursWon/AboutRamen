@@ -176,7 +176,7 @@ extension RegionPickerController: UIPickerViewDelegate, UIPickerViewDataSource {
             }
         }
         
-        delegateLocation?.sendCurrentLocation(lnglat: longlat)
+        delegateLocation?.sendCurrentLocation(longlat: longlat)
     }
     
     func pickerView(_ pickerView: UIPickerView, rowHeightForComponent component: Int) -> CGFloat {
