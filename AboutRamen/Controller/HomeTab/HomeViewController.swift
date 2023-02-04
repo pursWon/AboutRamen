@@ -4,7 +4,7 @@ import Kingfisher
 
 // TODO: 프로토콜 이름 변경해볼것!
 protocol LocationDataProtocol {
-    func sendCurrentLocation(lnglat: (Double, Double))
+    func sendCurrentLocation(longlat: (Double, Double))
 }
 
 protocol RegionDataProtocol {
@@ -187,7 +187,7 @@ extension HomeViewController: RegionDataProtocol {
 
 // MARK: - LngLatProtocol
 extension HomeViewController: LocationDataProtocol {
-    func sendCurrentLocation(lnglat: (Double, Double)) {
-        currentLocation = lnglat
+    func sendCurrentLocation(longlat: (Double, Double)) {
+        currentLocation = longlat
     }
 }
