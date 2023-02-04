@@ -1,4 +1,6 @@
 import UIKit
+import Alamofire
+import Kingfisher
 
 enum ReviewState: String {
     case yet = "리뷰하기"
@@ -47,6 +49,8 @@ class DetailViewController: UIViewController {
     var isMyListPressed: Bool = true
     var reviewImage: UIImage = UIImage(named: "평가하기")!
     var reviewState: ReviewState = .yet
+    var imageUrlList: (String, String) = ("None", "None")
+    let imageUrl: String = "https://dapi.kakao.com/v2/search/image"
     
     // MARK: - View Life Cycle
     override func viewDidLoad() {
@@ -56,6 +60,7 @@ class DetailViewController: UIViewController {
         setUpBackgroundColor()
         setUpLableText()
         setUpTabImageView()
+        getRamenImages()
         storeLabel.font = UIFont.boldSystemFont(ofSize: 23)
         reviewLabel.text = reviewState.rawValue
         reviewImageView.image = reviewImage
@@ -64,6 +69,23 @@ class DetailViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         reviewLabel.text = reviewState.rawValue
         reviewImageView.image = reviewImage
+    }
+    
+    func getRamenImages() {
+        let headers: HTTPHeaders = ["Authorization": "KakaoAK d8b066a3dbb0e888b857f37b667d96d2"]
+        let params: [String: Any] = ["query": information[index].place_name]
+        AF.request(imageUrl, method: .get, parameters: params, headers: headers).responseDecodable(of: RamenImage.self) { response in
+            if let dataImage = response.value {
+                self.imageUrlList = (dataImage.documents[0].image_url, dataImage.documents[1].image_url)
+            }
+            
+            DispatchQueue.main.async {
+                let urlOne = URL(string: self.imageUrlList.0)
+                let urlTwo = URL(string: self.imageUrlList.1)
+                self.pictureImageViewOne.kf.setImage(with: urlOne)
+                self.pictureImageViewTwo.kf.setImage(with: urlTwo)
+            }
+        }
     }
     
     func setUpBorder() {
@@ -79,6 +101,8 @@ class DetailViewController: UIViewController {
             $0.layer.borderColor = UIColor.black.cgColor
             $0.layer.cornerRadius = 10
         }
+        
+        pictureImageViewOne.layer.addBorder([.right], color: .black, width: 2.0)
     }
     
     func setUpBackgroundColor() {
@@ -236,3 +260,33 @@ extension DetailViewController: ReviewCompleteProtocol {
         isReviewPressed = sendReviewPressed
     }
 }
+
+extension CALayer {
+    func addBorder(_ arr_edge: [UIRectEdge], color: UIColor, width: CGFloat) {
+        for edge in arr_edge {
+            let border = CALayer()
+            switch edge {
+            case UIRectEdge.top:
+                border.frame = CGRect.init(x: 0, y: 0, width: frame.width, height: width)
+                break
+            case UIRectEdge.bottom:
+                border.frame = CGRect.init(x: 0, y: frame.height - width, width: frame.width, height: width)
+                break
+            case UIRectEdge.left:
+                border.frame = CGRect.init(x: 0, y: 0, width: width, height: frame.height)
+                break
+            case UIRectEdge.right:
+                border.frame = CGRect.init(x: frame.width - width, y: 0, width: width, height: frame.height)
+                break
+            default:
+                break
+            }
+            border.backgroundColor = color.cgColor;
+            self.addSublayer(border)
+        }
+    }
+}
+
+// imageURL을 두 개 가져와야한다. 검색을 했을 때에 0번째 이미지와 3번째 이미지
+// 그 두개를 가져와서 비어있는 튜플값의 배열에 저장해준다.
+
