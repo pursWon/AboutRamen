@@ -76,8 +76,6 @@ class SearchViewController: UIViewController {
         
         AF.request(url, method: .get, parameters: parameters ,headers: headers).responseDecodable(of: RamenStore.self) {
             response in
-            debugPrint("response.value : \(response.value)")
-            
             if let data = response.value {
                 
                 for ramenIndex in 0..<data.documents.count {

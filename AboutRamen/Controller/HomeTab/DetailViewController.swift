@@ -76,7 +76,7 @@ class DetailViewController: UIViewController {
         let params: [String: Any] = ["query": information[index].place_name]
         AF.request(imageUrl, method: .get, parameters: params, headers: headers).responseDecodable(of: RamenImage.self) { response in
             if let dataImage = response.value {
-                self.imageUrlList = (dataImage.documents[0].image_url, dataImage.documents[1].image_url)
+                self.imageUrlList = (dataImage.documents[5].image_url, dataImage.documents[6].image_url)
             }
             
             DispatchQueue.main.async {
@@ -286,7 +286,3 @@ extension CALayer {
         }
     }
 }
-
-// imageURL을 두 개 가져와야한다. 검색을 했을 때에 0번째 이미지와 3번째 이미지
-// 그 두개를 가져와서 비어있는 튜플값의 배열에 저장해준다.
-

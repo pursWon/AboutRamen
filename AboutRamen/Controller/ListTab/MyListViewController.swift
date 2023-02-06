@@ -20,10 +20,16 @@ class MyListViewController: UIViewController, UITableViewDelegate, UITableViewDa
     // TODO: Image 이름에 공백이 없어야함, 이미지 이름은 영어로 지어야함
     // TODO: 이미지 없을 수도 있으므로, 강제 언랩핑을 하지 않고 시스템 이미지를 하나 지정해줄 것.
     func addIconImages() {
-        iconImages.append(UIImage(named: "엄지 척 리스트버전")!)
-        iconImages.append(UIImage(named: "엄지 아래 리스트버전")!)
-        iconImages.append(UIImage(named: "평가하기 리스트버전")!)
-        iconImages.append(UIImage(named: "라멘")!)
+        if let iconImageOne = UIImage(named: "ThumbsUp"), let iconImageTwo = UIImage(named: "ThumbsDown"),
+           let iconImageThree = UIImage(named: "ReviewBlack"), let iconImageFour = UIImage(named: "Ramen") {
+            iconImages.append(iconImageOne)
+            iconImages.append(iconImageTwo)
+            iconImages.append(iconImageThree)
+            iconImages.append(iconImageFour)
+        } else {
+            guard let systemImage = UIImage(systemName: "list.bullet.circle") else { return }
+            iconImages.append(systemImage)
+        }
     }
     
     func setUptableView() {

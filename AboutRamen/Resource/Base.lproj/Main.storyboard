@@ -82,24 +82,10 @@
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SD7-7z-pTZ">
                                                             <rect key="frame" x="7" y="101.33333333333333" width="114" height="21.666666666666671"/>
                                                             <attributedString key="attributedText">
-                                                                <fragment content="가게">
-                                                                    <attributes>
-                                                                        <color key="NSColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                                                        <font key="NSFont" size="18" name=".AppleSDGothicNeoI-Regular"/>
-                                                                        <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
-                                                                    </attributes>
-                                                                </fragment>
-                                                                <fragment content=" ">
+                                                                <fragment content="가게 이름">
                                                                     <attributes>
                                                                         <color key="NSColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                                                         <font key="NSFont" metaFont="system" size="18"/>
-                                                                        <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
-                                                                    </attributes>
-                                                                </fragment>
-                                                                <fragment content="이름">
-                                                                    <attributes>
-                                                                        <color key="NSColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                                                        <font key="NSFont" size="18" name=".AppleSDGothicNeoI-Regular"/>
                                                                         <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
                                                                     </attributes>
                                                                 </fragment>
@@ -130,7 +116,7 @@
                                                             <constraints>
                                                                 <constraint firstAttribute="width" secondItem="s0R-2u-ZOL" secondAttribute="height" multiplier="1:1" id="I0t-YY-cv3"/>
                                                             </constraints>
-                                                            <imageReference key="image" image="빈 별" symbolScale="medium"/>
+                                                            <imageReference key="image" image="Ramen" symbolScale="medium"/>
                                                             <preferredSymbolConfiguration key="preferredSymbolConfiguration" scale="default"/>
                                                             <variation key="heightClass=regular-widthClass=compact" preservesSuperviewLayoutMargins="NO"/>
                                                         </imageView>
@@ -730,16 +716,16 @@
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="35" translatesAutoresizingMaskIntoConstraints="NO" id="miY-JH-i7O">
                                         <rect key="frame" x="15" y="6" width="285" height="34"/>
                                         <subviews>
-                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="엄지 척" translatesAutoresizingMaskIntoConstraints="NO" id="MZN-Jd-653">
+                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ThumbsUpWhite" translatesAutoresizingMaskIntoConstraints="NO" id="MZN-Jd-653">
                                                 <rect key="frame" x="0.0" y="0.0" width="45" height="34"/>
                                             </imageView>
-                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="엄지 아래" translatesAutoresizingMaskIntoConstraints="NO" id="V7H-La-dY9">
+                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ThumbsDownWhite" translatesAutoresizingMaskIntoConstraints="NO" id="V7H-La-dY9">
                                                 <rect key="frame" x="80" y="0.0" width="45" height="34"/>
                                             </imageView>
-                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="평가하기" translatesAutoresizingMaskIntoConstraints="NO" id="8ef-Tf-OVY">
+                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ReviewWhite" translatesAutoresizingMaskIntoConstraints="NO" id="8ef-Tf-OVY">
                                                 <rect key="frame" x="160" y="0.0" width="45" height="34"/>
                                             </imageView>
-                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="마이 리스트 누르기 전" translatesAutoresizingMaskIntoConstraints="NO" id="INh-2c-WIQ">
+                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="MyListWhite" translatesAutoresizingMaskIntoConstraints="NO" id="INh-2c-WIQ">
                                                 <rect key="frame" x="240" y="0.0" width="45" height="34"/>
                                             </imageView>
                                         </subviews>
@@ -912,19 +898,19 @@
                             <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="WYR-4Q-mNg">
                                 <rect key="frame" x="20" y="463.33333333333331" width="335" height="69.999999999999943"/>
                                 <subviews>
-                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" tag="1" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="빈 별" translatesAutoresizingMaskIntoConstraints="NO" id="cW4-wP-FPd">
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" tag="1" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="EmptyStar" translatesAutoresizingMaskIntoConstraints="NO" id="cW4-wP-FPd">
                                         <rect key="frame" x="0.0" y="0.0" width="67" height="70"/>
                                     </imageView>
-                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" tag="2" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="빈 별" translatesAutoresizingMaskIntoConstraints="NO" id="A8S-kn-2fN">
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" tag="2" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="EmptyStar" translatesAutoresizingMaskIntoConstraints="NO" id="A8S-kn-2fN">
                                         <rect key="frame" x="67" y="0.0" width="67" height="70"/>
                                     </imageView>
-                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" tag="3" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="빈 별" translatesAutoresizingMaskIntoConstraints="NO" id="rez-rW-s3C">
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" tag="3" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="EmptyStar" translatesAutoresizingMaskIntoConstraints="NO" id="rez-rW-s3C">
                                         <rect key="frame" x="134" y="0.0" width="67" height="70"/>
                                     </imageView>
-                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" tag="4" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="빈 별" translatesAutoresizingMaskIntoConstraints="NO" id="wuR-Cv-VuA">
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" tag="4" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="EmptyStar" translatesAutoresizingMaskIntoConstraints="NO" id="wuR-Cv-VuA">
                                         <rect key="frame" x="201" y="0.0" width="67" height="70"/>
                                     </imageView>
-                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" tag="5" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="빈 별" translatesAutoresizingMaskIntoConstraints="NO" id="NBf-la-kcY">
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" tag="5" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="EmptyStar" translatesAutoresizingMaskIntoConstraints="NO" id="NBf-la-kcY">
                                         <rect key="frame" x="268" y="0.0" width="67" height="70"/>
                                     </imageView>
                                 </subviews>
@@ -1086,8 +1072,8 @@
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                     </textView>
-                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="라멘" translatesAutoresizingMaskIntoConstraints="NO" id="Zv2-mc-wbV">
-                                        <rect key="frame" x="70" y="460" width="235" height="190"/>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Ramen" translatesAutoresizingMaskIntoConstraints="NO" id="Zv2-mc-wbV">
+                                        <rect key="frame" x="50" y="460" width="255" height="190"/>
                                     </imageView>
                                 </subviews>
                                 <color key="backgroundColor" systemColor="systemOrangeColor"/>
@@ -1097,7 +1083,7 @@
                                     <constraint firstItem="D4V-dV-W09" firstAttribute="top" secondItem="XQI-fQ-znc" secondAttribute="top" constant="20" id="AXr-Za-2WW"/>
                                     <constraint firstItem="D4V-dV-W09" firstAttribute="centerX" secondItem="XQI-fQ-znc" secondAttribute="centerX" id="CLJ-L3-IPZ"/>
                                     <constraint firstAttribute="bottom" secondItem="D4V-dV-W09" secondAttribute="bottom" constant="270" id="Hc4-Rr-Q4p"/>
-                                    <constraint firstItem="Zv2-mc-wbV" firstAttribute="leading" secondItem="XQI-fQ-znc" secondAttribute="leading" constant="70" id="RWE-o8-BRF"/>
+                                    <constraint firstItem="Zv2-mc-wbV" firstAttribute="leading" secondItem="XQI-fQ-znc" secondAttribute="leading" constant="50" id="RWE-o8-BRF"/>
                                     <constraint firstItem="Zv2-mc-wbV" firstAttribute="top" secondItem="XQI-fQ-znc" secondAttribute="top" constant="460" id="YrJ-tR-fVW"/>
                                     <constraint firstItem="D4V-dV-W09" firstAttribute="leading" secondItem="XQI-fQ-znc" secondAttribute="leading" constant="20" id="e9s-tg-ccx"/>
                                     <constraint firstAttribute="bottom" secondItem="Zv2-mc-wbV" secondAttribute="bottom" constant="40" id="ify-Zw-A23"/>
@@ -1276,17 +1262,17 @@
     </scenes>
     <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
     <resources>
+        <image name="EmptyStar" width="752" height="752"/>
+        <image name="MyListWhite" width="50" height="50"/>
+        <image name="Ramen" width="1024" height="1024"/>
+        <image name="ReviewWhite" width="128" height="128"/>
+        <image name="ThumbsDownWhite" width="128" height="128"/>
+        <image name="ThumbsUpWhite" width="128" height="128"/>
         <image name="house" catalog="system" width="128" height="106"/>
         <image name="list.bullet.circle" catalog="system" width="128" height="121"/>
         <image name="magnifyingglass" catalog="system" width="128" height="115"/>
         <image name="number" catalog="system" width="128" height="124"/>
         <image name="timer" catalog="system" width="128" height="121"/>
-        <image name="라멘" width="1024" height="1024"/>
-        <image name="마이 리스트 누르기 전" width="50" height="50"/>
-        <image name="빈 별" width="752" height="752"/>
-        <image name="엄지 아래" width="128" height="128"/>
-        <image name="엄지 척" width="128" height="128"/>
-        <image name="평가하기" width="128" height="128"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

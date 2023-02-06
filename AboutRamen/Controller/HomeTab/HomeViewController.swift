@@ -2,7 +2,6 @@ import UIKit
 import Alamofire
 import Kingfisher
 
-// TODO: 프로토콜 이름 변경해볼것!
 protocol LocationDataProtocol {
     func sendCurrentLocation(longlat: (Double, Double))
 }
@@ -28,7 +27,7 @@ class HomeViewController: UIViewController {
     var currentLocation: (long: Double, lat: Double) = (127.0495556, 37.514575)
     var storeNames: [String] = []
     
-    // MARK: - ViewLifeCycle
+    // MARK: - View Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -38,7 +37,7 @@ class HomeViewController: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        getRamenData(url: url, lnglat: currentLocation)
+        getRamenData(url: url, currentLocation : currentLocation)
     }
     
     func setUpNavigationBar() {
@@ -60,14 +59,14 @@ class HomeViewController: UIViewController {
         collectionView.delegate = self
         collectionView.backgroundColor = .systemOrange
     }
-    // TODO: 변수명 수정하기
-    func getRamenData(url: String, lnglat: (Double, Double)) {
+    
+    func getRamenData(url: String, currentLocation: (Double, Double)) {
         let headers: HTTPHeaders = ["Authorization": "KakaoAK d8b066a3dbb0e888b857f37b667d96d2"]
         
         let parameters: [String: Any] = [
             "query" : "라멘",
-            "x": "\(lnglat.0)",
-            "y": "\(lnglat.1)",
+            "x": "\(currentLocation.0)",
+            "y": "\(currentLocation.1)",
             "radius": 10000,
             "size": 15,
             "page": 1
@@ -185,7 +184,7 @@ extension HomeViewController: RegionDataProtocol {
     }
 }
 
-// MARK: - LngLatProtocol
+// MARK: - LocationDataProtocol
 extension HomeViewController: LocationDataProtocol {
     func sendCurrentLocation(longlat: (Double, Double)) {
         currentLocation = longlat
