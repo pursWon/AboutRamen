@@ -34,7 +34,7 @@ class ReviewViewController: UIViewController {
     
     // MARK: - Actions
     @objc func completeButtonAction() {
-        delegate?.sendReview(state: .done, image: UIImage(named: "평가하기 리스트버전")!, sendReviewPressed: false)
+        delegate?.sendReview(state: .done, image: UIImage(named: "ReviewBlack")!, sendReviewPressed: false)
         navigationController?.popViewController(animated: true)
     }
 }

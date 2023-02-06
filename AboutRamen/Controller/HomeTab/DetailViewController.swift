@@ -47,7 +47,6 @@ class DetailViewController: UIViewController {
     var isHatePressed: Bool = true
     var isReviewPressed: Bool = true
     var isMyListPressed: Bool = true
-    var reviewImage: UIImage = UIImage(named: "평가하기")!
     var reviewState: ReviewState = .yet
     var imageUrlList: (String, String) = ("None", "None")
     let imageUrl: String = "https://dapi.kakao.com/v2/search/image"
@@ -63,12 +62,13 @@ class DetailViewController: UIViewController {
         getRamenImages()
         storeLabel.font = UIFont.boldSystemFont(ofSize: 23)
         reviewLabel.text = reviewState.rawValue
+        
+        guard let reviewImage = UIImage(named: "ReviewWhite") else { return }
         reviewImageView.image = reviewImage
     }
     
     override func viewWillAppear(_ animated: Bool) {
         reviewLabel.text = reviewState.rawValue
-        reviewImageView.image = reviewImage
     }
     
     func getRamenImages() {
@@ -140,7 +140,7 @@ class DetailViewController: UIViewController {
     @objc func goodMark() {
         // TODO: 조건문 수정하기
         if isGoodPressed {
-            goodImageView.image = UIImage(named: "엄지 척 누른 상태")
+            goodImageView.image = UIImage(named: "ThumbsUpBlack")
             goodLabel.text = "좋아요 취소"
             
             if let rating = ratingLabel.text {
@@ -154,7 +154,7 @@ class DetailViewController: UIViewController {
             }
             
         } else {
-            goodImageView.image = UIImage(named: "엄지 척")
+            goodImageView.image = UIImage(named: "ThumbsUpWhite")
             goodLabel.text = "좋아요"
             isGoodPressed = true
         }
@@ -166,11 +166,11 @@ class DetailViewController: UIViewController {
     
     @objc func hateMark() {
         if isHatePressed {
-            hateImageView.image = UIImage(named: "엄지 아래 누른 상태")
+            hateImageView.image = UIImage(named: "ThumbsDownBlack")
             hateLabel.text = "싫어요 취소"
             isHatePressed = false
         } else {
-            hateImageView.image = UIImage(named: "엄지 아래")
+            hateImageView.image = UIImage(named: "ThumbsDownWhite")
             hateLabel.text = "싫어요"
             isHatePressed = true
         }
@@ -193,11 +193,11 @@ class DetailViewController: UIViewController {
     
     @objc func addMyListMark() {
         if isMyListPressed {
-            myListAddImageView.image = UIImage(named: "마이 리스트 누른 후")
+            myListAddImageView.image = UIImage(named: "MyListBlack")
             myListLabel.text = "추가하기 취소"
             isMyListPressed = false
         } else {
-            myListAddImageView.image = UIImage(named: "마이 리스트 누르기 전")
+            myListAddImageView.image = UIImage(named: "MyListWhite")
             myListLabel.text = "추가하기"
             isMyListPressed = true
         }
@@ -238,11 +238,11 @@ class DetailViewController: UIViewController {
         for index in 1...5 {
             if let starImage = view.viewWithTag(index) as? UIImageView {
                 if Float(index) <= value {
-                    starImage.image = UIImage(named: "별 한개")
+                    starImage.image = UIImage(named: "OneStar")
                 } else if (Float(index) - value) <= 0.5 {
-                    starImage.image = UIImage(named: "별 반개")
+                    starImage.image = UIImage(named: "HalfStar")
                 } else {
-                    starImage.image = UIImage(named: "빈 별")
+                    starImage.image = UIImage(named: "EmptyStar")
                 }
             }
         }
@@ -256,7 +256,7 @@ class DetailViewController: UIViewController {
 extension DetailViewController: ReviewCompleteProtocol {
     func sendReview(state: ReviewState, image: UIImage, sendReviewPressed: Bool) {
         reviewState = state
-        reviewImage = image
+        reviewImageView.image = image
         isReviewPressed = sendReviewPressed
     }
 }
