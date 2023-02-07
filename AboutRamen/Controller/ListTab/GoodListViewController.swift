@@ -33,9 +33,15 @@ class GoodListViewController: UIViewController, UITableViewDelegate, UITableView
         
         let goodDataList = GoodListData.goodListArray
         
-        cell.storeLabel.text = goodDataList[indexPath.row].storeName
-        cell.addressLabel.text = goodDataList[indexPath.row].addressName
-        cell.ratingLabel.text = goodDataList[indexPath.row].rating
+        if goodDataList.count != 0 {
+            cell.storeLabel.text = goodDataList[indexPath.row].storeName
+            cell.addressLabel.text = goodDataList[indexPath.row].addressName
+            cell.ratingLabel.text = goodDataList[indexPath.row].rating
+        } else {
+            cell.storeLabel.text = "비어 있음"
+            cell.addressLabel.text = "비어 있음"
+            cell.ratingLabel.text = "비어 있음"
+        }
         
         return cell
     }
