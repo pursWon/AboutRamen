@@ -5,7 +5,6 @@ class SearchViewController: UIViewController {
     // MARK: - UI
     @IBOutlet var searchTableView: UITableView!
     @IBOutlet var introduceLabel: UILabel!
-    @IBOutlet var searchTabBar: UITabBarItem!
     
     // MARK: - Properties
     let url: String = "https://dapi.kakao.com/v2/local/search/keyword.json"
