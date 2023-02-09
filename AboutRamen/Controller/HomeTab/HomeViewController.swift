@@ -1,6 +1,7 @@
 import UIKit
 import Alamofire
 import Kingfisher
+import MapKit
 
 protocol LocationDataProtocol {
     func sendCurrentLocation(longlat: (Double, Double))
@@ -24,7 +25,7 @@ class HomeViewController: UIViewController {
     var ramenList: [Information] = []
     /// 라멘집 이미지들의 image_url 값들의 배열
     var imageUrlList: [String] = []
-    var currentLocation: (long: Double, lat: Double) = (127.0495556, 37.514575)
+    var currentLocation: (long: Double, lat: Double) = (127.0277194, 37.63695556)
     var storeNames: [String] = []
     
     // MARK: - View Life Cycle
@@ -33,11 +34,13 @@ class HomeViewController: UIViewController {
         
         setUpCollectionView()
         setUpNavigationBar()
-        myLocationLabel.text = "서울시 강남구"
+        myLocationLabel.text = "서울시 강북구"
+        // myLocationLabel.text = "서울시 강남구"
     }
     
     override func viewWillAppear(_ animated: Bool) {
         getRamenData(url: url, currentLocation : currentLocation)
+        imageUrlList.removeAll()
     }
     
     func setUpNavigationBar() {
@@ -67,8 +70,8 @@ class HomeViewController: UIViewController {
             "query" : "라멘",
             "x": "\(currentLocation.0)",
             "y": "\(currentLocation.1)",
-            "radius": 10000,
-            "size": 15,
+            "radius": 7000,
+            "size": 10,
             "page": 1
         ]
         
@@ -93,7 +96,14 @@ class HomeViewController: UIViewController {
             let params: [String: Any] = ["query": name]
             AF.request(imageUrl, method: .get, parameters: params, headers: headers).responseDecodable(of: RamenImage.self) { response in
                 if let dataImage = response.value {
-                    self.imageUrlList.append(dataImage.documents[0].image_url)
+                    for i in 0..<dataImage.documents.count {
+                        if i == 0 {
+                            self.imageUrlList.append(dataImage.documents[0].image_url)
+                        }
+                    }
+                    self.storeNames.removeAll()
+                } else {
+                    
                 }
                 
                 DispatchQueue.main.async {
@@ -128,7 +138,6 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectionViewCell", for: indexPath) as? CollectionViewCell else { return UICollectionViewCell() }
         let ramenData = ramenList[indexPath.row]
-        
         cell.layer.borderColor = UIColor.black.cgColor
         cell.layer.borderWidth = 3
         cell.layer.cornerRadius = 10
@@ -139,10 +148,12 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
         
         cell.nameLabel.text = ramenData.place_name
         cell.distanceLabel.text = "\(ramenData.distance) m"
-        
+       
         if imageUrlList.count == ramenList.count {
             let url = URL(string: imageUrlList[indexPath.row])
             cell.ramenImageView.kf.setImage(with: url)
+        } else {
+            cell.ramenImageView.image = UIImage(named: "Ramen")
         }
         
         return cell

@@ -76,7 +76,7 @@ class DetailViewController: UIViewController {
         let params: [String: Any] = ["query": information[index].place_name]
         AF.request(imageUrl, method: .get, parameters: params, headers: headers).responseDecodable(of: RamenImage.self) { response in
             if let dataImage = response.value {
-                self.imageUrlList = (dataImage.documents[5].image_url, dataImage.documents[6].image_url)
+                self.imageUrlList = (dataImage.documents[1].image_url, dataImage.documents[3].image_url)
             }
             
             DispatchQueue.main.async {

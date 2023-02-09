@@ -26,7 +26,7 @@
                     <connections>
                         <segue destination="CqI-au-liI" kind="relationship" relationship="viewControllers" id="XQs-JV-bgj"/>
                         <segue destination="aLQ-ei-Vvk" kind="relationship" relationship="viewControllers" id="TZC-nV-fSL"/>
-                        <segue destination="Quu-FO-RbP" kind="relationship" relationship="viewControllers" id="zxg-mS-hcO"/>
+                        <segue destination="Quu-FO-RbP" kind="relationship" relationship="viewControllers" id="9JW-sn-Tnj"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="vVH-DS-gcj" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -619,13 +619,13 @@
                                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="3" translatesAutoresizingMaskIntoConstraints="NO" id="RQQ-kb-ejP">
                                                     <rect key="frame" x="50.000000000000014" y="-1.6666666666666679" width="180.33333333333337" height="43.666666666666671"/>
                                                     <subviews>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="가게 이름" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aq3-R3-mri">
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="가게 이름" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aq3-R3-mri">
                                                             <rect key="frame" x="0.0" y="0.0" width="180.33333333333334" height="20.333333333333332"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="주소" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Rey-Nj-dIb">
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="주소" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Rey-Nj-dIb">
                                                             <rect key="frame" x="0.0" y="23.333333333333336" width="180.33333333333334" height="20.333333333333336"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                             <nil key="textColor"/>
@@ -1108,7 +1108,7 @@
             </objects>
             <point key="canvasLocation" x="4343" y="539"/>
         </scene>
-        <!--검색-->
+        <!--검색하기-->
         <scene sceneID="ARo-nP-Hii">
             <objects>
                 <tableViewController id="iLt-Pu-j4r" customClass="SearchViewController" customModule="AboutRamen" customModuleProvider="target" sceneMemberID="viewController">
@@ -1152,11 +1152,10 @@
                             </tableViewCell>
                         </prototypes>
                     </tableView>
-                    <tabBarItem key="tabBarItem" title="검색" selectedImage="magnifyingglass" catalog="system" id="FxG-Ab-56a"/>
+                    <tabBarItem key="tabBarItem" title="검색하기" image="magnifyingglass" catalog="system" id="sMv-mr-Ca9"/>
                     <navigationItem key="navigationItem" id="bNw-mK-3sf"/>
                     <connections>
                         <outlet property="introduceLabel" destination="yKg-OP-Tyz" id="m5X-9d-9nd"/>
-                        <outlet property="searchTabBar" destination="FxG-Ab-56a" id="ed2-5y-qJ0"/>
                         <outlet property="searchTableView" destination="D3B-h9-ERM" id="A3F-Xt-hRc"/>
                     </connections>
                 </tableViewController>
@@ -1246,13 +1245,13 @@
         <scene sceneID="xta-L4-oRI">
             <objects>
                 <navigationController id="Quu-FO-RbP" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="검색" selectedImage="magnifyingglass" catalog="system" id="07b-Ia-K1b"/>
+                    <tabBarItem key="tabBarItem" title="검색" id="07b-Ia-K1b"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="Az5-jT-jD1">
                         <rect key="frame" x="0.0" y="44" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
-                        <segue destination="iLt-Pu-j4r" kind="relationship" relationship="rootViewController" id="zpU-gE-a3A"/>
+                        <segue destination="iLt-Pu-j4r" kind="relationship" relationship="rootViewController" id="VIK-ha-3JI"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SNV-9S-gHr" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
