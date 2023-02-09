@@ -3,7 +3,7 @@ import UIKit
 class GoodListViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     // MARK: - UI
     @IBOutlet var goodListTableView: UITableView!
-    
+    var information: Information = Information(place_name: "", distance: "", road_address_name: "", phone: "")
     // MARK: - View Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -37,6 +37,10 @@ class GoodListViewController: UIViewController, UITableViewDelegate, UITableView
             cell.storeLabel.text = goodDataList[indexPath.row].storeName
             cell.addressLabel.text = goodDataList[indexPath.row].addressName
             cell.ratingLabel.text = goodDataList[indexPath.row].rating
+            information = Information(place_name: goodDataList[indexPath.row].storeName,
+                                      distance: goodDataList[indexPath.row].distance,
+                                      road_address_name: goodDataList[indexPath.row].addressName,
+                                      phone: goodDataList[indexPath.row].phone)
         } else {
             cell.storeLabel.text = "비어 있음"
             cell.addressLabel.text = "비어 있음"
@@ -44,6 +48,13 @@ class GoodListViewController: UIViewController, UITableViewDelegate, UITableView
         }
         
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard let detailVC = self.storyboard?.instantiateViewController(withIdentifier: "DetailViewController") as? DetailViewController else { return }
+        detailVC.information.append(information)
+        detailVC.index = indexPath.row
+        navigationController?.pushViewController(detailVC, animated: true)
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
