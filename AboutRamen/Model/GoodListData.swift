@@ -1,6 +1,6 @@
 import Foundation
 
-struct GoodListData {
+struct GoodListData: Hashable {
     let storeName: String
     let addressName: String
     let rating: String
@@ -10,4 +10,3 @@ struct GoodListData {
     
     static var goodListArray: [GoodListData] = []
 }
-
