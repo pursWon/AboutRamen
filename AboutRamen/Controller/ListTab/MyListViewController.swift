@@ -4,7 +4,7 @@ class MyListViewController: UIViewController, UITableViewDelegate, UITableViewDa
     // MARK: - UI
     @IBOutlet var myListTableView: UITableView!
     // MARK: - Properties
-    let listNameArray: [String] = ["좋아요 목록", "싫어요 목록", "평가 목록", "나의 라멘 가게"]
+    let listNameArray: [String] = ["좋아요 목록", "싫어요 목록", "리뷰 목록", "나의 라멘 가게"]
     var iconImages: [UIImage] = []
     
     // MARK: - View Life Cycle
@@ -17,8 +17,6 @@ class MyListViewController: UIViewController, UITableViewDelegate, UITableViewDa
         navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font : UIFont(name: "Recipekorea", size: 20)!]
     }
     
-    // TODO: Image 이름에 공백이 없어야함, 이미지 이름은 영어로 지어야함
-    // TODO: 이미지 없을 수도 있으므로, 강제 언랩핑을 하지 않고 시스템 이미지를 하나 지정해줄 것.
     func addIconImages() {
         if let iconImageOne = UIImage(named: "ThumbsUp"), let iconImageTwo = UIImage(named: "ThumbsDown"),
            let iconImageThree = UIImage(named: "ReviewBlack"), let iconImageFour = UIImage(named: "Ramen") {
