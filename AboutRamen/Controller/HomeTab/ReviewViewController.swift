@@ -34,7 +34,12 @@ class ReviewViewController: UIViewController {
     
     // MARK: - Actions
     @objc func completeButtonAction() {
+        if reviewTextView.text.count != 0 {
+            
         delegate?.sendReview(state: .done, image: UIImage(named: "ReviewBlack")!, sendReviewPressed: false)
         navigationController?.popViewController(animated: true)
+        } else {
+        alert()
+        }
     }
 }

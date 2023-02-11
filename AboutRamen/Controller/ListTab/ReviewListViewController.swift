@@ -19,8 +19,7 @@ class ReviewListViewController: UIViewController, UITableViewDelegate, UITableVi
     
     // MARK: - TableView
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        
-        return 1
+        return ReviewListData.storeReviews.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
