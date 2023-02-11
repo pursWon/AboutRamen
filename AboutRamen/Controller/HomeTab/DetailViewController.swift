@@ -152,7 +152,6 @@ class DetailViewController: UIViewController {
                 let goodListData = GoodListData(storeName: information[index].place_name, addressName: information[index].road_address_name, rating: "0.0", pressed: isGoodPressed, distance: information[index].distance, phone: information[index].phone)
                 GoodListData.goodListArray.append(goodListData)
             }
-            
         } else {
             goodImageView.image = UIImage(named: "ThumbsUpWhite")
             goodLabel.text = "좋아요"
@@ -168,7 +167,16 @@ class DetailViewController: UIViewController {
         if isHatePressed {
             hateImageView.image = UIImage(named: "ThumbsDownBlack")
             hateLabel.text = "싫어요 취소"
-            isHatePressed = false
+            
+            if let rating = ratingLabel.text {
+                isHatePressed = false
+                let badListData = BadListData(storeName: information[index].place_name, addressName: information[index].road_address_name, rating: rating, pressed: isGoodPressed, distance: information[index].distance, phone: information[index].phone)
+                BadListData.badListArray.append(badListData)
+            } else {
+                isHatePressed = false
+                let badListData = BadListData(storeName: information[index].place_name, addressName: information[index].road_address_name, rating: "0.0", pressed: isGoodPressed, distance: information[index].distance, phone: information[index].phone)
+                BadListData.badListArray.append(badListData)
+            }
         } else {
             hateImageView.image = UIImage(named: "ThumbsDownWhite")
             hateLabel.text = "싫어요"
