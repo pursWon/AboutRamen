@@ -14,7 +14,7 @@ class SearchViewController: UIViewController {
     /// 전국에 있는 라멘 가게들의 이름 모음 배열
     var storeNameArray: [String] = []
     /// 중복된 요소를 제거한 전국에 있는 라멘 가게들의 이름 모음 배열
-    var storeNames: [String] = []
+    var uniqueStoreNames: [String] = []
     /// 데이터 송신을 통해 담아온 라멘 가게 정보들의 배열
     var ramenList: [Information] = []
     /// 경도 데이터를 담아줄 변수
@@ -82,7 +82,7 @@ class SearchViewController: UIViewController {
                     self.storeNameArray.append(data.documents[storeIndex].place_name)
                 }
                 
-                self.storeNames = Array(Set(self.storeNameArray))
+                self.uniqueStoreNames = Array(Set(self.storeNameArray))
             }
         }
     }
@@ -109,7 +109,7 @@ extension SearchViewController: UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
         guard let text = searchController.searchBar.text else { return }
         
-        self.filterArray = self.storeNames.filter { $0.contains(text) }
+        self.filterArray = self.uniqueStoreNames.filter { $0.contains(text) }
         self.searchTableView.reloadData()
     }
 }
@@ -126,7 +126,7 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
         if self.isFiltering {
             cell.textLabel?.text = self.filterArray[indexPath.row]
         } else {
-            cell.textLabel?.text = self.storeNames[indexPath.row]
+            cell.textLabel?.text = self.uniqueStoreNames[indexPath.row]
         }
         
         return cell
