@@ -6,6 +6,10 @@ class ReviewViewController: UIViewController {
     
     //MARK: - Properties
     var delegate: ReviewCompleteProtocol?
+    var storeName: String = ""
+    var addressName: String = ""
+    var reviewContent: String = ""
+    var modifyReview: String = ""
     
     // MARK: - View Life Cycle
     override func viewDidLoad() {
@@ -14,6 +18,10 @@ class ReviewViewController: UIViewController {
         
         setUpTextViewBorder()
         setUpNavigationBarButton()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        reviewTextView.text = reviewContent
     }
     
     func setUpTextViewBorder() {
@@ -34,12 +42,31 @@ class ReviewViewController: UIViewController {
     
     // MARK: - Actions
     @objc func completeButtonAction() {
-        if reviewTextView.text.count != 0 {
-            
-        delegate?.sendReview(state: .done, image: UIImage(named: "ReviewBlack")!, sendReviewPressed: false)
-        navigationController?.popViewController(animated: true)
+        var storeNameArray: [String] = []
+        for content in ReviewListData.storeReviews {
+            storeNameArray.append(content.storeName)
+        }
+        
+        if reviewTextView.text.count != 0, storeNameArray.contains(storeName) == false {
+            ReviewListData.storeReviews.append(ReviewListData(storeName: storeName, addressName: addressName, reviewContent: reviewTextView.text))
+            delegate?.sendReview(state: .done, image: UIImage(named: "ReviewBlack")!, sendReviewPressed: false)
+            navigationController?.popViewController(animated: true)
+        } else if reviewTextView.text.count != 0, storeNameArray.contains(storeName), reviewContent.count == 0 {
+            listAlert()
+        } else if reviewTextView.text.count != 0, storeNameArray.contains(storeName), reviewContent.count != 0 {
+            if reviewTextView.text.count != 0 {
+                modifyReview = reviewTextView.text
+                for i in 0..<ReviewListData.storeReviews.count {
+                    if ReviewListData.storeReviews[i].storeName == storeName {
+                        ReviewListData.storeReviews[i].reviewContent = modifyReview
+                    }
+                }
+                correctAlert()
+            } else {
+                blankTextAlert()
+            }
         } else {
-        alert()
+            blankTextAlert()
         }
     }
 }
