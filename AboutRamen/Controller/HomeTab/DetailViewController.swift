@@ -76,7 +76,7 @@ class DetailViewController: UIViewController {
         let params: [String: Any] = ["query": information[index].place_name]
         AF.request(imageUrl, method: .get, parameters: params, headers: headers).responseDecodable(of: RamenImage.self) { response in
             if let dataImage = response.value {
-                self.imageUrlList = (dataImage.documents[1].image_url, dataImage.documents[3].image_url)
+                self.imageUrlList = (dataImage.documents[0].image_url, dataImage.documents[1].image_url)
             }
             
             DispatchQueue.main.async {
@@ -138,30 +138,24 @@ class DetailViewController: UIViewController {
     }
     
     @objc func goodMark() {
-        // TODO: 조건문 수정하기
-        if isGoodPressed {
-            goodImageView.image = UIImage(named: "ThumbsUpBlack")
-            goodLabel.text = "좋아요 취소"
-            
-            if let rating = ratingLabel.text {
+        if let rating = ratingLabel.text {
+            if isGoodPressed {
+                goodImageView.image = UIImage(named: "ThumbsUpBlack")
+                goodLabel.text = "좋아요 취소"
                 isGoodPressed = false
                 let goodListData = GoodListData(storeName: information[index].place_name, addressName: information[index].road_address_name, rating: rating, pressed: isGoodPressed, distance: information[index].distance, phone: information[index].phone)
                 GoodListData.goodListArray.append(goodListData)
             } else {
-                isGoodPressed = false
-                let goodListData = GoodListData(storeName: information[index].place_name, addressName: information[index].road_address_name, rating: "0.0", pressed: isGoodPressed, distance: information[index].distance, phone: information[index].phone)
-                GoodListData.goodListArray.append(goodListData)
+                goodImageView.image = UIImage(named: "ThumbsUpWhite")
+                goodLabel.text = "좋아요"
+                isGoodPressed = true
             }
         } else {
-            goodImageView.image = UIImage(named: "ThumbsUpWhite")
-            goodLabel.text = "좋아요"
-            isGoodPressed = true
+            isGoodPressed = false
+            let goodListData = GoodListData(storeName: information[index].place_name, addressName: information[index].road_address_name, rating: "0.0", pressed: isGoodPressed, distance: information[index].distance, phone: information[index].phone)
+            GoodListData.goodListArray.append(goodListData)
         }
     }
-    
-    // !isHatePressed
-    // isHatePressed == false
-    // 둘이 같음
     
     @objc func hateMark() {
         if isHatePressed {
@@ -170,11 +164,11 @@ class DetailViewController: UIViewController {
             
             if let rating = ratingLabel.text {
                 isHatePressed = false
-                let badListData = BadListData(storeName: information[index].place_name, addressName: information[index].road_address_name, rating: rating, pressed: isGoodPressed, distance: information[index].distance, phone: information[index].phone)
+                let badListData = BadListData(storeName: information[index].place_name, addressName: information[index].road_address_name, rating: rating, pressed: isHatePressed, distance: information[index].distance, phone: information[index].phone)
                 BadListData.badListArray.append(badListData)
             } else {
                 isHatePressed = false
-                let badListData = BadListData(storeName: information[index].place_name, addressName: information[index].road_address_name, rating: "0.0", pressed: isGoodPressed, distance: information[index].distance, phone: information[index].phone)
+                let badListData = BadListData(storeName: information[index].place_name, addressName: information[index].road_address_name, rating: "0.0", pressed: isHatePressed, distance: information[index].distance, phone: information[index].phone)
                 BadListData.badListArray.append(badListData)
             }
         } else {
@@ -188,6 +182,8 @@ class DetailViewController: UIViewController {
         guard let reviewVC = self.storyboard?.instantiateViewController(withIdentifier: "ReviewViewController") as? ReviewViewController else { return }
         
         reviewVC.delegate = self
+        reviewVC.storeName = information[index].place_name
+        reviewVC.addressName = information[index].road_address_name
         
         let backButton = UIBarButtonItem(title: "가게 정보", style: .plain, target: self, action: nil)
         let attributes = [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 16)]
@@ -200,11 +196,19 @@ class DetailViewController: UIViewController {
     }
     
     @objc func addMyListMark() {
-        if isMyListPressed {
+        if isMyListPressed, let rating = ratingLabel.text {
             myListAddImageView.image = UIImage(named: "MyListBlack")
             myListLabel.text = "추가하기 취소"
             isMyListPressed = false
-        } else {
+            let myRamenListData = MyRamenListData(storeName: information[index].place_name, addressName: information[index].road_address_name, rating: rating, pressed: isMyListPressed, distance: information[index].distance, phone: information[index].phone)
+            MyRamenListData.myRamenList.append(myRamenListData)
+        } else if isMyListPressed {
+            myListAddImageView.image = UIImage(named: "MyListBlack")
+            myListLabel.text = "추가하기 취소"
+            isMyListPressed = false
+            let myRamenListData = MyRamenListData(storeName: information[index].place_name, addressName: information[index].road_address_name, rating: "0.0", pressed: isMyListPressed, distance: information[index].distance, phone: information[index].phone)
+            MyRamenListData.myRamenList.append(myRamenListData)
+        } else if !isMyListPressed {
             myListAddImageView.image = UIImage(named: "MyListWhite")
             myListLabel.text = "추가하기"
             isMyListPressed = true
