@@ -43,6 +43,7 @@
 		D0E8154D2999E4C1007DBC55 /* BadListData.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0E8154C2999E4C1007DBC55 /* BadListData.swift */; };
 		D0E8154F2999E4C7007DBC55 /* RegionData.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0E8154E2999E4C7007DBC55 /* RegionData.swift */; };
 		D0E815512999E4CC007DBC55 /* ReviewListData.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0E815502999E4CC007DBC55 /* ReviewListData.swift */; };
+		D0E815532999E6A2007DBC55 /* MyRamenListData.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0E815522999E6A2007DBC55 /* MyRamenListData.swift */; };
 		D0F15DE72988E4AF00A48EE5 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = D0F15DE62988E4AF00A48EE5 /* Kingfisher */; };
 /* End PBXBuildFile section */
 
@@ -97,6 +98,7 @@
 		D0E8154C2999E4C1007DBC55 /* BadListData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BadListData.swift; sourceTree = "<group>"; };
 		D0E8154E2999E4C7007DBC55 /* RegionData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegionData.swift; sourceTree = "<group>"; };
 		D0E815502999E4CC007DBC55 /* ReviewListData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReviewListData.swift; sourceTree = "<group>"; };
+		D0E815522999E6A2007DBC55 /* MyRamenListData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyRamenListData.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -149,6 +151,7 @@
 				D01308522976699000672422 /* RamenStore.swift */,
 				D01308552976B4AF00672422 /* RamenImage.swift */,
 				D01308C6297A4EA100672422 /* RegionData.swift */,
+				D0E815522999E6A2007DBC55 /* MyRamenListData.swift */,
 				D0E815502999E4CC007DBC55 /* ReviewListData.swift */,
 				D0459DD72982DBF500FFE9E3 /* GoodListData.swift */,
 				D0E8154C2999E4C1007DBC55 /* BadListData.swift */,
@@ -344,6 +347,7 @@
 				D0E8154129978BD7007DBC55 /* BlankTextAlert.swift in Sources */,
 				D01307B1296FF19200672422 /* ReviewListViewController.swift in Sources */,
 				D0459DD82982DBF500FFE9E3 /* GoodListData.swift in Sources */,
+				D0E815532999E6A2007DBC55 /* MyRamenListData.swift in Sources */,
 				D01307A9296FE0EB00672422 /* GoodListViewController.swift in Sources */,
 				D0B171C4296ED964002AD35D /* MyListViewController.swift in Sources */,
 				D0797CFD2959913900B14AC8 /* HomeViewController.swift in Sources */,
