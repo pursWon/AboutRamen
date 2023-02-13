@@ -34,7 +34,7 @@ class MyRamenListViewController: UIViewController {
         var removedArray = [RamenListData]()
         
         for i in array {
-            if removedArray.contains(i) == false {
+            if !removedArray.contains(i) {
                 removedArray.append(i)
             }
         }

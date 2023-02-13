@@ -18,15 +18,17 @@ class SearchViewController: UIViewController {
     /// 데이터 송신을 통해 담아온 라멘 가게 정보들의 배열
     var ramenList: [Information] = []
     /// 경도 데이터를 담아줄 변수
-    var lng: Double = 0.0
+    var lng: Double = 0
     /// 위도 데이터를 담아줄 변수
-    var lat: Double = 0.0
+    var lat: Double = 0
     var isFiltering: Bool {
         let searchController = self.navigationItem.searchController
-        let isActive = searchController?.isActive ?? false
-        let isSearchBarHasText = searchController?.searchBar.text?.isEmpty == false
+        if let isActive = searchController?.isActive,
+           let isSearchTextEmpty = searchController?.searchBar.text?.isEmpty {
+            return isActive && !isSearchTextEmpty
+        }
         
-        return isActive && isSearchBarHasText
+        return false
     }
     
     // MARK: - ViewLifeCycle

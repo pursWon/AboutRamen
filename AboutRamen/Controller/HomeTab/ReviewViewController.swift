@@ -47,7 +47,7 @@ class ReviewViewController: UIViewController {
             storeNameArray.append(content.storeName)
         }
         
-        if reviewTextView.text.count != 0, storeNameArray.contains(storeName) == false {
+        if reviewTextView.text.count != 0, !storeNameArray.contains(storeName) {
             DataStorage.storeReviews.append(ReviewListData(storeName: storeName, addressName: addressName, reviewContent: reviewTextView.text))
             delegate?.sendReview(state: .done, image: UIImage(named: "ReviewBlack")!, sendReviewPressed: false)
             navigationController?.popViewController(animated: true)
