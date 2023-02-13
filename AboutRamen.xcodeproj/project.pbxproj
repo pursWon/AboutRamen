@@ -7,9 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		D01307A9296FE0EB00672422 /* GoodListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01307A8296FE0EB00672422 /* GoodListViewController.swift */; };
 		D01307AB296FE13D00672422 /* GoodListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01307AA296FE13D00672422 /* GoodListCell.swift */; };
-		D01307AD296FEE6200672422 /* BadListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01307AC296FEE6200672422 /* BadListViewController.swift */; };
 		D01307AF296FEE8800672422 /* BadListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01307AE296FEE8800672422 /* BadListCell.swift */; };
 		D01307B1296FF19200672422 /* ReviewListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01307B0296FF19200672422 /* ReviewListViewController.swift */; };
 		D01307B3296FF1BF00672422 /* ReviewListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01307B2296FF1BF00672422 /* ReviewListCell.swift */; };
@@ -23,7 +21,6 @@
 		D01308C529799D6200672422 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = D01308C429799D6200672422 /* Alamofire */; };
 		D01308C7297A4EA100672422 /* RegionData.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01308C6297A4EA100672422 /* RegionData.swift */; };
 		D0459DB6298121D700FFE9E3 /* ReviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0459DB5298121D700FFE9E3 /* ReviewViewController.swift */; };
-		D0459DD82982DBF500FFE9E3 /* GoodListData.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0459DD72982DBF500FFE9E3 /* GoodListData.swift */; };
 		D0797CF92959913900B14AC8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0797CF82959913900B14AC8 /* AppDelegate.swift */; };
 		D0797CFB2959913900B14AC8 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0797CFA2959913900B14AC8 /* SceneDelegate.swift */; };
 		D0797CFD2959913900B14AC8 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0797CFC2959913900B14AC8 /* HomeViewController.swift */; };
@@ -40,10 +37,9 @@
 		D0E8154129978BD7007DBC55 /* BlankTextAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0E8154029978BD7007DBC55 /* BlankTextAlert.swift */; };
 		D0E815452998BD0F007DBC55 /* ListAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0E815442998BD0F007DBC55 /* ListAlert.swift */; };
 		D0E815472998D712007DBC55 /* CorrectAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0E815462998D712007DBC55 /* CorrectAlert.swift */; };
-		D0E8154D2999E4C1007DBC55 /* BadListData.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0E8154C2999E4C1007DBC55 /* BadListData.swift */; };
 		D0E8154F2999E4C7007DBC55 /* RegionData.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0E8154E2999E4C7007DBC55 /* RegionData.swift */; };
 		D0E815512999E4CC007DBC55 /* ReviewListData.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0E815502999E4CC007DBC55 /* ReviewListData.swift */; };
-		D0E815532999E6A2007DBC55 /* MyRamenListData.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0E815522999E6A2007DBC55 /* MyRamenListData.swift */; };
+		D0E815532999E6A2007DBC55 /* RamenListData.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0E815522999E6A2007DBC55 /* RamenListData.swift */; };
 		D0F15DE72988E4AF00A48EE5 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = D0F15DE62988E4AF00A48EE5 /* Kingfisher */; };
 /* End PBXBuildFile section */
 
@@ -61,9 +57,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		D01307A8296FE0EB00672422 /* GoodListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoodListViewController.swift; sourceTree = "<group>"; };
 		D01307AA296FE13D00672422 /* GoodListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoodListCell.swift; sourceTree = "<group>"; };
-		D01307AC296FEE6200672422 /* BadListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BadListViewController.swift; sourceTree = "<group>"; };
 		D01307AE296FEE8800672422 /* BadListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = BadListCell.swift; path = AboutRamen/View/BadListCell.swift; sourceTree = SOURCE_ROOT; };
 		D01307B0296FF19200672422 /* ReviewListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewListViewController.swift; sourceTree = "<group>"; };
 		D01307B2296FF1BF00672422 /* ReviewListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewListCell.swift; sourceTree = "<group>"; };
@@ -76,7 +70,6 @@
 		D01308792977C9E600672422 /* RegionPickerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegionPickerController.swift; sourceTree = "<group>"; };
 		D01308C6297A4EA100672422 /* RegionData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegionData.swift; sourceTree = "<group>"; };
 		D0459DB5298121D700FFE9E3 /* ReviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewViewController.swift; sourceTree = "<group>"; };
-		D0459DD72982DBF500FFE9E3 /* GoodListData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoodListData.swift; sourceTree = "<group>"; };
 		D0797CF52959913900B14AC8 /* AboutRamen.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AboutRamen.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D0797CF82959913900B14AC8 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D0797CFA2959913900B14AC8 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -95,10 +88,9 @@
 		D0E8154029978BD7007DBC55 /* BlankTextAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlankTextAlert.swift; sourceTree = "<group>"; };
 		D0E815442998BD0F007DBC55 /* ListAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListAlert.swift; sourceTree = "<group>"; };
 		D0E815462998D712007DBC55 /* CorrectAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CorrectAlert.swift; sourceTree = "<group>"; };
-		D0E8154C2999E4C1007DBC55 /* BadListData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BadListData.swift; sourceTree = "<group>"; };
 		D0E8154E2999E4C7007DBC55 /* RegionData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegionData.swift; sourceTree = "<group>"; };
 		D0E815502999E4CC007DBC55 /* ReviewListData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReviewListData.swift; sourceTree = "<group>"; };
-		D0E815522999E6A2007DBC55 /* MyRamenListData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyRamenListData.swift; sourceTree = "<group>"; };
+		D0E815522999E6A2007DBC55 /* RamenListData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RamenListData.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -129,8 +121,6 @@
 			isa = PBXGroup;
 			children = (
 				D0B171C3296ED964002AD35D /* MyListViewController.swift */,
-				D01307A8296FE0EB00672422 /* GoodListViewController.swift */,
-				D01307AC296FEE6200672422 /* BadListViewController.swift */,
 				D01307B0296FF19200672422 /* ReviewListViewController.swift */,
 				D01307B4296FFB1900672422 /* MyRamenListViewController.swift */,
 			);
@@ -151,10 +141,8 @@
 				D01308522976699000672422 /* RamenStore.swift */,
 				D01308552976B4AF00672422 /* RamenImage.swift */,
 				D01308C6297A4EA100672422 /* RegionData.swift */,
-				D0E815522999E6A2007DBC55 /* MyRamenListData.swift */,
+				D0E815522999E6A2007DBC55 /* RamenListData.swift */,
 				D0E815502999E4CC007DBC55 /* ReviewListData.swift */,
-				D0459DD72982DBF500FFE9E3 /* GoodListData.swift */,
-				D0E8154C2999E4C1007DBC55 /* BadListData.swift */,
 				D0E8154E2999E4C7007DBC55 /* RegionData.swift */,
 			);
 			path = Model;
@@ -333,22 +321,18 @@
 				D0E815472998D712007DBC55 /* CorrectAlert.swift in Sources */,
 				D01308532976699100672422 /* RamenStore.swift in Sources */,
 				D01307AF296FEE8800672422 /* BadListCell.swift in Sources */,
-				D01307AD296FEE6200672422 /* BadListViewController.swift in Sources */,
 				D01307B3296FF1BF00672422 /* ReviewListCell.swift in Sources */,
 				D0B171C6296EF4C5002AD35D /* MyListCell.swift in Sources */,
 				D0E815512999E4CC007DBC55 /* ReviewListData.swift in Sources */,
 				D01308562976B4B000672422 /* RamenImage.swift in Sources */,
 				D01307AB296FE13D00672422 /* GoodListCell.swift in Sources */,
-				D0E8154D2999E4C1007DBC55 /* BadListData.swift in Sources */,
 				D013087A2977C9E600672422 /* RegionPickerController.swift in Sources */,
 				D0B170C7295D39EA002AD35D /* SearchViewController.swift in Sources */,
 				D0B171BE2966D738002AD35D /* SearchViewCell.swift in Sources */,
 				D0E815452998BD0F007DBC55 /* ListAlert.swift in Sources */,
 				D0E8154129978BD7007DBC55 /* BlankTextAlert.swift in Sources */,
 				D01307B1296FF19200672422 /* ReviewListViewController.swift in Sources */,
-				D0459DD82982DBF500FFE9E3 /* GoodListData.swift in Sources */,
-				D0E815532999E6A2007DBC55 /* MyRamenListData.swift in Sources */,
-				D01307A9296FE0EB00672422 /* GoodListViewController.swift in Sources */,
+				D0E815532999E6A2007DBC55 /* RamenListData.swift in Sources */,
 				D0B171C4296ED964002AD35D /* MyListViewController.swift in Sources */,
 				D0797CFD2959913900B14AC8 /* HomeViewController.swift in Sources */,
 				D0797CF92959913900B14AC8 /* AppDelegate.swift in Sources */,

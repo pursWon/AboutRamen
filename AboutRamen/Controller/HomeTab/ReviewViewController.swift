@@ -43,12 +43,12 @@ class ReviewViewController: UIViewController {
     // MARK: - Actions
     @objc func completeButtonAction() {
         var storeNameArray: [String] = []
-        for content in ReviewListData.storeReviews {
+        for content in DataStorage.storeReviews {
             storeNameArray.append(content.storeName)
         }
         
         if reviewTextView.text.count != 0, storeNameArray.contains(storeName) == false {
-            ReviewListData.storeReviews.append(ReviewListData(storeName: storeName, addressName: addressName, reviewContent: reviewTextView.text))
+            DataStorage.storeReviews.append(ReviewListData(storeName: storeName, addressName: addressName, reviewContent: reviewTextView.text))
             delegate?.sendReview(state: .done, image: UIImage(named: "ReviewBlack")!, sendReviewPressed: false)
             navigationController?.popViewController(animated: true)
         } else if reviewTextView.text.count != 0, storeNameArray.contains(storeName), reviewContent.count == 0 {
@@ -56,9 +56,9 @@ class ReviewViewController: UIViewController {
         } else if reviewTextView.text.count != 0, storeNameArray.contains(storeName), reviewContent.count != 0 {
             if reviewTextView.text.count != 0 {
                 modifyReview = reviewTextView.text
-                for i in 0..<ReviewListData.storeReviews.count {
-                    if ReviewListData.storeReviews[i].storeName == storeName {
-                        ReviewListData.storeReviews[i].reviewContent = modifyReview
+                for i in 0..<DataStorage.storeReviews.count {
+                    if DataStorage.storeReviews[i].storeName == storeName {
+                        DataStorage.storeReviews[i].reviewContent = modifyReview
                     }
                 }
                 correctAlert()
