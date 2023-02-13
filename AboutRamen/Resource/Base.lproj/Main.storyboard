@@ -418,13 +418,13 @@
                                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="3" translatesAutoresizingMaskIntoConstraints="NO" id="I3a-aE-GTB">
                                                     <rect key="frame" x="50.000000000000014" y="2" width="180.33333333333337" height="36.666666666666664"/>
                                                     <subviews>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="가게 이름" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fXt-Hm-tP0">
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="가게 이름" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fXt-Hm-tP0">
                                                             <rect key="frame" x="0.0" y="0.0" width="180.33333333333334" height="18"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="주소" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ye7-Y7-6ek">
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="주소" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ye7-Y7-6ek">
                                                             <rect key="frame" x="0.0" y="21" width="180.33333333333334" height="15.666666666666664"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                                             <nil key="textColor"/>
@@ -478,7 +478,7 @@
         <!--Navigation Controller-->
         <scene sceneID="Eex-j9-4QS">
             <objects>
-                <navigationController id="mOV-Fy-GBo" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="DetailNC" id="mOV-Fy-GBo" sceneMemberID="viewController">
                     <navigationItem key="navigationItem" id="CdJ-8p-XCC"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="nn5-zJ-msi">
                         <rect key="frame" x="0.0" y="44" width="375" height="44"/>
@@ -846,7 +846,7 @@
         <!--Navigation Controller-->
         <scene sceneID="x3K-1W-UEY">
             <objects>
-                <navigationController id="vgw-J2-XHe" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="ReviewNC" id="vgw-J2-XHe" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="X53-lu-cMe">
                         <rect key="frame" x="0.0" y="44" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -971,7 +971,7 @@
         <!--Navigation Controller-->
         <scene sceneID="qdM-tb-qoq">
             <objects>
-                <navigationController id="2Ce-W2-Q8d" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="RegionPickerNC" id="2Ce-W2-Q8d" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="zs1-yC-b7l">
                         <rect key="frame" x="0.0" y="44" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
