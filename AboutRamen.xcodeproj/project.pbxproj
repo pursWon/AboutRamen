@@ -40,6 +40,7 @@
 		D0E8154F2999E4C7007DBC55 /* RegionData.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0E8154E2999E4C7007DBC55 /* RegionData.swift */; };
 		D0E815512999E4CC007DBC55 /* ReviewListData.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0E815502999E4CC007DBC55 /* ReviewListData.swift */; };
 		D0E815532999E6A2007DBC55 /* RamenListData.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0E815522999E6A2007DBC55 /* RamenListData.swift */; };
+		D0E815552999F31A007DBC55 /* DataStorage .swift in Sources */ = {isa = PBXBuildFile; fileRef = D0E815542999F31A007DBC55 /* DataStorage .swift */; };
 		D0F15DE72988E4AF00A48EE5 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = D0F15DE62988E4AF00A48EE5 /* Kingfisher */; };
 /* End PBXBuildFile section */
 
@@ -91,6 +92,7 @@
 		D0E8154E2999E4C7007DBC55 /* RegionData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegionData.swift; sourceTree = "<group>"; };
 		D0E815502999E4CC007DBC55 /* ReviewListData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReviewListData.swift; sourceTree = "<group>"; };
 		D0E815522999E6A2007DBC55 /* RamenListData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RamenListData.swift; sourceTree = "<group>"; };
+		D0E815542999F31A007DBC55 /* DataStorage .swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DataStorage .swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -143,6 +145,7 @@
 				D01308C6297A4EA100672422 /* RegionData.swift */,
 				D0E815522999E6A2007DBC55 /* RamenListData.swift */,
 				D0E815502999E4CC007DBC55 /* ReviewListData.swift */,
+				D0E815542999F31A007DBC55 /* DataStorage .swift */,
 				D0E8154E2999E4C7007DBC55 /* RegionData.swift */,
 			);
 			path = Model;
@@ -321,6 +324,7 @@
 				D0E815472998D712007DBC55 /* CorrectAlert.swift in Sources */,
 				D01308532976699100672422 /* RamenStore.swift in Sources */,
 				D01307AF296FEE8800672422 /* BadListCell.swift in Sources */,
+				D0E815552999F31A007DBC55 /* DataStorage .swift in Sources */,
 				D01307B3296FF1BF00672422 /* ReviewListCell.swift in Sources */,
 				D0B171C6296EF4C5002AD35D /* MyListCell.swift in Sources */,
 				D0E815512999E4CC007DBC55 /* ReviewListData.swift in Sources */,

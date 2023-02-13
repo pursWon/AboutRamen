@@ -1,6 +1,6 @@
 import UIKit
 
-class MyListViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class MyListViewController: UIViewController {
     // MARK: - UI
     @IBOutlet var myListTableView: UITableView!
     // MARK: - Properties
@@ -34,8 +34,10 @@ class MyListViewController: UIViewController, UITableViewDelegate, UITableViewDa
         myListTableView.dataSource = self
         myListTableView.delegate = self
     }
-    
-    // MARK: - TableView
+}
+
+// MARK: - TableView
+extension MyListViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 4
     }

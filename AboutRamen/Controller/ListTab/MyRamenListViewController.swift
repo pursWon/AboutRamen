@@ -1,6 +1,6 @@
 import UIKit
 
-class MyRamenListViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class MyRamenListViewController: UIViewController {
     // MARK: - UI
     @IBOutlet var myRamenListTableView: UITableView!
     
@@ -45,8 +45,10 @@ class MyRamenListViewController: UIViewController, UITableViewDelegate, UITableV
     func removeDuplicate() {
         uniqueMyRamenList = removeDuplicate(DataStorage.myRamenList)
     }
-    
-    // MARK: - TableView
+}
+
+// MARK: - TableView
+extension MyRamenListViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch uniqueMyRamenList.count {
         case 0:

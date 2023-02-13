@@ -1,6 +1,6 @@
 import UIKit
 
-class ReviewListViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class ReviewListViewController: UIViewController {
     // MARK: - UI
     @IBOutlet var reviewListTableView: UITableView!
     
@@ -16,8 +16,10 @@ class ReviewListViewController: UIViewController, UITableViewDelegate, UITableVi
         reviewListTableView.dataSource = self
         reviewListTableView.delegate = self
     }
-    
-    // MARK: - TableView
+}
+
+// MARK: - TableView
+extension ReviewListViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch DataStorage.storeReviews.count {
         case 0:
