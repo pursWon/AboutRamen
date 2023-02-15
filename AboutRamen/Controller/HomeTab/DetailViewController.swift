@@ -43,10 +43,10 @@ class DetailViewController: UIViewController {
     var index: Int = 0
     var information: [Information] = []
     var searchIndex: Int = 0
-    var isGoodPressed: Bool = true
-    var isHatePressed: Bool = true
-    var isReviewPressed: Bool = true
-    var isMyListPressed: Bool = true
+    var isGoodPressed: Bool = false
+    var isHatePressed: Bool = false
+    var isReviewPressed: Bool = false
+    var isMyListPressed: Bool = false
     var reviewState: ReviewState = .yet
     var imageUrlList: (String, String) = ("None", "None")
     let imageUrl: String = "https://dapi.kakao.com/v2/search/image"
@@ -139,42 +139,42 @@ class DetailViewController: UIViewController {
     
     @objc func goodMark() {
         if let rating = ratingLabel.text {
-            if isGoodPressed {
+            if !isGoodPressed {
                 goodImageView.image = UIImage(named: "ThumbsUpBlack")
                 goodLabel.text = "좋아요 취소"
-                isGoodPressed = false
+                isGoodPressed = true
                 let goodListData = RamenListData(storeName: information[index].place_name, addressName: information[index].road_address_name, rating: rating, pressed: isGoodPressed, distance: information[index].distance, phone: information[index].phone)
                 DataStorage.goodList.append(goodListData)
             } else {
                 goodImageView.image = UIImage(named: "ThumbsUpWhite")
                 goodLabel.text = "좋아요"
-                isGoodPressed = true
+                isGoodPressed = false
             }
         } else {
-            isGoodPressed = false
+            isGoodPressed = true
             let goodListData = RamenListData(storeName: information[index].place_name, addressName: information[index].road_address_name, rating: "0.0", pressed: isGoodPressed, distance: information[index].distance, phone: information[index].phone)
             DataStorage.goodList.append(goodListData)
         }
     }
     
     @objc func hateMark() {
-        if isHatePressed {
+        if !isHatePressed {
             hateImageView.image = UIImage(named: "ThumbsDownBlack")
             hateLabel.text = "싫어요 취소"
             
             if let rating = ratingLabel.text {
-                isHatePressed = false
+                isHatePressed = true
                 let badListData = RamenListData(storeName: information[index].place_name, addressName: information[index].road_address_name, rating: rating, pressed: isHatePressed, distance: information[index].distance, phone: information[index].phone)
                 DataStorage.badList.append(badListData)
             } else {
-                isHatePressed = false
+                isHatePressed = true
                 let badListData = RamenListData(storeName: information[index].place_name, addressName: information[index].road_address_name, rating: "0.0", pressed: isHatePressed, distance: information[index].distance, phone: information[index].phone)
                 DataStorage.badList.append(badListData)
             }
         } else {
             hateImageView.image = UIImage(named: "ThumbsDownWhite")
             hateLabel.text = "싫어요"
-            isHatePressed = true
+            isHatePressed = false
         }
     }
     
@@ -196,22 +196,22 @@ class DetailViewController: UIViewController {
     }
     
     @objc func addMyListMark() {
-        if isMyListPressed, let rating = ratingLabel.text {
+        if !isMyListPressed, let rating = ratingLabel.text {
             myListAddImageView.image = UIImage(named: "MyListBlack")
             myListLabel.text = "추가하기 취소"
-            isMyListPressed = false
+            isMyListPressed = true
             let ramenListData = RamenListData(storeName: information[index].place_name, addressName: information[index].road_address_name, rating: rating, pressed: isMyListPressed, distance: information[index].distance, phone: information[index].phone)
             DataStorage.myRamenList.append(ramenListData)
-        } else if isMyListPressed {
+        } else if !isMyListPressed {
             myListAddImageView.image = UIImage(named: "MyListBlack")
             myListLabel.text = "추가하기 취소"
-            isMyListPressed = false
+            isMyListPressed = true
             let ramenListData = RamenListData(storeName: information[index].place_name, addressName: information[index].road_address_name, rating: "0.0", pressed: isMyListPressed, distance: information[index].distance, phone: information[index].phone)
             DataStorage.myRamenList.append(ramenListData)
-        } else if !isMyListPressed {
+        } else if isMyListPressed {
             myListAddImageView.image = UIImage(named: "MyListWhite")
             myListLabel.text = "추가하기"
-            isMyListPressed = true
+            isMyListPressed = false
         }
     }
     
