@@ -14,6 +14,10 @@ class MyRamenListViewController: UIViewController {
     var viewType: ViewType = .ramenList
     var uniqueMyRamenList: [RamenListData] = []
     var myRamenList: [Information] = []
+    var uniqueGoodList: [RamenListData] = []
+    var goodList: [Information] = []
+    var uniqueBadList: [RamenListData] = []
+    var badList: [Information] = []
     
     // MARK: - View Life Cycle
     override func viewDidLoad() {
@@ -44,27 +48,70 @@ class MyRamenListViewController: UIViewController {
     
     func removeDuplicate() {
         uniqueMyRamenList = removeDuplicate(DataStorage.myRamenList)
+        uniqueGoodList = removeDuplicate(DataStorage.goodList)
+        uniqueBadList = removeDuplicate(DataStorage.badList)
     }
 }
 
 // MARK: - TableView
 extension MyRamenListViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        switch uniqueMyRamenList.count {
-        case 0:
-            return 1
+        switch title {
+        case "나의 라멘 가게":
+            switch uniqueMyRamenList.count {
+            case 0:
+                return 1
+            default:
+                return uniqueMyRamenList.count
+            }
+        case "좋아요 목록":
+            switch uniqueGoodList.count {
+            case 0:
+                return 1
+            default:
+                return uniqueGoodList.count
+            }
+        case "싫어요 목록":
+            switch uniqueBadList.count {
+            case 0:
+                return 1
+            default:
+                return uniqueBadList.count
+            }
         default:
-            return uniqueMyRamenList.count
+            fatalError()
         }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "MyRamenListCell", for: indexPath) as? MyRamenListCell else { return UITableViewCell() }
+        switch title {
+        case "나의 라멘 가게":
         if uniqueMyRamenList.count != 0 {
             cell.nameLabel.text = uniqueMyRamenList[indexPath.row].storeName
             cell.addressLabel.text = uniqueMyRamenList[indexPath.row].addressName
             cell.ratingLabel.text = uniqueMyRamenList[indexPath.row].rating
             myRamenList.append(Information(place_name: uniqueMyRamenList[indexPath.row].storeName, distance: uniqueMyRamenList[indexPath.row].distance, road_address_name: uniqueMyRamenList[indexPath.row].addressName, phone: uniqueMyRamenList[indexPath.row].phone))
+        }
+        
+        case "좋아요 목록":
+            if uniqueGoodList.count != 0 {
+                cell.nameLabel.text = uniqueGoodList[indexPath.row].storeName
+                cell.addressLabel.text = uniqueGoodList[indexPath.row].addressName
+                cell.ratingLabel.text = uniqueGoodList[indexPath.row].rating
+                goodList.append(Information(place_name: uniqueGoodList[indexPath.row].storeName, distance: uniqueGoodList[indexPath.row].distance, road_address_name: uniqueGoodList[indexPath.row].addressName, phone: uniqueGoodList[indexPath.row].phone))
+            }
+        
+        case "싫어요 목록":
+            if uniqueBadList.count != 0 {
+                cell.nameLabel.text = uniqueBadList[indexPath.row].storeName
+                cell.addressLabel.text = uniqueBadList[indexPath.row].addressName
+                cell.ratingLabel.text = uniqueBadList[indexPath.row].rating
+                badList.append(Information(place_name: uniqueBadList[indexPath.row].storeName, distance: uniqueBadList[indexPath.row].distance, road_address_name: uniqueBadList[indexPath.row].addressName, phone: uniqueBadList[indexPath.row].phone))
+            }
+            
+        default:
+            fatalError()
         }
         
         return cell
