@@ -69,6 +69,7 @@ extension MyListViewController: UITableViewDelegate, UITableViewDataSource {
             backButton.setTitleTextAttributes(attributes, for: .normal)
             
             navigationController?.pushViewController(goodListVC, animated: true)
+        
         case 1:
             guard let badListVC = self.storyboard?.instantiateViewController(withIdentifier: "MyRamenListVC") as? MyRamenListViewController else { return }
             badListVC.viewType = .badList
@@ -81,6 +82,7 @@ extension MyListViewController: UITableViewDelegate, UITableViewDataSource {
             backButton.setTitleTextAttributes(attributes, for: .normal)
             
             navigationController?.pushViewController(badListVC, animated: true)
+       
         case 2:
             guard let reviewListVC = self.storyboard?.instantiateViewController(withIdentifier: "ReviewListVC") as? ReviewListViewController else { return }
             
@@ -92,6 +94,7 @@ extension MyListViewController: UITableViewDelegate, UITableViewDataSource {
             backButton.setTitleTextAttributes(attributes, for: .normal)
             
             navigationController?.pushViewController(reviewListVC, animated: true)
+        
         case 3:
             guard let myRamenListVC = self.storyboard?.instantiateViewController(withIdentifier: "MyRamenListVC") as? MyRamenListViewController else { return }
             
