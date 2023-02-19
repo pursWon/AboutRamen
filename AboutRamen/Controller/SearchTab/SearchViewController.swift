@@ -1,5 +1,6 @@
 import UIKit
 import Alamofire
+import RealmSwift
 
 class SearchViewController: UIViewController {
     // MARK: - UI
@@ -16,7 +17,7 @@ class SearchViewController: UIViewController {
     /// 중복된 요소를 제거한 전국에 있는 라멘 가게들의 이름 모음 배열
     var uniqueStoreNames: [String] = []
     /// 데이터 송신을 통해 담아온 라멘 가게 정보들의 배열
-    var ramenList: [Information] = []
+    var ramenList: List<Information>?
     /// 경도 데이터를 담아줄 변수
     var lng: Double = 0
     /// 위도 데이터를 담아줄 변수
@@ -68,16 +69,16 @@ class SearchViewController: UIViewController {
             "query" : "라멘",
             "x" : "\(lng)",
             "y" : "\(lat)",
-            "radius" : 10000,
-            "size" : 15
+            "radius" : 7000,
+            "size" : 10
         ]
         
         AF.request(url, method: .get, parameters: parameters ,headers: headers).responseDecodable(of: RamenStore.self) {
             response in
-            if let data = response.value {
+            if let data = response.value, let ramenList = self.ramenList {
                 
                 for ramenIndex in 0..<data.documents.count {
-                    self.ramenList.append(data.documents[ramenIndex])
+                    ramenList.append(data.documents[ramenIndex])
                 }
                 
                 for storeIndex in 0..<data.documents.count {
@@ -140,6 +141,8 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let detailVC = self.storyboard?.instantiateViewController(withIdentifier: "DetailViewController") as? DetailViewController else { return }
+        
+        guard let ramenList = ramenList else { return }
         
         for ramenIndex in 0..<ramenList.count {
             if filterArray[indexPath.row] == ramenList[ramenIndex].place_name {

@@ -1,4 +1,5 @@
 import UIKit
+import RealmSwift
 
 class MyRamenListViewController: UIViewController {
     // MARK: - UI
@@ -13,7 +14,7 @@ class MyRamenListViewController: UIViewController {
     // MARK: - Properties
     var viewType: ViewType = .ramenList
     var uniqueMyRamenList: [RamenListData] = []
-    var myRamenList: [Information] = []
+    var myRamenList = List<Information>()
     var uniqueGoodList: [RamenListData] = []
     var goodList: [Information] = []
     var uniqueBadList: [RamenListData] = []
@@ -49,7 +50,6 @@ class MyRamenListViewController: UIViewController {
     func removeDuplicate() {
         uniqueMyRamenList = removeDuplicate(DataStorage.myRamenList)
         uniqueGoodList = removeDuplicate(DataStorage.goodList)
-        uniqueBadList = removeDuplicate(DataStorage.badList)
     }
 }
 
@@ -87,27 +87,28 @@ extension MyRamenListViewController: UITableViewDelegate, UITableViewDataSource 
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "MyRamenListCell", for: indexPath) as? MyRamenListCell else { return UITableViewCell() }
         switch title {
         case "나의 라멘 가게":
-        if uniqueMyRamenList.count != 0 {
-            cell.nameLabel.text = uniqueMyRamenList[indexPath.row].storeName
-            cell.addressLabel.text = uniqueMyRamenList[indexPath.row].addressName
-            cell.ratingLabel.text = uniqueMyRamenList[indexPath.row].rating
-            myRamenList.append(Information(place_name: uniqueMyRamenList[indexPath.row].storeName, distance: uniqueMyRamenList[indexPath.row].distance, road_address_name: uniqueMyRamenList[indexPath.row].addressName, phone: uniqueMyRamenList[indexPath.row].phone))
-        }
-        
+            if uniqueMyRamenList.count != 0 {
+                let ramen = Information()
+                ramen.place_name = uniqueMyRamenList[indexPath.row].storeName
+                ramen.road_address_name = uniqueMyRamenList[indexPath.row].addressName
+                ramen.distance = uniqueMyRamenList[indexPath.row].distance
+                ramen.phone = uniqueMyRamenList[indexPath.row].phone
+                myRamenList.append(ramen)
+                cell.nameLabel.text = uniqueMyRamenList[indexPath.row].storeName
+                cell.addressLabel.text = uniqueMyRamenList[indexPath.row].addressName
+                cell.ratingLabel.text = uniqueMyRamenList[indexPath.row].rating
+            }
+            
         case "좋아요 목록":
             if uniqueGoodList.count != 0 {
+                let ramen = Information()
+                ramen.place_name = uniqueGoodList[indexPath.row].storeName
+                ramen.road_address_name = uniqueGoodList[indexPath.row].addressName
+                ramen.distance = uniqueGoodList[indexPath.row].distance
+                ramen.phone = uniqueGoodList[indexPath.row].phone
                 cell.nameLabel.text = uniqueGoodList[indexPath.row].storeName
                 cell.addressLabel.text = uniqueGoodList[indexPath.row].addressName
                 cell.ratingLabel.text = uniqueGoodList[indexPath.row].rating
-                goodList.append(Information(place_name: uniqueGoodList[indexPath.row].storeName, distance: uniqueGoodList[indexPath.row].distance, road_address_name: uniqueGoodList[indexPath.row].addressName, phone: uniqueGoodList[indexPath.row].phone))
-            }
-        
-        case "싫어요 목록":
-            if uniqueBadList.count != 0 {
-                cell.nameLabel.text = uniqueBadList[indexPath.row].storeName
-                cell.addressLabel.text = uniqueBadList[indexPath.row].addressName
-                cell.ratingLabel.text = uniqueBadList[indexPath.row].rating
-                badList.append(Information(place_name: uniqueBadList[indexPath.row].storeName, distance: uniqueBadList[indexPath.row].distance, road_address_name: uniqueBadList[indexPath.row].addressName, phone: uniqueBadList[indexPath.row].phone))
             }
             
         default:
@@ -119,10 +120,15 @@ extension MyRamenListViewController: UITableViewDelegate, UITableViewDataSource 
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let detailVC = self.storyboard?.instantiateViewController(withIdentifier: "DetailViewController") as? DetailViewController else { return }
-        if uniqueMyRamenList.count != 0 {
-            detailVC.information = myRamenList
-            detailVC.index = indexPath.row
-            navigationController?.pushViewController(detailVC, animated: true)
+        switch title {
+        case "나의 라멘 가게":
+            if uniqueMyRamenList.count != 0 {
+                detailVC.information = myRamenList
+                detailVC.index = indexPath.row
+                navigationController?.pushViewController(detailVC, animated: true)
+            }
+        default:
+            fatalError()
         }
     }
     
