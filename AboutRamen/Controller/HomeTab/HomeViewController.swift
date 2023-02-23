@@ -1,7 +1,7 @@
 import UIKit
 import Alamofire
 import Kingfisher
-import MapKit
+import RealmSwift
 
 protocol LocationDataProtocol {
     func sendCurrentLocation(longlat: (Double, Double))
@@ -22,20 +22,34 @@ class HomeViewController: UIViewController {
     let imageUrl: String = "https://dapi.kakao.com/v2/search/image"
     let regionData = RegionData()
     /// API를 통해서 가져온 라멘집 리스트 정보를 담고 있는 배열
-    var ramenList: [Information] = []
+    var ramenList: List<Information>?
     /// 라멘집 이미지들의 image_url 값들의 배열
     var imageUrlList: [String] = []
     var currentLocation: (long: Double, lat: Double) = (127.0277194, 37.63695556)
     var storeNames: [String] = []
+    var realmDataStorage: [RealmData] = []
+    let realm = try! Realm()
+    var uniqueRealmData: LazyFilterSequence<List<Information>>?
+    var ramen = List<Information>()
+
     
     // MARK: - View Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         setUpCollectionView()
         setUpNavigationBar()
         myLocationLabel.text = "서울시 강북구"
         // myLocationLabel.text = "서울시 강남구"
+        print(realm.configuration.fileURL)
+        
+        let regionList = RegionData.list
+        for region in regionList {
+            let guList = region.guList
+            
+            for gu in guList {
+                putInRealmData(lng: gu.location.long, lat: gu.location.lat)
+            }
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -63,9 +77,42 @@ class HomeViewController: UIViewController {
         collectionView.backgroundColor = .systemOrange
     }
     
+    func putInRealmData(lng: Double, lat: Double) {
+        let headers: HTTPHeaders = ["Authorization" : "KakaoAK d8b066a3dbb0e888b857f37b667d96d2"]
+        let parameters: [String : Any] = [
+            "query" : "라멘",
+            "x" : "\(lng)",
+            "y" : "\(lat)",
+            "radius" : 7000,
+            "size" : 10
+        ]
+        
+        AF.request(url, method: .get, parameters: parameters ,headers: headers).responseDecodable(of: RamenStore.self) {
+            response in
+            let unique = List<Information>()
+            if let data = response.value {
+                self.ramen.append(objectsIn: data.documents)
+            }
+            let allRealmData = self.realm.objects(RealmData.self)
+            
+            
+        }
+    }
+    
+    func removeDuplicate (_ array: [RealmData]) -> [RealmData] {
+        var removedArray = [RealmData]()
+
+        for i in array {
+            if !removedArray.contains(i) {
+                removedArray.append(i)
+            }
+        }
+        
+        return removedArray
+    }
+    
     func getRamenData(url: String, currentLocation: (Double, Double)) {
         let headers: HTTPHeaders = ["Authorization": "KakaoAK d8b066a3dbb0e888b857f37b667d96d2"]
-        
         let parameters: [String: Any] = [
             "query" : "라멘",
             "x": "\(currentLocation.0)",
@@ -75,12 +122,14 @@ class HomeViewController: UIViewController {
             "page": 1
         ]
         
-        AF.request(url, method: .get, parameters: parameters, headers: headers).responseDecodable(of: RamenStore.self) { response in
+        AF.request(url, method: .get, parameters: parameters, headers: headers).responseDecodable(of: RamenStore.self) {
+            response in
             if let data = response.value {
                 self.ramenList = data.documents
+                guard let ramenList = self.ramenList else { return }
                 
-                for index in 0..<self.ramenList.count {
-                    self.storeNames.append(self.ramenList[index].place_name)
+                for index in 0..<ramenList.count {
+                    self.storeNames.append(ramenList[index].place_name)
                 }
                 
                 DispatchQueue.main.async {
@@ -132,11 +181,16 @@ class HomeViewController: UIViewController {
 // MARK: - Collecion View
 extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return ramenList.count
+        if let ramenList = ramenList {
+            return ramenList.count
+        } else {
+            return 0
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectionViewCell", for: indexPath) as? CollectionViewCell else { return UICollectionViewCell() }
+        guard let ramenList = ramenList else { return UICollectionViewCell() }
         let ramenData = ramenList[indexPath.row]
         cell.layer.borderColor = UIColor.black.cgColor
         cell.layer.borderWidth = 3
@@ -148,7 +202,7 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
         
         cell.nameLabel.text = ramenData.place_name
         cell.distanceLabel.text = "\(ramenData.distance) m"
-       
+        
         if imageUrlList.count == ramenList.count {
             let url = URL(string: imageUrlList[indexPath.row])
             cell.ramenImageView.kf.setImage(with: url)
@@ -174,6 +228,7 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard let detailVC = self.storyboard?.instantiateViewController(withIdentifier: "DetailViewController") as? DetailViewController else { return }
+        guard let ramenList = ramenList else { return }
         detailVC.index = indexPath.row
         detailVC.information = ramenList
         
