@@ -30,8 +30,7 @@ class HomeViewController: UIViewController {
     var realmDataStorage: [RealmData] = []
     let realm = try! Realm()
     var uniqueRealmData: LazyFilterSequence<List<Information>>?
-    var ramen = List<Information>()
-
+    var allRamenData: List<Information>?
     
     // MARK: - View Life Cycle
     override func viewDidLoad() {
@@ -40,9 +39,9 @@ class HomeViewController: UIViewController {
         setUpNavigationBar()
         myLocationLabel.text = "서울시 강북구"
         // myLocationLabel.text = "서울시 강남구"
-        print(realm.configuration.fileURL)
         
         let regionList = RegionData.list
+        
         for region in regionList {
             let guList = region.guList
             
@@ -89,19 +88,35 @@ class HomeViewController: UIViewController {
         
         AF.request(url, method: .get, parameters: parameters ,headers: headers).responseDecodable(of: RamenStore.self) {
             response in
-            let unique = List<Information>()
-            if let data = response.value {
-                self.ramen.append(objectsIn: data.documents)
-            }
-            let allRealmData = self.realm.objects(RealmData.self)
+            // if let data = response.value {
+            //     self.a이러lRamenData = data.documents
+            // }
             
-            
+            // if let allRamenData = self.allRamenData {
+            //     for i in 0..<allRamenData.count {
+            //         if self.isItemAlreadyExist(title: allRamenData[i].place_name) {
+            //
+            //         } else if !self.isItemAlreadyExist(title: allRamenData[i].place_name) {
+            //             try! self.realm.write {
+            //                 let realmData = RealmData(storeName: allRamenData[i].place_name, isGoodPressed: false, rating: 0, reviewContent: "", isMyRamenPressed: false)
+            //
+            //             }
+            //         }
+            //     }
+            // }
         }
+    }
+    
+    func isItemAlreadyExist(title: String) -> Bool {
+        let allRealmData = self.realm.objects(RealmData.self)
+        let sameObject = allRealmData.filter { $0.storeName == title }
+        
+        return sameObject.isEmpty ? false : true
     }
     
     func removeDuplicate (_ array: [RealmData]) -> [RealmData] {
         var removedArray = [RealmData]()
-
+        
         for i in array {
             if !removedArray.contains(i) {
                 removedArray.append(i)
@@ -229,8 +244,14 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard let detailVC = self.storyboard?.instantiateViewController(withIdentifier: "DetailViewController") as? DetailViewController else { return }
         guard let ramenList = ramenList else { return }
+        detailVC.store = ramenList[indexPath.row].place_name
+        let update = realm.objects(RealmData.self).where {
+            $0.storeName == ramenList[indexPath.row].place_name
+        }.first!
+        
         detailVC.index = indexPath.row
         detailVC.information = ramenList
+        detailVC.goodPressed = update.isGoodPressed
         
         let backButton = UIBarButtonItem(title: "홈", style: .plain, target: self, action: nil)
         let attributes = [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 16)]
@@ -256,3 +277,5 @@ extension HomeViewController: LocationDataProtocol {
         currentLocation = longlat
     }
 }
+
+
