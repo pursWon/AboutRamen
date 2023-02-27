@@ -1,6 +1,7 @@
 import UIKit
 import Alamofire
 import Kingfisher
+import RealmSwift
 
 enum ReviewState: String {
     case yet = "리뷰하기"
@@ -23,55 +24,77 @@ class DetailViewController: UIViewController {
     @IBOutlet var timeLabel: UILabel!
     @IBOutlet var buttonsView: UIView!
     @IBOutlet var ratingLabel: UILabel!
-    @IBOutlet weak var starSlider: UISlider!
-    @IBOutlet weak var starStackView: UIStackView!
     @IBOutlet var pictureView: UIView!
     @IBOutlet var pictureImageViewOne: UIImageView!
     @IBOutlet var pictureImageViewTwo: UIImageView!
     
     @IBOutlet var goodImageView: UIImageView!
-    @IBOutlet var hateImageView: UIImageView!
     @IBOutlet var reviewImageView: UIImageView!
     @IBOutlet var myListAddImageView: UIImageView!
     
     @IBOutlet var goodLabel: UILabel!
-    @IBOutlet var hateLabel: UILabel!
     @IBOutlet var reviewLabel: UILabel!
     @IBOutlet var myListLabel: UILabel!
     
+    @IBOutlet var starRatingView: RatingView!
+    
     // MARK: - Properties
     var index: Int = 0
-    var information: [Information] = []
+    var information: List<Information>?
     var searchIndex: Int = 0
-    var isGoodPressed: Bool = false
-    var isHatePressed: Bool = false
-    var isReviewPressed: Bool = false
-    var isMyListPressed: Bool = false
     var reviewState: ReviewState = .yet
     var imageUrlList: (String, String) = ("None", "None")
     let imageUrl: String = "https://dapi.kakao.com/v2/search/image"
+    let realm = try! Realm()
+    var goodPressed: Bool = false
+    var store: String = ""
     
     // MARK: - View Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        view.backgroundColor = .systemOrange
         setUpBorder()
         setUpBackgroundColor()
         setUpLableText()
         setUpTabImageView()
         getRamenImages()
-        storeLabel.font = UIFont.boldSystemFont(ofSize: 23)
+        setListValue()
+        storeLabel.font = UIFont.boldSystemFont(ofSize: 35)
         reviewLabel.text = reviewState.rawValue
-        
+        starRatingView.delegate = self
+        starRatingView.contentMode = .scaleAspectFit
+        if let storeName = storeLabel.text {
+        store = storeName
+        }
         guard let reviewImage = UIImage(named: "ReviewWhite") else { return }
         reviewImageView.image = reviewImage
+        
+        let allRealmData = realm.objects(RealmData.self)
+        for i in 0..<allRealmData.count {
+            if allRealmData[i].storeName == storeLabel.text {
+                print(allRealmData[i].isGoodPressed)
+            }
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
         reviewLabel.text = reviewState.rawValue
     }
     
+    func setListValue() {
+        let all = realm.objects(RealmData.self)
+        
+        if !goodPressed {
+            goodLabel.text = "좋아요"
+            goodImageView.image = UIImage(named: "ThumbsUpWhite")
+        } else {
+            goodLabel.text = "좋아요 취소"
+            goodImageView.image = UIImage(named: "ThumbsUpBlack")
+        }
+    }
+    
     func getRamenImages() {
+        guard let information = information else { return }
         let headers: HTTPHeaders = ["Authorization": "KakaoAK d8b066a3dbb0e888b857f37b667d96d2"]
         let params: [String: Any] = ["query": information[index].place_name]
         AF.request(imageUrl, method: .get, parameters: params, headers: headers).responseDecodable(of: RamenImage.self) { response in
@@ -113,6 +136,7 @@ class DetailViewController: UIViewController {
     }
     
     func setUpLableText() {
+        guard let information = information else { return }
         storeLabel.text = information[index].place_name
         distanceLabel.text = "\(information[index].distance)m"
         addressLabel.text = information[index].road_address_name
@@ -124,9 +148,6 @@ class DetailViewController: UIViewController {
         goodImageView.addGestureRecognizer(goodTabGesture)
         goodImageView.isUserInteractionEnabled = true
         
-        let hateTabGesture = UITapGestureRecognizer(target: self, action: #selector(hateMark))
-        hateImageView.addGestureRecognizer(hateTabGesture)
-        hateImageView.isUserInteractionEnabled = true
         
         let reviewTabGesture = UITapGestureRecognizer(target: self, action: #selector(reviewMark))
         reviewImageView.addGestureRecognizer(reviewTabGesture)
@@ -138,49 +159,31 @@ class DetailViewController: UIViewController {
     }
     
     @objc func goodMark() {
-        if let rating = ratingLabel.text {
-            if !isGoodPressed {
-                goodImageView.image = UIImage(named: "ThumbsUpBlack")
-                goodLabel.text = "좋아요 취소"
-                isGoodPressed = true
-                let goodListData = RamenListData(storeName: information[index].place_name, addressName: information[index].road_address_name, rating: rating, pressed: isGoodPressed, distance: information[index].distance, phone: information[index].phone)
-                DataStorage.goodList.append(goodListData)
-            } else {
-                goodImageView.image = UIImage(named: "ThumbsUpWhite")
-                goodLabel.text = "좋아요"
-                isGoodPressed = false
+        guard let storeName = storeLabel.text else { return }
+        let update = realm.objects(RealmData.self).where {
+            $0.storeName == storeName
+        }.first!
+        
+        if goodPressed == false {
+            goodPressed = true
+            goodImageView.image = UIImage(named: "ThumbsUpBlack")
+            goodLabel.text = "좋아요 취소"
+            try! realm.write {
+                update.isGoodPressed = true
             }
-        } else {
-            isGoodPressed = true
-            let goodListData = RamenListData(storeName: information[index].place_name, addressName: information[index].road_address_name, rating: "0.0", pressed: isGoodPressed, distance: information[index].distance, phone: information[index].phone)
-            DataStorage.goodList.append(goodListData)
-        }
-    }
-    
-    @objc func hateMark() {
-        if !isHatePressed {
-            hateImageView.image = UIImage(named: "ThumbsDownBlack")
-            hateLabel.text = "싫어요 취소"
-            
-            if let rating = ratingLabel.text {
-                isHatePressed = true
-                let badListData = RamenListData(storeName: information[index].place_name, addressName: information[index].road_address_name, rating: rating, pressed: isHatePressed, distance: information[index].distance, phone: information[index].phone)
-                DataStorage.badList.append(badListData)
-            } else {
-                isHatePressed = true
-                let badListData = RamenListData(storeName: information[index].place_name, addressName: information[index].road_address_name, rating: "0.0", pressed: isHatePressed, distance: information[index].distance, phone: information[index].phone)
-                DataStorage.badList.append(badListData)
+        } else if goodPressed == true {
+            goodPressed = false
+            goodImageView.image = UIImage(named: "ThumbsUpWhite")
+            goodLabel.text = "좋아요"
+            try! realm.write {
+                update.isGoodPressed = false
             }
-        } else {
-            hateImageView.image = UIImage(named: "ThumbsDownWhite")
-            hateLabel.text = "싫어요"
-            isHatePressed = false
         }
     }
     
     @objc func reviewMark() {
         guard let reviewVC = self.storyboard?.instantiateViewController(withIdentifier: "ReviewViewController") as? ReviewViewController else { return }
-        
+        guard let information = information else { return }
         reviewVC.delegate = self
         reviewVC.storeName = information[index].place_name
         reviewVC.addressName = information[index].road_address_name
@@ -196,23 +199,53 @@ class DetailViewController: UIViewController {
     }
     
     @objc func addMyListMark() {
-        if !isMyListPressed, let rating = ratingLabel.text {
-            myListAddImageView.image = UIImage(named: "MyListBlack")
-            myListLabel.text = "추가하기 취소"
-            isMyListPressed = true
-            let ramenListData = RamenListData(storeName: information[index].place_name, addressName: information[index].road_address_name, rating: rating, pressed: isMyListPressed, distance: information[index].distance, phone: information[index].phone)
-            DataStorage.myRamenList.append(ramenListData)
-        } else if !isMyListPressed {
-            myListAddImageView.image = UIImage(named: "MyListBlack")
-            myListLabel.text = "추가하기 취소"
-            isMyListPressed = true
-            let ramenListData = RamenListData(storeName: information[index].place_name, addressName: information[index].road_address_name, rating: "0.0", pressed: isMyListPressed, distance: information[index].distance, phone: information[index].phone)
-            DataStorage.myRamenList.append(ramenListData)
-        } else if isMyListPressed {
-            myListAddImageView.image = UIImage(named: "MyListWhite")
-            myListLabel.text = "추가하기"
-            isMyListPressed = false
-        }
+        let allRealmData = realm.objects(RealmData.self)
+        // if !isMyListPressed {
+        //     isMyListPressed = true
+        //     myListAddImageView.image = UIImage(named: "MyListBlack")
+        //     if let rating = ratingLabel.text {
+        //         for i in 0..<allRealmData.count {
+        //             if storeLabel.text == allRealmData[i].storeName {
+        //                 guard let myRating = NumberFormatter().number(from: rating)?.doubleValue else { return }
+        //                 if let isMyRamenPressed = realm.objects(RealmData.self).filter(NSPredicate(format: "isMyRamenPressed = %@", allRealmData[i].isMyRamenPressed)).first,
+        //                    let rating = realm.objects(RealmData.self).filter(NSPredicate(format: "rating = %@", allRealmData[i].isMyRamenPressed)).first {
+        //                     try! realm.write {
+        //                         isMyRamenPressed.isMyRamenPressed = isMyListPressed
+        //                         rating.rating = myRating
+        //                     }
+        //                 }
+        //                 ListDataStorage.myRamenList.insert(ListDataStorage(name: allRealmData[i].storeName, address: addressLabel.text ?? "x", rating: myRating))
+        //             }
+        //         }
+        //     } else {
+        //         for i in 0..<allRealmData.count {
+        //             if storeLabel.text == allRealmData[i].storeName {
+        //                 if let myRamenPressed = realm.objects(RealmData.self).filter(NSPredicate(format: "isMyRamenPressed = %@", allRealmData[i].isMyRamenPressed)).first,
+        //                    let rating = realm.objects(RealmData.self).filter(NSPredicate(format: "rating = %@", allRealmData[i].rating)).first {
+        //                     try! realm.write {
+        //                         myRamenPressed.isMyRamenPressed = isMyListPressed
+        //                         rating.rating = 0
+        //                     }
+        //                 }
+        //                 ListDataStorage.myRamenList.insert(ListDataStorage(name: allRealmData[i].storeName, address: addressLabel.text ?? "x", rating: 0))
+        //             }
+        //         }
+        //     }
+        // } else if isMyListPressed {
+        //     isMyListPressed = false
+        //     myListAddImageView.image = UIImage(named: "MyListWhite")
+        //     for i in 0..<allRealmData.count {
+        //         if storeLabel.text == allRealmData[i].storeName {
+        //             if let myRamenPressed = realm.objects(RealmData.self).filter(NSPredicate(format: "isMyRamenPressed = %@", allRealmData[i].isMyRamenPressed)).first {
+        //                 try! realm.write {
+        //                     myRamenPressed.isMyRamenPressed = isMyListPressed
+        //                 }
+        //             }
+        //             if let indexToRemove = ListDataStorage.myRamenList.firstIndex(of: ListDataStorage(name: allRealmData[i].storeName, address: addressLabel.text ?? "x", rating: allRealmData[i].rating)) {
+        //                 ListDataStorage.myRamenList.remove(at: indexToRemove)
+        //             }
+        //         }
+        //     }
     }
     
     // MARK: - Actions
@@ -268,7 +301,6 @@ extension DetailViewController: ReviewCompleteProtocol {
     func sendReview(state: ReviewState, image: UIImage, sendReviewPressed: Bool) {
         reviewState = state
         reviewImageView.image = image
-        isReviewPressed = sendReviewPressed
     }
 }
 
@@ -295,5 +327,11 @@ extension CALayer {
             border.backgroundColor = color.cgColor;
             self.addSublayer(border)
         }
+    }
+}
+
+extension DetailViewController: RatingViewDelegate {
+    func ratingView(_ ratingView: RatingView, isUpdating rating: Double) {
+        ratingLabel.text = String(rating)
     }
 }
