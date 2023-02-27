@@ -1,8 +1,12 @@
 import UIKit
+import RealmSwift
 
 class ReviewListViewController: UIViewController {
     // MARK: - UI
     @IBOutlet var reviewListTableView: UITableView!
+    
+    // MARK: - Properties
+    let realm = try! Realm()
     
     // MARK: - View Life Cycle
     override func viewDidLoad() {
@@ -21,20 +25,20 @@ class ReviewListViewController: UIViewController {
 // MARK: - TableView
 extension ReviewListViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        switch DataStorage.storeReviews.count {
+        switch ListDataStorage.reviewList.count {
         case 0:
             return 1
         default:
-            return DataStorage.storeReviews.count
+            return ListDataStorage.reviewList.count
         }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = reviewListTableView.dequeueReusableCell(withIdentifier: "ReviewListCell", for: indexPath) as? ReviewListCell else { return UITableViewCell() }
-        
-        if DataStorage.storeReviews.count != 0 {
-            cell.nameLabel.text = DataStorage.storeReviews[indexPath.row].storeName
-            cell.addressLabel.text = DataStorage.storeReviews[indexPath.row].addressName
+        let reviewList = Array(ListDataStorage.reviewList)
+        if ListDataStorage.reviewList.count != 0 {
+            cell.nameLabel.text = reviewList[indexPath.row].name
+            cell.addressLabel.text = reviewList[indexPath.row].address
         }
         
         return cell
@@ -42,10 +46,17 @@ extension ReviewListViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let reviewVC = self.storyboard?.instantiateViewController(withIdentifier: "ReviewViewController") as? ReviewViewController else { return }
-        if DataStorage.storeReviews.count != 0 {
-            reviewVC.reviewContent = DataStorage.storeReviews[indexPath.row].reviewContent
-            reviewVC.storeName = DataStorage.storeReviews[indexPath.row].storeName
-            navigationController?.pushViewController(reviewVC, animated: true)
+        let reviewList = Array(ListDataStorage.reviewList)
+        let allRealmData = realm.objects(RealmData.self)
+        
+        if ListDataStorage.reviewList.count != 0 {
+            reviewVC.storeName = reviewList[indexPath.row].name
+            for i in 0..<allRealmData.count {
+                if reviewList[indexPath.row].name == allRealmData[i].storeName {
+                    reviewVC.reviewContent = allRealmData[i].reviewContent
+                    navigationController?.pushViewController(reviewVC, animated: true)
+                }
+            }
         }
     }
     
