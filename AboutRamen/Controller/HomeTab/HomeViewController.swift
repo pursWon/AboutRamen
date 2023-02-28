@@ -3,6 +3,7 @@ import Alamofire
 import Kingfisher
 import RealmSwift
 
+// MARK: - Protocols
 protocol LocationDataProtocol {
     func sendCurrentLocation(longlat: (Double, Double))
 }
@@ -18,7 +19,10 @@ class HomeViewController: UIViewController {
     @IBOutlet var myLocationLabel: UILabel!
     
     // MARK: - Properties
+    let realm = try! Realm()
+    /// kakao 키워드 검색 API 주소
     let url: String = "https://dapi.kakao.com/v2/local/search/keyword.json"
+    /// kakao 키워드 이미지 검색 API 주소
     let imageUrl: String = "https://dapi.kakao.com/v2/search/image"
     let regionData = RegionData()
     /// API를 통해서 가져온 라멘집 리스트 정보를 담고 있는 배열
@@ -27,38 +31,30 @@ class HomeViewController: UIViewController {
     var imageUrlList: [String] = []
     var currentLocation: (long: Double, lat: Double) = (127.0277194, 37.63695556)
     var storeNames: [String] = []
-    var realmDataStorage: [RealmData] = []
-    let realm = try! Realm()
-    var uniqueRealmData: LazyFilterSequence<List<Information>>?
     var allRamenData: List<Information>?
     
     // MARK: - View Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         setUpCollectionView()
         setUpNavigationBar()
+        // TODO: RegionData 정보 활용하기
         myLocationLabel.text = "서울시 강북구"
-        // myLocationLabel.text = "서울시 강남구"
-        
-        let regionList = RegionData.list
-        
-        for region in regionList {
-            let guList = region.guList
-            
-            for gu in guList {
-                putInRealmData(lng: gu.location.long, lat: gu.location.lat)
-            }
+        view.backgroundColor = .systemOrange
+        print(realm.configuration.fileURL)
+        try! realm.write {
+            let my = realm.objects(MyRamenListData.self)
+            realm.delete(my)
         }
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        getRamenData(url: url, currentLocation : currentLocation)
-        imageUrlList.removeAll()
+        getRamenData(url: url, currentLocation: currentLocation)
     }
     
     func setUpNavigationBar() {
         title = "어바웃라멘"
-        view.backgroundColor = .systemOrange
         
         let attributes = [NSAttributedString.Key.font: UIFont(name: "BlackHanSans-Regular", size: 20)!]
         regionChangeButton.setTitleTextAttributes(attributes, for: .normal)
@@ -74,56 +70,6 @@ class HomeViewController: UIViewController {
         collectionView.dataSource = self
         collectionView.delegate = self
         collectionView.backgroundColor = .systemOrange
-    }
-    
-    func putInRealmData(lng: Double, lat: Double) {
-        let headers: HTTPHeaders = ["Authorization" : "KakaoAK d8b066a3dbb0e888b857f37b667d96d2"]
-        let parameters: [String : Any] = [
-            "query" : "라멘",
-            "x" : "\(lng)",
-            "y" : "\(lat)",
-            "radius" : 7000,
-            "size" : 10
-        ]
-        
-        AF.request(url, method: .get, parameters: parameters ,headers: headers).responseDecodable(of: RamenStore.self) {
-            response in
-            // if let data = response.value {
-            //     self.a이러lRamenData = data.documents
-            // }
-            
-            // if let allRamenData = self.allRamenData {
-            //     for i in 0..<allRamenData.count {
-            //         if self.isItemAlreadyExist(title: allRamenData[i].place_name) {
-            //
-            //         } else if !self.isItemAlreadyExist(title: allRamenData[i].place_name) {
-            //             try! self.realm.write {
-            //                 let realmData = RealmData(storeName: allRamenData[i].place_name, isGoodPressed: false, rating: 0, reviewContent: "", isMyRamenPressed: false)
-            //
-            //             }
-            //         }
-            //     }
-            // }
-        }
-    }
-    
-    func isItemAlreadyExist(title: String) -> Bool {
-        let allRealmData = self.realm.objects(RealmData.self)
-        let sameObject = allRealmData.filter { $0.storeName == title }
-        
-        return sameObject.isEmpty ? false : true
-    }
-    
-    func removeDuplicate (_ array: [RealmData]) -> [RealmData] {
-        var removedArray = [RealmData]()
-        
-        for i in array {
-            if !removedArray.contains(i) {
-                removedArray.append(i)
-            }
-        }
-        
-        return removedArray
     }
     
     func getRamenData(url: String, currentLocation: (Double, Double)) {
@@ -155,6 +101,8 @@ class HomeViewController: UIViewController {
     }
     
     func getRamenImages() {
+        imageUrlList.removeAll()
+        
         let headers: HTTPHeaders = ["Authorization": "KakaoAK d8b066a3dbb0e888b857f37b667d96d2"]
         for name in storeNames {
             let params: [String: Any] = ["query": name]
@@ -165,9 +113,8 @@ class HomeViewController: UIViewController {
                             self.imageUrlList.append(dataImage.documents[0].image_url)
                         }
                     }
-                    self.storeNames.removeAll()
-                } else {
                     
+                    self.storeNames.removeAll()
                 }
                 
                 DispatchQueue.main.async {
@@ -193,7 +140,7 @@ class HomeViewController: UIViewController {
     }
 }
 
-// MARK: - Collecion View
+// MARK: - CollectionView Delegate & Datasource
 extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if let ramenList = ramenList {
@@ -207,14 +154,8 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectionViewCell", for: indexPath) as? CollectionViewCell else { return UICollectionViewCell() }
         guard let ramenList = ramenList else { return UICollectionViewCell() }
         let ramenData = ramenList[indexPath.row]
-        cell.layer.borderColor = UIColor.black.cgColor
-        cell.layer.borderWidth = 3
-        cell.layer.cornerRadius = 10
         
-        cell.nameLabel.textAlignment = .left
-        cell.nameLabel.font = .boldSystemFont(ofSize: 12)
-        cell.starLabel.font = .boldSystemFont(ofSize: 15)
-        
+        cell.cellConfigure()
         cell.nameLabel.text = ramenData.place_name
         cell.distanceLabel.text = "\(ramenData.distance) m"
         
@@ -244,14 +185,39 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard let detailVC = self.storyboard?.instantiateViewController(withIdentifier: "DetailViewController") as? DetailViewController else { return }
         guard let ramenList = ramenList else { return }
+        
         detailVC.store = ramenList[indexPath.row].place_name
-        let update = realm.objects(RealmData.self).where {
-            $0.storeName == ramenList[indexPath.row].place_name
-        }.first!
+        if let x = Double(ramenList[indexPath.row].x), let y = Double(ramenList[indexPath.row].y) {
+            detailVC.location = (x,y)
+        }
+        
+        let goodData = realm.objects(GoodListData.self).filter {
+            $0.storeName == ramenList[indexPath.row].place_name &&
+            $0.x == Double(ramenList[indexPath.row].x) &&
+            $0.y == Double(ramenList[indexPath.row].y)
+        }
+        
+        if goodData.isEmpty {
+            detailVC.goodPressed = false
+        } else {
+            detailVC.goodPressed = true
+        }
+        
+        let myRamenData = realm.objects(MyRamenListData.self).filter {
+            $0.storeName == ramenList[indexPath.row].place_name &&
+            $0.x == Double(ramenList[indexPath.row].x) &&
+            $0.y == Double(ramenList[indexPath.row].y)
+        }
+        
+        if myRamenData.isEmpty {
+            detailVC.myRamenPressed = false
+        } else {
+            detailVC.myRamenPressed = true
+        }
+        
         
         detailVC.index = indexPath.row
         detailVC.information = ramenList
-        detailVC.goodPressed = update.isGoodPressed
         
         let backButton = UIBarButtonItem(title: "홈", style: .plain, target: self, action: nil)
         let attributes = [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 16)]
