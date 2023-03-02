@@ -2,6 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>&quot;현재 위치사용을 허용하시겠습니까?&quot;</string>
 	<key>UILaunchStoryboardName</key>
 	<string></string>
 	<key>UIAppFonts</key>
@@ -9,6 +11,8 @@
 		<string>BlackHanSans-Regular.ttf</string>
 		<string>Recipekorea.ttf</string>
 	</array>
+	<key>CFBundleIdentifier</key>
+	<string></string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>

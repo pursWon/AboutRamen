@@ -2,6 +2,7 @@ import UIKit
 import Alamofire
 import Kingfisher
 import RealmSwift
+import CoreLocation
 
 // MARK: - Protocols
 protocol LocationDataProtocol {
@@ -32,6 +33,7 @@ class HomeViewController: UIViewController {
     var currentLocation: (long: Double, lat: Double) = (127.0277194, 37.63695556)
     var storeNames: [String] = []
     var allRamenData: List<Information>?
+    var locationManager = CLLocationManager()
     
     // MARK: - View Life Cycle
     override func viewDidLoad() {
@@ -41,12 +43,20 @@ class HomeViewController: UIViewController {
         setUpNavigationBar()
         // TODO: RegionData 정보 활용하기
         myLocationLabel.text = "서울시 강북구"
+        locationManager.delegate = self
+        locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        locationManager.requestWhenInUseAuthorization()
+        
+        if CLLocationManager.locationServicesEnabled() {
+            print("위치 서비스 On 상태")
+            locationManager.stopUpdatingLocation()
+            print(locationManager.location?.coordinate)
+        } else {
+            print("위치 서비스 Off 상태")
+        }
+        
         view.backgroundColor = .systemOrange
         print(realm.configuration.fileURL)
-        try! realm.write {
-            let my = realm.objects(MyRamenListData.self)
-            realm.delete(my)
-        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -154,10 +164,24 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectionViewCell", for: indexPath) as? CollectionViewCell else { return UICollectionViewCell() }
         guard let ramenList = ramenList else { return UICollectionViewCell() }
         let ramenData = ramenList[indexPath.row]
+        let goodList = realm.objects(GoodListData.self)
+        let myRamenList = realm.objects(MyRamenListData.self)
         
         cell.cellConfigure()
         cell.nameLabel.text = ramenData.place_name
         cell.distanceLabel.text = "\(ramenData.distance) m"
+        
+        for index in 0..<goodList.count {
+            if cell.nameLabel.text == goodList[index].storeName {
+                cell.starLabel.text = String(goodList[index].rating)
+            }
+        }
+        
+        for index in 0..<myRamenList.count {
+            if cell.nameLabel.text == myRamenList[index].storeName {
+                cell.starLabel.text = String(myRamenList[index].rating)
+            }
+        }
         
         if imageUrlList.count == ramenList.count {
             let url = URL(string: imageUrlList[indexPath.row])
@@ -244,4 +268,17 @@ extension HomeViewController: LocationDataProtocol {
     }
 }
 
+extension HomeViewController: CLLocationManagerDelegate {
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        print("didUpdateLocations")
+        if let location = locations.first {
+            print("위도 : \(location.coordinate.latitude)")
+            print("경도 : \(location.coordinate.longitude)")
+        }
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+        print(error)
+    }
+}
 
