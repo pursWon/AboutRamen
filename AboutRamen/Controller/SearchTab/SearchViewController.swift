@@ -9,7 +9,8 @@ class SearchViewController: UIViewController {
     
     // MARK: - Properties
     let url: String = "https://dapi.kakao.com/v2/local/search/keyword.json"
-    let regionData = RegionData()
+    let beige = UIColor(red: 255/255, green: 231/255, blue: 204/255, alpha: 1.0)
+    let deepGreen = UIColor(red: 24/255, green: 58/255, blue: 29/255, alpha: 1.0)
     /// 검색어에 해당되는 String값들의 모음 배열
     var filterArray: [String] = []
     /// 전국에 있는 라멘 가게들의 이름 모음 배열
@@ -18,12 +19,14 @@ class SearchViewController: UIViewController {
     var uniqueStoreNames: [String] = []
     /// 데이터 송신을 통해 담아온 라멘 가게 정보들의 배열
     var ramenList = List<Information>()
+    // TODO: 위도, 경도 묶어서 저장하기
     /// 경도 데이터를 담아줄 변수
     var lng: Double = 0
     /// 위도 데이터를 담아줄 변수
     var lat: Double = 0
-    var isFiltering: Bool {
+    var isFiltered: Bool {
         let searchController = self.navigationItem.searchController
+        
         if let isActive = searchController?.isActive,
            let isSearchTextEmpty = searchController?.searchBar.text?.isEmpty {
             return isActive && !isSearchTextEmpty
@@ -52,10 +55,12 @@ class SearchViewController: UIViewController {
     }
     
     func navigationBarSetUp() {
-        navigationController?.navigationBar.backgroundColor = .white
+        navigationController?.navigationBar.backgroundColor = beige
+        
         view.backgroundColor = .white
         navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font : UIFont(name: "Recipekorea", size: 20)!]
         introduceLabel.font = .boldSystemFont(ofSize: 15)
+        introduceLabel.backgroundColor = beige
         searchTableView.backgroundColor = .white
     }
     
@@ -73,8 +78,7 @@ class SearchViewController: UIViewController {
             "size" : 10
         ]
         
-        AF.request(url, method: .get, parameters: parameters , headers: headers).responseDecodable(of: RamenStore.self) {
-            response in
+        AF.request(url, method: .get, parameters: parameters , headers: headers).responseDecodable(of: RamenStore.self) { response in
             if let data = response.value {
                 self.ramenList.append(objectsIn: data.documents)
                 
@@ -115,7 +119,7 @@ extension SearchViewController: UISearchResultsUpdating {
     }
 }
 
-// MARK: - TableView
+// MARK: - TableView UITableViewDelegate & UITableViewDataSource
 extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return filterArray.count
@@ -124,7 +128,7 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = searchTableView.dequeueReusableCell(withIdentifier: "SearchViewCell", for: indexPath) as? SearchViewCell else { return UITableViewCell() }
         
-        if isFiltering {
+        if isFiltered {
             cell.textLabel?.text = filterArray[indexPath.row]
         } else {
             cell.textLabel?.text = uniqueStoreNames[indexPath.row]
