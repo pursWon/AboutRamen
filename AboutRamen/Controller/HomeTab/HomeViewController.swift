@@ -26,6 +26,7 @@ class HomeViewController: UIViewController {
     /// kakao 키워드 이미지 검색 API 주소
     let imageUrl: String = "https://dapi.kakao.com/v2/search/image"
     let regionData = RegionData()
+    let beige = UIColor(red: 255/255, green: 231/255, blue: 204/255, alpha: 1.0)
     /// API를 통해서 가져온 라멘집 리스트 정보를 담고 있는 배열
     var ramenList: List<Information>?
     /// 라멘집 이미지들의 image_url 값들의 배열
@@ -50,12 +51,12 @@ class HomeViewController: UIViewController {
         if CLLocationManager.locationServicesEnabled() {
             print("위치 서비스 On 상태")
             locationManager.stopUpdatingLocation()
-            print(locationManager.location?.coordinate)
+            let coor = locationManager.location?.coordinate
         } else {
             print("위치 서비스 Off 상태")
         }
         
-        view.backgroundColor = .systemOrange
+        view.backgroundColor = beige
         print(realm.configuration.fileURL)
     }
     
@@ -65,6 +66,7 @@ class HomeViewController: UIViewController {
     
     func setUpNavigationBar() {
         title = "어바웃라멘"
+        navigationController?.navigationBar.backgroundColor = beige
         
         let attributes = [NSAttributedString.Key.font: UIFont(name: "BlackHanSans-Regular", size: 20)!]
         regionChangeButton.setTitleTextAttributes(attributes, for: .normal)
@@ -79,7 +81,7 @@ class HomeViewController: UIViewController {
     func setUpCollectionView() {
         collectionView.dataSource = self
         collectionView.delegate = self
-        collectionView.backgroundColor = .systemOrange
+        collectionView.backgroundColor = beige
     }
     
     func getRamenData(url: String, currentLocation: (Double, Double)) {
@@ -166,22 +168,16 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
         let ramenData = ramenList[indexPath.row]
         let goodList = realm.objects(GoodListData.self)
         let myRamenList = realm.objects(MyRamenListData.self)
+        let sage = UIColor(red: 225/255, green: 238/255, blue: 221/255, alpha: 1.0)
         
         cell.cellConfigure()
         cell.nameLabel.text = ramenData.place_name
         cell.distanceLabel.text = "\(ramenData.distance) m"
+        cell.contentView.backgroundColor = sage
+        cell.ramenImageView.layer.borderWidth = 1.5
+        cell.ramenImageView.layer.borderColor = UIColor.black.cgColor
+        cell.ramenImageView.layer.cornerRadius = 10
         
-        for index in 0..<goodList.count {
-            if cell.nameLabel.text == goodList[index].storeName {
-                cell.starLabel.text = String(goodList[index].rating)
-            }
-        }
-        
-        for index in 0..<myRamenList.count {
-            if cell.nameLabel.text == myRamenList[index].storeName {
-                cell.starLabel.text = String(myRamenList[index].rating)
-            }
-        }
         
         if imageUrlList.count == ramenList.count {
             let url = URL(string: imageUrlList[indexPath.row])

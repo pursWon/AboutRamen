@@ -16,6 +16,7 @@ protocol ReviewCompleteProtocol {
 
 class DetailViewController: UIViewController {
     // MARK: - UI
+    @IBOutlet var informationView: UIView!
     @IBOutlet var storeLabel: UILabel!
     @IBOutlet var distanceLabel: UILabel!
     @IBOutlet var addressView: UIView!
@@ -43,6 +44,8 @@ class DetailViewController: UIViewController {
     // MARK: - Properties
     let realm = try! Realm()
     let imageUrl: String = "https://dapi.kakao.com/v2/search/image"
+    let beige = UIColor(red: 255/255, green: 231/255, blue: 204/255, alpha: 1.0)
+    let sage = UIColor(red: 225/255, green: 238/255, blue: 221/255, alpha: 1.0)
     var index: Int = 0
     var information = List<Information>()
     var searchIndex: Int = 0
@@ -57,7 +60,7 @@ class DetailViewController: UIViewController {
     // MARK: - View Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .systemOrange
+        view.backgroundColor = beige
         setUpBorder()
         setUpBackgroundColor()
         setUpLableText()
@@ -135,7 +138,7 @@ class DetailViewController: UIViewController {
     
     func setUpBackgroundColor() {
         [addressLabel, numberLabel, timeLabel].forEach {
-            $0.backgroundColor = .systemOrange
+            $0.backgroundColor = beige
         }
     }
     
@@ -246,16 +249,18 @@ class DetailViewController: UIViewController {
                 myListAddImageView.image = UIImage(named: "MyListBlack")
                 let myRating = (rating as NSString).doubleValue
                 storeRating = myRating
+                
                 guard let address = addressLabel.text else { return }
+                
                 let myRamenData = MyRamenListData(storeName: store, address: address, x: location.0, y: location.1, rating: storeRating, myRamenPressed: myRamenPressed)
                 MyRamenListData.myRamenList.append(myRamenData)
-                
                 try! realm.write {
                     realm.add(myRamenData)
                 }
             } else {
                 myListAddImageView.image = UIImage(named: "MyListBlack")
                 guard let address = addressLabel.text else { return }
+                
                 let myRamenData = MyRamenListData(storeName: store, address: address, x: location.0, y: location.1, rating: 0, myRamenPressed: myRamenPressed)
                 MyRamenListData.myRamenList.append(myRamenData)
                 try! realm.write {
