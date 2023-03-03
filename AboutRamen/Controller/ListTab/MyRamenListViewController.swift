@@ -15,6 +15,7 @@ class MyRamenListViewController: UIViewController {
     let realm = try! Realm()
     var viewType: ViewType = .ramenList
     let url: String = "https://dapi.kakao.com/v2/local/search/keyword.json"
+    let beige = UIColor(red: 255/255, green: 231/255, blue: 204/255, alpha: 1.0)
     var ramenList = List<Information>()
     // MARK: - View Life Cycle
     override func viewDidLoad() {
@@ -22,11 +23,7 @@ class MyRamenListViewController: UIViewController {
         
         title = viewType.rawValue
         setUpTableView()
-        view.backgroundColor = .systemOrange
-        
-        let goodList = realm.objects(GoodListData.self)
-        let myRamenList = realm.objects(MyRamenListData.self)
-        
+        view.backgroundColor = beige
     }
     
     func setUpTableView() {
@@ -43,9 +40,9 @@ class MyRamenListViewController: UIViewController {
         ]
         
         AF.request(url, method: .get, parameters: parameters, headers: headers).responseDecodable(of: RamenStore.self) {
-        response in
+            response in
             if let data = response.value {
-            self.ramenList = data.documents
+                self.ramenList = data.documents
             } else {
                 print("통신 실패")
             }
@@ -93,13 +90,14 @@ extension MyRamenListViewController: UITableViewDelegate, UITableViewDataSource 
                 cell.nameLabel.text = goodList[indexPath.row].storeName
                 cell.addressLabel.text = goodList[indexPath.row].addressName
                 cell.ratingLabel.text = String(goodList[indexPath.row].rating)
+                cell.starImage.isHidden = true
             }
             
         case "나의 라멘 가게":
             if !myRamenList.isEmpty {
                 cell.nameLabel.text = myRamenList[indexPath.row].storeName
                 cell.addressLabel.text = myRamenList[indexPath.row].address
-                cell.ratingLabel.text = String(myRamenList[indexPath.row].rating)
+                cell.ratingLabel.isHidden = true
             }
             
         default:
@@ -117,25 +115,81 @@ extension MyRamenListViewController: UITableViewDelegate, UITableViewDataSource 
             
         case "좋아요 목록":
             if goodList.count != 0 {
-                // detailVC.information = ramenList
-                // detailVC.index = indexPath.row
-                // navigationController?.pushViewController(detailVC, animated: true)
+                let information = ramenList.filter { $0.place_name == goodList[indexPath.row].storeName &&
+                    $0.x == String(goodList[indexPath.row].x) &&
+                    $0.y == String(goodList[indexPath.row].y)
+                }
+                
+                let goodObject = realm.objects(GoodListData.self).where {
+                    $0.storeName == goodList[indexPath.row].storeName &&
+                    $0.x == goodList[indexPath.row].x &&
+                    $0.y == goodList[indexPath.row].y
+                }.first
+                
+                let myRamenListObject = realm.objects(MyRamenListData.self).where {
+                    $0.storeName == goodList[indexPath.row].storeName &&
+                    $0.x == goodList[indexPath.row].x &&
+                    $0.y == goodList[indexPath.row].y
+                }.first
+                
+                if let information = information.first {
+                    
+                    detailVC.information.append(information)
+                    detailVC.goodPressed = goodObject?.isGoodPressed ?? false
+                    detailVC.myRamenPressed = myRamenListObject?.myRamenPressed ?? false
+                    
+                    let backButton = UIBarButtonItem(title: "나의 라멘 가게", style: .plain, target: self, action: nil)
+                    let attributes = [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 16)]
+                    
+                    self.navigationItem.backBarButtonItem = backButton
+                    self.navigationItem.backBarButtonItem?.tintColor = .black
+                    backButton.setTitleTextAttributes(attributes, for: .normal)
+                    
+                    navigationController?.pushViewController(detailVC, animated: true)
+                }
+                
+                getData(url: url, storeName: goodList[indexPath.row].storeName, x: String(goodList[indexPath.row].x),
+                        y: String(goodList[indexPath.row].y))
             }
             
         case "나의 라멘 가게":
             if myRamenList.count != 0 {
                 let information = ramenList.filter { $0.place_name == myRamenList[indexPath.row].storeName &&
-                    $0.x == String(myRamenList[indexPath.row].x)
-            }
+                    $0.x == String(myRamenList[indexPath.row].x) &&
+                    $0.y == String(myRamenList[indexPath.row].y)
+                }
+                
+                let goodObject = realm.objects(GoodListData.self).where {
+                    $0.storeName == myRamenList[indexPath.row].storeName &&
+                    $0.x == myRamenList[indexPath.row].x &&
+                    $0.y == myRamenList[indexPath.row].y
+                }.first
+                
+                let myRamenListObject = realm.objects(MyRamenListData.self).where {
+                    $0.storeName == myRamenList[indexPath.row].storeName &&
+                    $0.x == myRamenList[indexPath.row].x &&
+                    $0.y == myRamenList[indexPath.row].y
+                }.first
+                
                 if let information = information.first {
+                    
                     detailVC.information.append(information)
-                    print(detailVC.information)
+                    detailVC.goodPressed = goodObject?.isGoodPressed ?? false
+                    detailVC.myRamenPressed = myRamenListObject?.myRamenPressed ?? false
+                    
+                    let backButton = UIBarButtonItem(title: "나의 라멘 가게", style: .plain, target: self, action: nil)
+                    let attributes = [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 16)]
+                    
+                    self.navigationItem.backBarButtonItem = backButton
+                    self.navigationItem.backBarButtonItem?.tintColor = .black
+                    backButton.setTitleTextAttributes(attributes, for: .normal)
+                    
                     navigationController?.pushViewController(detailVC, animated: true)
                 }
                 
                 getData(url: url, storeName: myRamenList[indexPath.row].storeName, x: String(myRamenList[indexPath.row].x), y: String(myRamenList[indexPath.row].y))
-                
             }
+            
         default:
             fatalError()
         }
