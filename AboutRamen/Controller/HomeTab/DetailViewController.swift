@@ -11,7 +11,7 @@ enum ReviewState: String {
 
 // MARK: - Protocol
 protocol ReviewCompleteProtocol {
-    func sendReview(state: ReviewState, image: UIImage, sendReviewPressed: Bool)
+    func sendReview(state: ReviewState)
 }
 
 class DetailViewController: UIViewController {
@@ -60,6 +60,7 @@ class DetailViewController: UIViewController {
     // MARK: - View Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         view.backgroundColor = beige
         setUpBorder()
         setUpBackgroundColor()
@@ -68,18 +69,12 @@ class DetailViewController: UIViewController {
         getRamenImages()
         setPressedValue()
         storeLabel.font = UIFont.boldSystemFont(ofSize: 35)
-        reviewLabel.text = reviewState.rawValue
         starRatingView.delegate = self
         starRatingView.contentMode = .scaleAspectFit
+        
         if let storeName = storeLabel.text {
             store = storeName
         }
-        guard let reviewImage = UIImage(named: "ReviewWhite") else { return }
-        reviewImageView.image = reviewImage
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        reviewLabel.text = reviewState.rawValue
     }
     
     func setPressedValue() {
@@ -97,6 +92,21 @@ class DetailViewController: UIViewController {
         } else {
             myListLabel.text = "추가하기"
             myListAddImageView.image = UIImage(named: "MyListWhite")
+        }
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        switch reviewState {
+        case .yet:
+            reviewLabel.text = reviewState.rawValue
+            guard let reviewImage = UIImage(named: "ReviewWhite") else { return }
+            reviewImageView.image = reviewImage
+        case .done:
+            reviewLabel.text = reviewState.rawValue
+            guard let reviewImage = UIImage(named: "ReviewBlack") else { return }
+            reviewImageView.image = reviewImage
+        default:
+            fatalError()
         }
     }
     
@@ -205,6 +215,7 @@ class DetailViewController: UIViewController {
     }
     
     @objc func reviewMark() {
+        if reviewState == .yet {
         guard let reviewVC = self.storyboard?.instantiateViewController(withIdentifier: "ReviewViewController") as? ReviewViewController else { return }
         reviewVC.delegate = self
         reviewVC.storeName = information[index].place_name
@@ -218,6 +229,7 @@ class DetailViewController: UIViewController {
         backButton.setTitleTextAttributes(attributes, for: .normal)
         
         navigationController?.pushViewController(reviewVC, animated: true)
+        }
     }
     
     @objc func addMyListMark() {
@@ -274,9 +286,8 @@ class DetailViewController: UIViewController {
 
 // MARK: - ReviewCompleteProtocol
 extension DetailViewController: ReviewCompleteProtocol {
-    func sendReview(state: ReviewState, image: UIImage, sendReviewPressed: Bool) {
+    func sendReview(state: ReviewState) {
         reviewState = state
-        reviewImageView.image = image
     }
 }
 
