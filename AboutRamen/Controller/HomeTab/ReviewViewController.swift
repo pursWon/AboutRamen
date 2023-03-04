@@ -4,9 +4,11 @@ import RealmSwift
 class ReviewViewController: UIViewController {
     // MARK: - UI
     @IBOutlet var reviewTextView: UITextView!
+    @IBOutlet var reviewView: UIView!
     
     //MARK: - Properties
     let realm = try! Realm()
+    let beige = UIColor(red: 255/255, green: 231/255, blue: 204/255, alpha: 1.0)
     var delegate: ReviewCompleteProtocol?
     var storeName: String = ""
     var addressName: String = ""
@@ -16,14 +18,18 @@ class ReviewViewController: UIViewController {
     // MARK: - View Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .systemOrange
+        
+        view.backgroundColor = beige
+        reviewView.backgroundColor = beige
         
         setUpTextViewBorder()
         setUpNavigationBarButton()
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        reviewTextView.text = reviewContent
+        
+        if modifyReview.isEmpty {
+            reviewTextView.text = ""
+        } else {
+            reviewTextView.text = modifyReview
+        }
     }
     
     func setUpTextViewBorder() {
@@ -42,51 +48,52 @@ class ReviewViewController: UIViewController {
         completeButton.target = self
     }
     
-    /// savedText는 기존 realm에 존재하는 review 문자열, reviewText는 새로 작성한 review 문자열
-    func writeRealm(savedText: String ,reviewText: String) {
-        // if let review = realm.objects(RealmData.self).filter(NSPredicate(format: "reviewContent = %@", savedText)).first {
-        //     try! realm.write {
-        //         review.reviewContent = reviewText
-        //     }
-        // }
-    }
-    
     // MARK: - Actions
     @objc func completeButtonAction() {
-        // let allRealmData = realm.objects(RealmData.self)
+        let reviewList = realm.objects(ReviewListData.self)
         var storeNameArray: [String] = []
         
-        for content in ListDataStorage.reviewList {
-            storeNameArray.append(content.name)
+        for i in 0..<reviewList.count {
+            storeNameArray.append(reviewList[i].storeName)
         }
         
-        if !reviewTextView.text.isEmpty {
-            if !storeNameArray.contains(storeName) {
-                // for i in 0..<allRealmData.count {
-                //     if storeName == allRealmData[i].storeName {
-                //         writeRealm(savedText: allRealmData[i].reviewContent, reviewText: reviewTextView.text)
-                //         
-                //         ListDataStorage.reviewList.insert(ListDataStorage(name: storeName, address: addressName, rating: 0))
-                //         delegate?.sendReview(state: .done, image: UIImage(named: "ReviewBlack")!, sendReviewPressed: false)
-                //         navigationController?.popViewController(animated: true)
-                //     }
-                // }
-            } else {
-                if reviewContent.isEmpty {
-                    listAlert()
-                } else {
-                    modifyReview = reviewTextView.text
-                    // for i in 0..<allRealmData.count {
-                    //     if storeName == allRealmData[i].storeName {
-                    //         writeRealm(savedText: allRealmData[i].reviewContent, reviewText: modifyReview)
-                    //     }
-                    // }
-                    
-                    correctAlert()
-                }
-            }
-        } else {
+        switch modifyReview.isEmpty {
+        
+        case true:
+        if reviewTextView.text.isEmpty {
             blankTextAlert()
+        } else {
+            if storeNameArray.contains(storeName) {
+                listAlert()
+            } else {
+                try! realm.write {
+                    realm.add(ReviewListData(storeName: storeName, addressName: addressName, reviewContent: reviewTextView.text))
+                }
+                
+                delegate?.sendReview(state: .done)
+                navigationController?.popViewController(animated: true)
+            }
+        }
+            
+        case false:
+            if reviewTextView.text.isEmpty {
+                blankTextAlert()
+            } else {
+                correctAlert()
+                modifyReview = reviewTextView.text
+                let reviewUpdate = realm.objects(ReviewListData.self).where {
+                    $0.storeName == storeName &&
+                    $0.addressName == addressName
+                }.first
+            
+                try! realm.write {
+                    if let reviewUpdate = reviewUpdate {
+                        reviewUpdate.reviewContent = reviewTextView.text
+                    }
+                }
+                
+                delegate?.sendReview(state: .done)
+            }
         }
     }
 }
