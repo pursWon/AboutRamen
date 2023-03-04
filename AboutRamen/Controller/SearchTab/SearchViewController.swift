@@ -1,6 +1,7 @@
 import UIKit
 import Alamofire
 import RealmSwift
+import CoreLocation
 
 class SearchViewController: UIViewController {
     // MARK: - UI
@@ -10,7 +11,8 @@ class SearchViewController: UIViewController {
     // MARK: - Properties
     let url: String = "https://dapi.kakao.com/v2/local/search/keyword.json"
     let beige = UIColor(red: 255/255, green: 231/255, blue: 204/255, alpha: 1.0)
-    let deepGreen = UIColor(red: 24/255, green: 58/255, blue: 29/255, alpha: 1.0)
+    let sage = UIColor(red: 225/255, green: 238/255, blue: 221/255, alpha: 1.0)
+    var locationManager = CLLocationManager()
     /// 검색어에 해당되는 String값들의 모음 배열
     var filterArray: [String] = []
     /// 전국에 있는 라멘 가게들의 이름 모음 배열
@@ -34,6 +36,7 @@ class SearchViewController: UIViewController {
         
         return false
     }
+    var currentLocation: (Double, Double)?
     
     // MARK: - ViewLifeCycle
     override func viewDidLoad() {
@@ -42,9 +45,18 @@ class SearchViewController: UIViewController {
         navigationBarSetUp()
         setUpSearchController()
         setUpTableView()
+        locationManager.delegate = self
+        locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        locationManager.requestWhenInUseAuthorization()
+        
+        if CLLocationManager.locationServicesEnabled() {
+            print("위치 서비스 ON 상태")
+            locationManager.startUpdatingLocation()
+        } else {
+            print("위치 서비스 OFF 상태")
+        }
         
         let regionList = RegionData.list
-        
         for region in regionList {
             let guList = region.guList
     
@@ -60,7 +72,7 @@ class SearchViewController: UIViewController {
         view.backgroundColor = .white
         navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font : UIFont(name: "Recipekorea", size: 20)!]
         introduceLabel.font = .boldSystemFont(ofSize: 15)
-        introduceLabel.backgroundColor = beige
+        introduceLabel.backgroundColor = sage
         searchTableView.backgroundColor = .white
     }
     
@@ -163,4 +175,17 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
     }
 }
 
-
+extension SearchViewController: CLLocationManagerDelegate {
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        print("didUpdateLocations")
+        if let location = locations.first {
+            print("위도 : \(location.coordinate.latitude)")
+            print("경도 : \(location.coordinate.longitude)")
+            currentLocation = (location.coordinate.latitude, location.coordinate.longitude)
+        }
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+        print(error)
+    }
+}
