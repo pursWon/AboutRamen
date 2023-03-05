@@ -8,6 +8,7 @@ class ReviewListViewController: UIViewController {
     // MARK: - Properties
     let realm = try! Realm()
     let beige = UIColor(red: 255/255, green: 231/255, blue: 204/255, alpha: 1.0)
+    
     // MARK: - View Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -67,5 +68,23 @@ extension ReviewListViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 60
+    }
+    
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        let reviewList = realm.objects(ReviewListData.self)
+        var reviewArray = Array(reviewList)
+        
+        
+        if editingStyle == .delete {
+            let item = reviewArray[indexPath.row]
+            try! realm.write {
+                realm.delete(item)
+            }
+            reviewListTableView.deleteRows(at: [indexPath], with: .automatic)
+        }
     }
 }
