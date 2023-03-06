@@ -31,10 +31,11 @@ class HomeViewController: UIViewController {
     var ramenList: List<Information>?
     /// 라멘집 이미지들의 image_url 값들의 배열
     var imageUrlList: [String] = []
-    var currentLocation: (long: Double, lat: Double) = (127.0277194, 37.63695556)
+    var regionLocation: (long: Double, lat: Double) = (127.0277194, 37.63695556)
     var storeNames: [String] = []
     var allRamenData: List<Information>?
     var locationManager = CLLocationManager()
+    var currentLocation: (Double?, Double?)
     
     // MARK: - View Life Cycle
     override func viewDidLoad() {
@@ -50,8 +51,8 @@ class HomeViewController: UIViewController {
         
         if CLLocationManager.locationServicesEnabled() {
             print("위치 서비스 On 상태")
-            locationManager.stopUpdatingLocation()
-            let coor = locationManager.location?.coordinate
+            locationManager.startUpdatingLocation()
+            print(locationManager.location?.coordinate)
         } else {
             print("위치 서비스 Off 상태")
         }
@@ -61,7 +62,7 @@ class HomeViewController: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        getRamenData(url: url, currentLocation: currentLocation)
+        getRamenData(url: url, currentLocation: regionLocation)
     }
     
     func setUpNavigationBar() {
@@ -139,7 +140,7 @@ class HomeViewController: UIViewController {
     @IBAction func regionChangeButton(_ sender: UIBarButtonItem) {
         guard let regionPickerVC = self.storyboard?.instantiateViewController(withIdentifier: "RegionPickerController") as? RegionPickerController else { return }
         
-        regionPickerVC.delegateRegion = self
+        regionPickerVC.delegateRegion = self 
         regionPickerVC.delegateLocation = self
         
         let backButton = UIBarButtonItem(title: "홈", style: .plain, target: self, action: nil)
@@ -165,19 +166,19 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectionViewCell", for: indexPath) as? CollectionViewCell else { return UICollectionViewCell() }
         guard let ramenList = ramenList else { return UICollectionViewCell() }
+        
         let ramenData = ramenList[indexPath.row]
-        let goodList = realm.objects(GoodListData.self)
-        let myRamenList = realm.objects(MyRamenListData.self)
-        let sage = UIColor(red: 225/255, green: 238/255, blue: 221/255, alpha: 1.0)
+        
+        let myLocation = CLLocation(latitude: currentLocation.0 ?? 0 , longitude: currentLocation.1 ?? 0 )
+        let storeLocation = CLLocation(latitude: Double(ramenList[indexPath.row].y) ?? 0, longitude: Double(ramenList[indexPath.row].x) ?? 0)
+        let distance = Int(round(myLocation.distance(from: storeLocation) / 1000))
         
         cell.cellConfigure()
         cell.nameLabel.text = ramenData.place_name
-        cell.distanceLabel.text = "\(ramenData.distance) m"
-        cell.contentView.backgroundColor = sage
+        cell.distanceLabel.text = "\(distance)km"
         cell.ramenImageView.layer.borderWidth = 1.5
         cell.ramenImageView.layer.borderColor = UIColor.black.cgColor
         cell.ramenImageView.layer.cornerRadius = 10
-        
         
         if imageUrlList.count == ramenList.count {
             let url = URL(string: imageUrlList[indexPath.row])
@@ -235,6 +236,16 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
             detailVC.myRamenPressed = true
         }
         
+        let reviewListData = realm.objects(ReviewListData.self).filter {
+            $0.storeName == ramenList[indexPath.row].place_name &&
+            $0.addressName == ramenList[indexPath.row].road_address_name
+        }
+        
+        if reviewListData.isEmpty {
+            detailVC.reviewState = .yet
+        } else {
+            detailVC.reviewState = .done
+        }
         
         detailVC.index = indexPath.row
         detailVC.information = ramenList
@@ -260,16 +271,18 @@ extension HomeViewController: RegionDataProtocol {
 // MARK: - LocationDataProtocol
 extension HomeViewController: LocationDataProtocol {
     func sendCurrentLocation(longlat: (Double, Double)) {
-        currentLocation = longlat
+        regionLocation = longlat
     }
 }
 
+// MARK: - CLLocationManagerDelegate
 extension HomeViewController: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         print("didUpdateLocations")
         if let location = locations.first {
             print("위도 : \(location.coordinate.latitude)")
             print("경도 : \(location.coordinate.longitude)")
+            currentLocation = (Double(location.coordinate.latitude), Double(location.coordinate.longitude))
         }
     }
     
@@ -277,4 +290,3 @@ extension HomeViewController: CLLocationManagerDelegate {
         print(error)
     }
 }
-
