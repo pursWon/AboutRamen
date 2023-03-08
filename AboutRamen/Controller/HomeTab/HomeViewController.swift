@@ -36,6 +36,7 @@ class HomeViewController: UIViewController {
     var allRamenData: List<Information>?
     var locationManager = CLLocationManager()
     var currentLocation: (Double?, Double?)
+    var distance: Int = 0
     
     // MARK: - View Life Cycle
     override func viewDidLoad() {
@@ -48,6 +49,7 @@ class HomeViewController: UIViewController {
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         locationManager.requestWhenInUseAuthorization()
+        
         
         if CLLocationManager.locationServicesEnabled() {
             print("위치 서비스 On 상태")
@@ -171,7 +173,7 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
         
         let myLocation = CLLocation(latitude: currentLocation.0 ?? 0 , longitude: currentLocation.1 ?? 0 )
         let storeLocation = CLLocation(latitude: Double(ramenList[indexPath.row].y) ?? 0, longitude: Double(ramenList[indexPath.row].x) ?? 0)
-        let distance = Int(round(myLocation.distance(from: storeLocation) / 1000))
+        distance = Int(round(myLocation.distance(from: storeLocation) / 1000))
         
         cell.cellConfigure()
         cell.nameLabel.text = ramenData.place_name
@@ -249,6 +251,7 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
         
         detailVC.index = indexPath.row
         detailVC.information = ramenList
+        detailVC.distance = distance
         
         let backButton = UIBarButtonItem(title: "홈", style: .plain, target: self, action: nil)
         let attributes = [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 16)]
