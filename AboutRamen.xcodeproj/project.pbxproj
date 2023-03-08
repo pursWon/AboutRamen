@@ -148,9 +148,9 @@
 				D01308552976B4AF00672422 /* RamenImage.swift */,
 				D0E815522999E6A2007DBC55 /* ListDataStorage.swift */,
 				D0E8154E2999E4C7007DBC55 /* RegionData.swift */,
+				D0BB719529B8703E002C47D0 /* GoodListData.swift */,
 				D0E815502999E4CC007DBC55 /* ReviewListData.swift */,
 				D0BB719329B87037002C47D0 /* MyRamenListData.swift */,
-				D0BB719529B8703E002C47D0 /* GoodListData.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";

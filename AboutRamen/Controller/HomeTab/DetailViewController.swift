@@ -48,14 +48,13 @@ class DetailViewController: UIViewController {
     let beige = UIColor(red: 255/255, green: 231/255, blue: 204/255, alpha: 1.0)
     let sage = UIColor(red: 225/255, green: 238/255, blue: 221/255, alpha: 1.0)
     var index: Int = 0
-    var information = List<Information>()
     var searchIndex: Int = 0
+    var information = List<Information>()
     var reviewState: ReviewState = .yet
-    var imageUrlList: (String?, String?)
     var goodPressed: Bool = false
     var myRamenPressed: Bool = false
     var store: String = ""
-    var location: (Double, Double) = (0,0)
+    var location: (Double, Double) = (0, 0)
     var storeRating: Double = 0
     var distance: Int = 0
     /// DetailVC에서 보여줄 두 개의 이미지 URL을 담는 배열
@@ -65,19 +64,31 @@ class DetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = beige
         setUpBorder()
         setUpBackgroundColor()
         setUpLableText()
         setUpTabImageView()
         getRamenImages()
         setPressedValue()
-        storeLabel.font = UIFont.boldSystemFont(ofSize: 35)
         starRatingView.delegate = self
-        starRatingView.contentMode = .scaleAspectFit
         
         if let storeName = storeLabel.text {
             store = storeName
+        } else {
+            store = "가게 이름 없음"
+        }
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        switch reviewState {
+        case .yet:
+            reviewLabel.text = reviewState.rawValue
+            guard let reviewImage = UIImage(named: "ReviewWhite") else { return }
+            reviewImageView.image = reviewImage
+        case .done:
+            reviewLabel.text = reviewState.rawValue
+            guard let reviewImage = UIImage(named: "ReviewBlack") else { return }
+            reviewImageView.image = reviewImage
         }
     }
     
@@ -96,21 +107,6 @@ class DetailViewController: UIViewController {
         } else {
             myListLabel.text = "추가하기"
             myListAddImageView.image = UIImage(named: "MyListWhite")
-        }
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        switch reviewState {
-        case .yet:
-            reviewLabel.text = reviewState.rawValue
-            guard let reviewImage = UIImage(named: "ReviewWhite") else { return }
-            reviewImageView.image = reviewImage
-        case .done:
-            reviewLabel.text = reviewState.rawValue
-            guard let reviewImage = UIImage(named: "ReviewBlack") else { return }
-            reviewImageView.image = reviewImage
-        default:
-            fatalError()
         }
     }
     
@@ -173,13 +169,14 @@ class DetailViewController: UIViewController {
     }
     
     func setUpBackgroundColor() {
-        [addressLabel, numberLabel, timeLabel].forEach {
+        [view, addressLabel, numberLabel, timeLabel].forEach {
             $0.backgroundColor = beige
         }
     }
     
     func setUpLableText() {
         let info = Array(information)
+        storeLabel.font = .boldSystemFont(ofSize: 35)
         storeLabel.text = info[index].place_name
         distanceLabel.text = "\(distance)km"
         addressLabel.text = info[index].road_address_name
@@ -202,12 +199,13 @@ class DetailViewController: UIViewController {
     
     @objc func goodMark() -> String {
         let goodObject = realm.objects(GoodListData.self).where {
-            $0.storeName == store &&
-            $0.x == location.0 &&
-            $0.y == location.1
+            $0.storeName == store
+            && $0.x == location.0
+            && $0.y == location.1
         }.first
         
         guard let rating = ratingLabel.text else { return "0" }
+        
         let myRating = (rating as NSString).doubleValue
         storeRating = myRating
         
@@ -215,7 +213,8 @@ class DetailViewController: UIViewController {
             goodPressed = false
             goodLabel.text = "좋아요"
             goodImageView.image = UIImage(named: "ThumbsUpWhite")
-            guard let goodObject = goodObject else { return ""}
+            guard let goodObject = goodObject else { return "" }
+            
             if let index = GoodListData.goodList.firstIndex(of: goodObject) {
                 GoodListData.goodList.remove(at: index)
             }
@@ -229,8 +228,10 @@ class DetailViewController: UIViewController {
             goodImageView.image = UIImage(named: "ThumbsUpBlack")
             
             guard let address = addressLabel.text else { return "" }
+            
             let goodData = GoodListData(storeName: store, addressName: address, x: location.0, y: location.1, rating: storeRating, isGoodPressed: goodPressed)
             GoodListData.goodList.append(goodData)
+            
             try! realm.write {
                 realm.add(goodData)
                 goodData.rating = storeRating
@@ -243,6 +244,7 @@ class DetailViewController: UIViewController {
     @objc func reviewMark() {
         if reviewState == .yet {
             guard let reviewVC = self.storyboard?.instantiateViewController(withIdentifier: "ReviewViewController") as? ReviewViewController else { return }
+            
             reviewVC.delegate = self
             reviewVC.storeName = information[index].place_name
             reviewVC.addressName = information[index].road_address_name
@@ -262,9 +264,9 @@ class DetailViewController: UIViewController {
         guard let storeName = storeLabel.text else { return }
         
         let myListObject = realm.objects(MyRamenListData.self).where {
-            $0.storeName == storeName &&
-            $0.x == location.0 &&
-            $0.y == location.1
+            $0.storeName == storeName
+            && $0.x == location.0
+            && $0.y == location.1
         }.first
         
         if myRamenPressed {
@@ -283,6 +285,7 @@ class DetailViewController: UIViewController {
         } else {
             myRamenPressed = true
             myListLabel.text = "추가하기 취소"
+            
             if let rating = ratingLabel.text {
                 myListAddImageView.image = UIImage(named: "MyListBlack")
                 let myRating = (rating as NSString).doubleValue
@@ -292,21 +295,23 @@ class DetailViewController: UIViewController {
                 
                 let myRamenData = MyRamenListData(storeName: store, address: address, x: location.0, y: location.1, rating: storeRating, myRamenPressed: myRamenPressed)
                 MyRamenListData.myRamenList.append(myRamenData)
+                
                 try! realm.write {
                     realm.add(myRamenData)
                 }
             } else {
                 myListAddImageView.image = UIImage(named: "MyListBlack")
+                
                 guard let address = addressLabel.text else { return }
                 
                 let myRamenData = MyRamenListData(storeName: store, address: address, x: location.0, y: location.1, rating: 0, myRamenPressed: myRamenPressed)
                 MyRamenListData.myRamenList.append(myRamenData)
+                
                 try! realm.write {
                     realm.add(myRamenData)
                 }
             }
         }
-        
     }
 }
 
