@@ -44,6 +44,7 @@ class DetailViewController: UIViewController {
     // MARK: - Properties
     let realm = try! Realm()
     let imageUrl: String = "https://dapi.kakao.com/v2/search/image"
+    let defaultImage: UIImage = UIImage(named: "Ramen") ?? UIImage(systemName: "fork.knife")!
     let beige = UIColor(red: 255/255, green: 231/255, blue: 204/255, alpha: 1.0)
     let sage = UIColor(red: 225/255, green: 238/255, blue: 221/255, alpha: 1.0)
     var index: Int = 0
@@ -56,6 +57,9 @@ class DetailViewController: UIViewController {
     var store: String = ""
     var location: (Double, Double) = (0,0)
     var storeRating: Double = 0
+    var distance: Int = 0
+    /// DetailVC에서 보여줄 두 개의 이미지 URL을 담는 배열
+    var existImageUrlList: [String] = []
     
     // MARK: - View Life Cycle
     override func viewDidLoad() {
@@ -111,22 +115,44 @@ class DetailViewController: UIViewController {
     }
     
     func getRamenImages() {
+        existImageUrlList = []
+        
         let headers: HTTPHeaders = ["Authorization": "KakaoAK d8b066a3dbb0e888b857f37b667d96d2"]
         let params: [String: Any] = ["query": information[index].place_name]
         AF.request(imageUrl, method: .get, parameters: params, headers: headers).responseDecodable(of: RamenImage.self) { response in
             if let dataImage = response.value {
-                self.imageUrlList = (dataImage.documents[0].image_url, dataImage.documents[1].image_url)
+                if dataImage.documents.count >= 2 {
+                    let firstImageUrl = dataImage.documents[0].image_url
+                    let secondImageUrl = dataImage.documents[1].image_url
+                    self.existImageUrlList.append(firstImageUrl)
+                    self.existImageUrlList.append(secondImageUrl)
+                } else if dataImage.documents.count == 1 {
+                    let firstImageUrl = dataImage.documents[0].image_url
+                    self.existImageUrlList.append(firstImageUrl)
+                }
             }
             
             DispatchQueue.main.async {
-                if let firstImageUrl = self.imageUrlList.0 {
-                    let urlOne = URL(string: firstImageUrl)
-                    self.pictureImageViewOne.kf.setImage(with: urlOne)
+                var firstUrl: URL?
+                var secondUrl: URL?
+                
+                if self.existImageUrlList.count == 2 {
+                    firstUrl = URL(string: self.existImageUrlList[0])
+                    secondUrl = URL(string: self.existImageUrlList[1])
+                } else if self.existImageUrlList.count == 1{
+                    firstUrl = URL(string: self.existImageUrlList[0])
                 }
                 
-                if let secondImageUrl = self.imageUrlList.1 {
-                    let urlTwo = URL(string: secondImageUrl)
-                    self.pictureImageViewTwo.kf.setImage(with: urlTwo)
+                if let firstUrl = firstUrl {
+                    self.pictureImageViewOne.kf.setImage(with: firstUrl, placeholder: self.defaultImage)
+                } else {
+                    self.pictureImageViewOne.image = self.defaultImage
+                }
+                
+                if let secondUrl = secondUrl {
+                    self.pictureImageViewTwo.kf.setImage(with: secondUrl, placeholder: self.defaultImage)
+                } else {
+                    self.pictureImageViewTwo.image = self.defaultImage
                 }
             }
         }
@@ -155,7 +181,7 @@ class DetailViewController: UIViewController {
     func setUpLableText() {
         let info = Array(information)
         storeLabel.text = info[index].place_name
-        distanceLabel.text = "\(info[index].distance)m"
+        distanceLabel.text = "\(distance)km"
         addressLabel.text = info[index].road_address_name
         numberLabel.text = info[index].phone
     }
@@ -184,7 +210,7 @@ class DetailViewController: UIViewController {
         guard let rating = ratingLabel.text else { return "0" }
         let myRating = (rating as NSString).doubleValue
         storeRating = myRating
-      
+        
         if goodPressed {
             goodPressed = false
             goodLabel.text = "좋아요"
@@ -201,13 +227,13 @@ class DetailViewController: UIViewController {
             goodPressed = true
             goodLabel.text = "좋아요 취소"
             goodImageView.image = UIImage(named: "ThumbsUpBlack")
-           
+            
             guard let address = addressLabel.text else { return "" }
             let goodData = GoodListData(storeName: store, addressName: address, x: location.0, y: location.1, rating: storeRating, isGoodPressed: goodPressed)
             GoodListData.goodList.append(goodData)
-                try! realm.write {
-                    realm.add(goodData)
-                    goodData.rating = storeRating
+            try! realm.write {
+                realm.add(goodData)
+                goodData.rating = storeRating
             }
         }
         
@@ -216,19 +242,19 @@ class DetailViewController: UIViewController {
     
     @objc func reviewMark() {
         if reviewState == .yet {
-        guard let reviewVC = self.storyboard?.instantiateViewController(withIdentifier: "ReviewViewController") as? ReviewViewController else { return }
-        reviewVC.delegate = self
-        reviewVC.storeName = information[index].place_name
-        reviewVC.addressName = information[index].road_address_name
-        
-        let backButton = UIBarButtonItem(title: "가게 정보", style: .plain, target: self, action: nil)
-        let attributes = [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 16)]
-        
-        self.navigationItem.backBarButtonItem = backButton
-        self.navigationItem.backBarButtonItem?.tintColor = .black
-        backButton.setTitleTextAttributes(attributes, for: .normal)
-        
-        navigationController?.pushViewController(reviewVC, animated: true)
+            guard let reviewVC = self.storyboard?.instantiateViewController(withIdentifier: "ReviewViewController") as? ReviewViewController else { return }
+            reviewVC.delegate = self
+            reviewVC.storeName = information[index].place_name
+            reviewVC.addressName = information[index].road_address_name
+            
+            let backButton = UIBarButtonItem(title: "가게 정보", style: .plain, target: self, action: nil)
+            let attributes = [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 16)]
+            
+            self.navigationItem.backBarButtonItem = backButton
+            self.navigationItem.backBarButtonItem?.tintColor = .black
+            backButton.setTitleTextAttributes(attributes, for: .normal)
+            
+            navigationController?.pushViewController(reviewVC, animated: true)
         }
     }
     
