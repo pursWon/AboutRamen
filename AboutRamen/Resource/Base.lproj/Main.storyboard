@@ -520,11 +520,11 @@
                                             <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="hSD-ak-4np">
                                                 <rect key="frame" x="0.0" y="0.0" width="428" height="284"/>
                                                 <subviews>
-                                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="qHh-wX-Ccy">
+                                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="qHh-wX-Ccy">
                                                         <rect key="frame" x="0.0" y="0.0" width="214" height="284"/>
                                                         <color key="backgroundColor" systemColor="systemGray4Color"/>
                                                     </imageView>
-                                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Sss-fL-FSh">
+                                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Sss-fL-FSh">
                                                         <rect key="frame" x="214" y="0.0" width="214" height="284"/>
                                                         <color key="backgroundColor" systemColor="systemIndigoColor"/>
                                                     </imageView>

@@ -1,7 +1,4 @@
 import UIKit
-// 0. outlet 연결
-// 1. delegate 호출
-// 2. delegate 안에 있는 함수 호출
 
 @objc public protocol RatingViewDelegate {
     @objc optional func ratingView(_ ratingView: RatingView, didUpdate rating: Double)
@@ -12,29 +9,30 @@ import UIKit
 @objcMembers
 open class RatingView: UIView {
     open weak var delegate: RatingViewDelegate?
-    
     private var emptyImageViews: [UIImageView] = []
-    
     private var fullImageViews: [UIImageView] = []
-    
     @IBInspectable open var emptyImage: UIImage? {
         didSet {
+            
             for imageView in emptyImageViews {
                 imageView.image = emptyImage
             }
+            
             refresh()
         }
     }
     
     @IBInspectable open var fullImage: UIImage? {
         didSet {
+            
             for imageView in fullImageViews {
                 imageView.image = fullImage
             }
+            
             refresh()
         }
     }
-
+    
     open var imageContentMode: UIView.ContentMode = .scaleAspectFit
     
     @IBInspectable open var minRating: Int = 0 {
@@ -51,7 +49,6 @@ open class RatingView: UIView {
             if maxRating != oldValue {
                 removeImageViews()
                 initImageViews()
-                
                 setNeedsLayout()
                 refresh()
             }
@@ -124,30 +121,30 @@ open class RatingView: UIView {
                     x: 0, y: 0,
                     width: CGFloat(rating - Double(i)) * imageView.frame.size.width,
                     height: imageView.frame.size.height)
-                    maskLayer.backgroundColor = UIColor.black.cgColor
+                maskLayer.backgroundColor = UIColor.black.cgColor
                 imageView.layer.mask = maskLayer
                 imageView.isHidden = false
             } else {
-                    imageView.layer.mask = nil
-                    imageView.isHidden = true
-                }
+                imageView.layer.mask = nil
+                imageView.isHidden = true
             }
         }
+    }
+    
+    private func sizeForImage(_ image: UIImage, inSize size: CGSize) -> CGSize {
+        let imageRatio = image.size.width / image.size.height
+        let viewRatio = size.width / size.height
         
-        private func sizeForImage(_ image: UIImage, inSize size: CGSize) -> CGSize {
-            let imageRatio = image.size.width / image.size.height
-            let viewRatio = size.width / size.height
+        if imageRatio < viewRatio {
+            let scale = size.height / image.size.height
+            let width = scale * image.size.width
             
-            if imageRatio < viewRatio {
-                let scale = size.height / image.size.height
-                let width = scale * image.size.width
-                
-                return CGSize(width: width, height: size.height)
-            } else {
-                let scale = size.width / image.size.width
-                let height = scale * image.size.height
-                
-                return CGSize(width: size.width, height: height)
+            return CGSize(width: width, height: size.height)
+        } else {
+            let scale = size.width / image.size.width
+            let height = scale * image.size.height
+            
+            return CGSize(width: size.width, height: height)
         }
     }
     
@@ -190,11 +187,11 @@ open class RatingView: UIView {
         let imageOffset = (frame.size.width - (imageViewSize.width * CGFloat(emptyImageViews.count))) / CGFloat(emptyImageViews.count - 1)
         
         for i in 0..<maxRating {
-        let imageFrame = CGRect(
-            x: i == 0 ? 0 : CGFloat(i) * (imageOffset + imageViewSize.width),
-            y: 0,
-            width: imageViewSize.width,
-            height: imageViewSize.height)
+            let imageFrame = CGRect(
+                x: i == 0 ? 0 : CGFloat(i) * (imageOffset + imageViewSize.width),
+                y: 0,
+                width: imageViewSize.width,
+                height: imageViewSize.height)
             
             var imageView = emptyImageViews[i]
             imageView.frame = imageFrame
@@ -224,4 +221,3 @@ open class RatingView: UIView {
         delegate?.ratingView?(self, didUpdate: rating)
     }
 }
-
