@@ -25,13 +25,12 @@ class HomeViewController: UIViewController {
     let url: String = "https://dapi.kakao.com/v2/local/search/keyword.json"
     /// kakao 키워드 이미지 검색 API 주소
     let imageUrl: String = "https://dapi.kakao.com/v2/search/image"
-    let regionData = RegionData()
     let beige = UIColor(red: 255/255, green: 231/255, blue: 204/255, alpha: 1.0)
     /// API를 통해서 가져온 라멘집 리스트 정보를 담고 있는 배열
     var ramenList: List<Information>?
     /// 라멘집 이미지들의 image_url 값들의 배열
     var imageUrlList: [String] = []
-    var regionLocation: (long: Double, lat: Double) = (127.0277194, 37.63695556)
+    var regionLocation: (long: Double, lat: Double) = (RegionData.list[0].guList[0].location.long, RegionData.list[0].guList[0].location.lat)
     var storeNames: [String] = []
     var allRamenData: List<Information>?
     var locationManager = CLLocationManager()
@@ -44,13 +43,12 @@ class HomeViewController: UIViewController {
         
         setUpCollectionView()
         setUpNavigationBar()
-        // TODO: RegionData 정보 활용하기
-        myLocationLabel.text = "서울시 강북구"
+    
+        myLocationLabel.text = "\(RegionData.list[0].city.rawValue) \(RegionData.list[0].guList[0].gu)"
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         locationManager.requestWhenInUseAuthorization()
-        
-        
+      
         if CLLocationManager.locationServicesEnabled() {
             print("위치 서비스 On 상태")
             locationManager.startUpdatingLocation()

@@ -3,6 +3,8 @@ import Alamofire
 import RealmSwift
 import CoreLocation
 
+//TODO: - 현재 좌표를 중심으로 보여지는 가게 10개를 tableView에 보여주기
+
 class SearchViewController: UIViewController {
     // MARK: - UI
     @IBOutlet var searchTableView: UITableView!
@@ -16,16 +18,10 @@ class SearchViewController: UIViewController {
     /// 검색어에 해당되는 String값들의 모음 배열
     var filterArray: [String] = []
     /// 전국에 있는 라멘 가게들의 이름 모음 배열
-    var storeNameArray: [String] = []
-    /// 중복된 요소를 제거한 전국에 있는 라멘 가게들의 이름 모음 배열
-    var uniqueStoreNames: [String] = []
+    var storeNames: [String] = []
     /// 데이터 송신을 통해 담아온 라멘 가게 정보들의 배열
     var ramenList = List<Information>()
-    // TODO: 위도, 경도 묶어서 저장하기
-    /// 경도 데이터를 담아줄 변수
-    var lng: Double = 0
-    /// 위도 데이터를 담아줄 변수
-    var lat: Double = 0
+    var currentLocation: (Double?, Double?)
     var isFiltered: Bool {
         let searchController = self.navigationItem.searchController
         
@@ -36,7 +32,6 @@ class SearchViewController: UIViewController {
         
         return false
     }
-    var currentLocation: (Double, Double)?
     
     // MARK: - ViewLifeCycle
     override func viewDidLoad() {
@@ -56,14 +51,7 @@ class SearchViewController: UIViewController {
             print("위치 서비스 OFF 상태")
         }
         
-        let regionList = RegionData.list
-        for region in regionList {
-            let guList = region.guList
-    
-            for gu in guList {
-                getStoreName(lng: gu.location.long, lat: gu.location.lat)
-            }
-        }
+        getRamenData(url: url, currentLocation: (currentLocation.0 ?? 0, currentLocation.1 ?? 0))
     }
     
     func navigationBarSetUp() {
@@ -80,27 +68,29 @@ class SearchViewController: UIViewController {
         navigationController?.navigationBar.backgroundColor = .white
     }
     
-    func getStoreName(lng: Double, lat: Double) {
-        let headers: HTTPHeaders = ["Authorization" : "KakaoAK d8b066a3dbb0e888b857f37b667d96d2"]
-        let parameters: [String : Any] = [
+    func getRamenData(url: String, currentLocation: (Double, Double)) {
+        let headers: HTTPHeaders = ["Authorization": "KakaoAK d8b066a3dbb0e888b857f37b667d96d2"]
+        let parameters: [String: Any] = [
             "query" : "라멘",
-            "x" : "\(lng)",
-            "y" : "\(lat)",
-            "radius" : 7000,
-            "size" : 10
+            "x": "\(currentLocation.0)",
+            "y": "\(currentLocation.1)",
+            "radius": 7000,
+            "size": 15,
+            "page": 1
         ]
         
-        AF.request(url, method: .get, parameters: parameters , headers: headers).responseDecodable(of: RamenStore.self) { response in
+        AF.request(url, method: .get, parameters: parameters, headers: headers).responseDecodable(of: RamenStore.self) {
+            response in
             if let data = response.value {
-                self.ramenList.append(objectsIn: data.documents)
+                self.ramenList = data.documents
                 
-                for storeIndex in 0..<data.documents.count {
-                    self.storeNameArray.append(data.documents[storeIndex].place_name)
+                for i in 0..<self.ramenList.count {
+                    self.storeNames.append(self.ramenList[i].place_name)
                 }
                 
-                self.uniqueStoreNames = Array(Set(self.storeNameArray))
-            } else {
-                print("통신 실패")
+                DispatchQueue.main.async {
+                    self.searchTableView.reloadData()
+                }
             }
         }
     }
@@ -126,7 +116,7 @@ class SearchViewController: UIViewController {
 extension SearchViewController: UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
         guard let text = searchController.searchBar.text else { return }
-        filterArray = uniqueStoreNames.filter { $0.contains(text) }
+        filterArray = storeNames.filter { $0.contains(text) }
         searchTableView.reloadData()
     }
 }
@@ -134,7 +124,11 @@ extension SearchViewController: UISearchResultsUpdating {
 // MARK: - TableView UITableViewDelegate & UITableViewDataSource
 extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return filterArray.count
+        if isFiltered {
+            return filterArray.count
+        } else {
+            return storeNames.count
+        }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -143,7 +137,7 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
         if isFiltered {
             cell.textLabel?.text = filterArray[indexPath.row]
         } else {
-            cell.textLabel?.text = uniqueStoreNames[indexPath.row]
+            cell.textLabel?.text = storeNames[indexPath.row]
         }
         
         return cell
@@ -156,11 +150,12 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let detailVC = self.storyboard?.instantiateViewController(withIdentifier: "DetailViewController") as? DetailViewController else { return }
         
-        for ramenIndex in 0..<ramenList.count {
-            if filterArray[indexPath.row] == ramenList[ramenIndex].place_name {
-                detailVC.information = ramenList
-                detailVC.index = ramenIndex
-            }
+        if isFiltered {
+            let information = ramenList.filter { $0.place_name == self.filterArray[indexPath.row] }
+            detailVC.information.append(objectsIn: information)
+        } else {
+            let information = ramenList.filter { $0.place_name == self.storeNames[indexPath.row] }
+            detailVC.information.append(objectsIn: information)
         }
         
         let backButton = UIBarButtonItem(title: "가게 검색", style: .plain, target: self, action: nil)
@@ -170,7 +165,7 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
         navigationItem.backBarButtonItem?.tintColor = .black
         navigationItem.backBarButtonItem?.setTitleTextAttributes(attributes, for: .normal)
         
-        navigationController?.navigationBar.backgroundColor = .systemOrange
+        navigationController?.navigationBar.backgroundColor = beige
         navigationController?.pushViewController(detailVC, animated: true)
     }
 }
@@ -182,6 +177,7 @@ extension SearchViewController: CLLocationManagerDelegate {
             print("위도 : \(location.coordinate.latitude)")
             print("경도 : \(location.coordinate.longitude)")
             currentLocation = (location.coordinate.latitude, location.coordinate.longitude)
+            print("현재 위치 : \(currentLocation)")
         }
     }
     
