@@ -172,6 +172,7 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
         let myLocation = CLLocation(latitude: currentLocation.0 ?? 0 , longitude: currentLocation.1 ?? 0 )
         let storeLocation = CLLocation(latitude: Double(ramenList[indexPath.row].y) ?? 0, longitude: Double(ramenList[indexPath.row].x) ?? 0)
         distance = Int(round(myLocation.distance(from: storeLocation) / 1000))
+        print(distance)
         
         cell.cellConfigure()
         cell.nameLabel.text = ramenData.place_name

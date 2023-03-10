@@ -90,6 +90,8 @@ class DetailViewController: UIViewController {
             guard let reviewImage = UIImage(named: "ReviewBlack") else { return }
             reviewImageView.image = reviewImage
         }
+        
+        setPressedValue()
     }
     
     func setPressedValue() {
@@ -135,7 +137,7 @@ class DetailViewController: UIViewController {
                 if self.existImageUrlList.count == 2 {
                     firstUrl = URL(string: self.existImageUrlList[0])
                     secondUrl = URL(string: self.existImageUrlList[1])
-                } else if self.existImageUrlList.count == 1{
+                } else if self.existImageUrlList.count == 1 {
                     firstUrl = URL(string: self.existImageUrlList[0])
                 }
                 

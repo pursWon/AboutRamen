@@ -1,6 +1,7 @@
 import UIKit
 import RealmSwift
 import Alamofire
+import CoreLocation
 
 class MyRamenListViewController: UIViewController {
     // MARK: - UI
@@ -13,10 +14,14 @@ class MyRamenListViewController: UIViewController {
     
     // MARK: - Properties
     let realm = try! Realm()
-    var viewType: ViewType = .ramenList
     let url: String = "https://dapi.kakao.com/v2/local/search/keyword.json"
     let beige = UIColor(red: 255/255, green: 231/255, blue: 204/255, alpha: 1.0)
     var ramenList = List<Information>()
+    var viewType: ViewType = .ramenList
+    var locationManager = CLLocationManager()
+    var currentLocation: (Double?, Double?)
+    var distance: Int = 0
+    
     // MARK: - View Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -24,6 +29,16 @@ class MyRamenListViewController: UIViewController {
         title = viewType.rawValue
         setUpTableView()
         view.backgroundColor = beige
+        
+        locationManager.delegate = self
+        locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        locationManager.requestWhenInUseAuthorization()
+        
+        if CLLocationManager.locationServicesEnabled() {
+            locationManager.startUpdatingLocation()
+        } else {
+            print("위치 서비스 Off 상태")
+        }
     }
     
     func setUpTableView() {
@@ -111,6 +126,9 @@ extension MyRamenListViewController: UITableViewDelegate, UITableViewDataSource 
         guard let detailVC = self.storyboard?.instantiateViewController(withIdentifier: "DetailViewController") as? DetailViewController else { return }
         let goodList = realm.objects(GoodListData.self)
         let myRamenList = realm.objects(MyRamenListData.self)
+        let myLocation = CLLocation(latitude: currentLocation.0 ?? 0, longitude: currentLocation.1 ?? 0)
+        
+        
         switch title {
             
         case "좋아요 목록":
@@ -132,11 +150,14 @@ extension MyRamenListViewController: UITableViewDelegate, UITableViewDataSource 
                     $0.y == goodList[indexPath.row].y
                 }.first
                 
+                let storeLocation = CLLocation(latitude: goodList[indexPath.row].y, longitude: goodList[indexPath.row].x)
+                distance = Int(round(myLocation.distance(from: storeLocation) / 1000))
+                
                 if let information = information.first {
-                    
                     detailVC.information.append(information)
                     detailVC.goodPressed = goodObject?.isGoodPressed ?? false
                     detailVC.myRamenPressed = myRamenListObject?.myRamenPressed ?? false
+                    detailVC.distance = distance
                     
                     let backButton = UIBarButtonItem(title: "나의 라멘 가게", style: .plain, target: self, action: nil)
                     let attributes = [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 16)]
@@ -171,11 +192,15 @@ extension MyRamenListViewController: UITableViewDelegate, UITableViewDataSource 
                     $0.y == myRamenList[indexPath.row].y
                 }.first
                 
+                let storeLocation = CLLocation(latitude: myRamenList[indexPath.row].y, longitude: myRamenList[indexPath.row].x)
+                distance = Int(round(myLocation.distance(from: storeLocation) / 1000))
+                
                 if let information = information.first {
                     
                     detailVC.information.append(information)
                     detailVC.goodPressed = goodObject?.isGoodPressed ?? false
                     detailVC.myRamenPressed = myRamenListObject?.myRamenPressed ?? false
+                    detailVC.distance = distance
                     
                     let backButton = UIBarButtonItem(title: "나의 라멘 가게", style: .plain, target: self, action: nil)
                     let attributes = [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 16)]
@@ -197,5 +222,20 @@ extension MyRamenListViewController: UITableViewDelegate, UITableViewDataSource 
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 60
+    }
+}
+
+extension MyRamenListViewController: CLLocationManagerDelegate {
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        if let location = locations.first {
+            print("위도 : \(location.coordinate.latitude)")
+            print("경도 : \(location.coordinate.longitude)")
+            currentLocation.0 = location.coordinate.latitude
+            currentLocation.1 = location.coordinate.longitude
+        }
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+        print(error)
     }
 }

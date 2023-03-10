@@ -12,6 +12,7 @@ class SearchViewController: UIViewController {
     
     // MARK: - Properties
     let url: String = "https://dapi.kakao.com/v2/local/search/keyword.json"
+    let realm = try! Realm()
     let beige = UIColor(red: 255/255, green: 231/255, blue: 204/255, alpha: 1.0)
     let sage = UIColor(red: 225/255, green: 238/255, blue: 221/255, alpha: 1.0)
     var locationManager = CLLocationManager()
@@ -22,6 +23,7 @@ class SearchViewController: UIViewController {
     /// 데이터 송신을 통해 담아온 라멘 가게 정보들의 배열
     var ramenList = List<Information>()
     var currentLocation: (Double?, Double?)
+    var distance: Int = 0
     var isFiltered: Bool {
         let searchController = self.navigationItem.searchController
         
@@ -150,12 +152,70 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let detailVC = self.storyboard?.instantiateViewController(withIdentifier: "DetailViewController") as? DetailViewController else { return }
         
+        let myLocation = CLLocation(latitude: currentLocation.0 ?? 0, longitude: currentLocation.1 ?? 0)
+        let storeLocation = CLLocation(latitude: Double(ramenList[indexPath.row].y) ?? 0, longitude: Double(ramenList[indexPath.row].x) ?? 0)
+        distance = Int(round(myLocation.distance(from: storeLocation) / 1000))
+        
+        let goodList = realm.objects(GoodListData.self)
+        let myRamenList = realm.objects(MyRamenListData.self)
+        var goodListNames: [String] = []
+        var myRamenListNames: [String] = []
+        
+        for i in 0..<goodList.count {
+            goodListNames.append(goodList[i].storeName)
+        }
+        
+        for i in 0..<myRamenList.count {
+            myRamenListNames.append(myRamenList[i].storeName)
+        }
+        
         if isFiltered {
             let information = ramenList.filter { $0.place_name == self.filterArray[indexPath.row] }
+            
             detailVC.information.append(objectsIn: information)
+            detailVC.distance = distance
+            
+            if let long = Double(information[indexPath.row].x), let lat = Double(information[indexPath.row].y) {
+            detailVC.location.0 = long
+            detailVC.location.1 = lat
+            }
+            
+            if goodListNames.contains(filterArray[indexPath.row]) {
+                detailVC.goodPressed = true
+            } else {
+                detailVC.goodPressed = false
+            }
+            
+            if myRamenListNames.contains(filterArray[indexPath.row]) {
+                detailVC.myRamenPressed = true
+            } else {
+                detailVC.myRamenPressed = false
+            }
+            
+            navigationController?.pushViewController(detailVC, animated: true)
         } else {
             let information = ramenList.filter { $0.place_name == self.storeNames[indexPath.row] }
             detailVC.information.append(objectsIn: information)
+            detailVC.distance = distance
+            
+            if let long = Double(information[indexPath.row].x), let lat = Double(information[indexPath.row].y) {
+            detailVC.location.0 = long
+            detailVC.location.1 = lat
+            }
+            
+            if goodListNames.contains(storeNames[indexPath.row]) {
+                detailVC.goodPressed = true
+            } else {
+                detailVC.goodPressed = false
+            }
+            
+            if myRamenListNames.contains(storeNames[indexPath.row]) {
+                detailVC.myRamenPressed = true
+            } else {
+                detailVC.myRamenPressed = false
+            }
+            
+            navigationController?.pushViewController(detailVC, animated: true)
         }
         
         let backButton = UIBarButtonItem(title: "가게 검색", style: .plain, target: self, action: nil)
@@ -166,7 +226,6 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
         navigationItem.backBarButtonItem?.setTitleTextAttributes(attributes, for: .normal)
         
         navigationController?.navigationBar.backgroundColor = beige
-        navigationController?.pushViewController(detailVC, animated: true)
     }
 }
 
