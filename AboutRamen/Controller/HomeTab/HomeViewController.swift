@@ -35,7 +35,8 @@ class HomeViewController: UIViewController {
     var allRamenData: List<Information>?
     var locationManager = CLLocationManager()
     var currentLocation: (Double?, Double?)
-    var distance: Int = 0
+    var distance: String = "0"
+    var goodStoreName: [String] = []
     
     // MARK: - View Life Cycle
     override func viewDidLoad() {
@@ -59,6 +60,12 @@ class HomeViewController: UIViewController {
         
         view.backgroundColor = beige
         print(realm.configuration.fileURL)
+        
+        let goodList = realm.objects(GoodListData.self)
+        
+        for i in 0..<goodList.count {
+            goodStoreName.append(goodList[i].storeName)
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -166,13 +173,12 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectionViewCell", for: indexPath) as? CollectionViewCell else { return UICollectionViewCell() }
         guard let ramenList = ramenList else { return UICollectionViewCell() }
-        
+        let goodList = realm.objects(GoodListData.self)
         let ramenData = ramenList[indexPath.row]
         
         let myLocation = CLLocation(latitude: currentLocation.0 ?? 0 , longitude: currentLocation.1 ?? 0 )
         let storeLocation = CLLocation(latitude: Double(ramenList[indexPath.row].y) ?? 0, longitude: Double(ramenList[indexPath.row].x) ?? 0)
-        distance = Int(round(myLocation.distance(from: storeLocation) / 1000))
-        print(distance)
+        distance = String(format: "%.2f" , myLocation.distance(from: storeLocation) / 1000)
         
         cell.cellConfigure()
         cell.nameLabel.text = ramenData.place_name
@@ -180,7 +186,7 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
         cell.ramenImageView.layer.borderWidth = 1.5
         cell.ramenImageView.layer.borderColor = UIColor.black.cgColor
         cell.ramenImageView.layer.cornerRadius = 10
-        
+            
         if imageUrlList.count == ramenList.count {
             let url = URL(string: imageUrlList[indexPath.row])
             cell.ramenImageView.kf.setImage(with: url)

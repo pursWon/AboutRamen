@@ -56,7 +56,7 @@ class DetailViewController: UIViewController {
     var store: String = ""
     var location: (Double, Double) = (0, 0)
     var storeRating: Double = 0
-    var distance: Int = 0
+    var distance: String = "0"
     /// DetailVC에서 보여줄 두 개의 이미지 URL을 담는 배열
     var existImageUrlList: [String] = []
     
@@ -288,30 +288,15 @@ class DetailViewController: UIViewController {
             myRamenPressed = true
             myListLabel.text = "추가하기 취소"
             
-            if let rating = ratingLabel.text {
-                myListAddImageView.image = UIImage(named: "MyListBlack")
-                let myRating = (rating as NSString).doubleValue
-                storeRating = myRating
-                
-                guard let address = addressLabel.text else { return }
-                
-                let myRamenData = MyRamenListData(storeName: store, address: address, x: location.0, y: location.1, rating: storeRating, myRamenPressed: myRamenPressed)
-                MyRamenListData.myRamenList.append(myRamenData)
-                
-                try! realm.write {
-                    realm.add(myRamenData)
-                }
-            } else {
-                myListAddImageView.image = UIImage(named: "MyListBlack")
-                
-                guard let address = addressLabel.text else { return }
-                
-                let myRamenData = MyRamenListData(storeName: store, address: address, x: location.0, y: location.1, rating: 0, myRamenPressed: myRamenPressed)
-                MyRamenListData.myRamenList.append(myRamenData)
-                
-                try! realm.write {
-                    realm.add(myRamenData)
-                }
+            myListAddImageView.image = UIImage(named: "MyListBlack")
+            
+            guard let address = addressLabel.text else { return }
+            
+            let myRamenData = MyRamenListData(storeName: store, address: address, x: location.0, y: location.1, myRamenPressed: myRamenPressed)
+            MyRamenListData.myRamenList.append(myRamenData)
+            
+            try! realm.write {
+                realm.add(myRamenData)
             }
         }
     }

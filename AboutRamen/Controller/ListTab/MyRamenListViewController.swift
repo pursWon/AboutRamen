@@ -20,7 +20,7 @@ class MyRamenListViewController: UIViewController {
     var viewType: ViewType = .ramenList
     var locationManager = CLLocationManager()
     var currentLocation: (Double?, Double?)
-    var distance: Int = 0
+    var distance: String = "0"
     
     // MARK: - View Life Cycle
     override func viewDidLoad() {
@@ -106,12 +106,16 @@ extension MyRamenListViewController: UITableViewDelegate, UITableViewDataSource 
                 cell.addressLabel.text = goodList[indexPath.row].addressName
                 cell.ratingLabel.text = String(goodList[indexPath.row].rating)
                 cell.starImage.isHidden = true
+            } else {
+                cell.starImage.isHidden = true
             }
             
         case "나의 라멘 가게":
             if !myRamenList.isEmpty {
                 cell.nameLabel.text = myRamenList[indexPath.row].storeName
                 cell.addressLabel.text = myRamenList[indexPath.row].address
+                cell.ratingLabel.isHidden = true
+            } else {
                 cell.ratingLabel.isHidden = true
             }
             
@@ -127,7 +131,6 @@ extension MyRamenListViewController: UITableViewDelegate, UITableViewDataSource 
         let goodList = realm.objects(GoodListData.self)
         let myRamenList = realm.objects(MyRamenListData.self)
         let myLocation = CLLocation(latitude: currentLocation.0 ?? 0, longitude: currentLocation.1 ?? 0)
-        
         
         switch title {
             
@@ -151,13 +154,16 @@ extension MyRamenListViewController: UITableViewDelegate, UITableViewDataSource 
                 }.first
                 
                 let storeLocation = CLLocation(latitude: goodList[indexPath.row].y, longitude: goodList[indexPath.row].x)
-                distance = Int(round(myLocation.distance(from: storeLocation) / 1000))
+                
+                distance = String(format: "%.2f", myLocation.distance(from: storeLocation) / 1000)
                 
                 if let information = information.first {
                     detailVC.information.append(information)
                     detailVC.goodPressed = goodObject?.isGoodPressed ?? false
                     detailVC.myRamenPressed = myRamenListObject?.myRamenPressed ?? false
                     detailVC.distance = distance
+                    detailVC.location.0 = goodList[indexPath.row].x
+                    detailVC.location.1 = goodList[indexPath.row].y
                     
                     let backButton = UIBarButtonItem(title: "나의 라멘 가게", style: .plain, target: self, action: nil)
                     let attributes = [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 16)]
@@ -193,7 +199,7 @@ extension MyRamenListViewController: UITableViewDelegate, UITableViewDataSource 
                 }.first
                 
                 let storeLocation = CLLocation(latitude: myRamenList[indexPath.row].y, longitude: myRamenList[indexPath.row].x)
-                distance = Int(round(myLocation.distance(from: storeLocation) / 1000))
+                distance = String(format: "%.2f", myLocation.distance(from: storeLocation) / 1000)
                 
                 if let information = information.first {
                     
@@ -201,6 +207,8 @@ extension MyRamenListViewController: UITableViewDelegate, UITableViewDataSource 
                     detailVC.goodPressed = goodObject?.isGoodPressed ?? false
                     detailVC.myRamenPressed = myRamenListObject?.myRamenPressed ?? false
                     detailVC.distance = distance
+                    detailVC.location.0 = myRamenList[indexPath.row].x
+                    detailVC.location.1 = myRamenList[indexPath.row].y
                     
                     let backButton = UIBarButtonItem(title: "나의 라멘 가게", style: .plain, target: self, action: nil)
                     let attributes = [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 16)]

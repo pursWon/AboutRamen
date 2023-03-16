@@ -23,7 +23,7 @@ class SearchViewController: UIViewController {
     /// 데이터 송신을 통해 담아온 라멘 가게 정보들의 배열
     var ramenList = List<Information>()
     var currentLocation: (Double?, Double?)
-    var distance: Int = 0
+    var distance: String = "0"
     var isFiltered: Bool {
         let searchController = self.navigationItem.searchController
         
@@ -154,7 +154,7 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
         
         let myLocation = CLLocation(latitude: currentLocation.0 ?? 0, longitude: currentLocation.1 ?? 0)
         let storeLocation = CLLocation(latitude: Double(ramenList[indexPath.row].y) ?? 0, longitude: Double(ramenList[indexPath.row].x) ?? 0)
-        distance = Int(round(myLocation.distance(from: storeLocation) / 1000))
+        distance = String(format: "%.2f", myLocation.distance(from: storeLocation) / 1000)
         
         let goodList = realm.objects(GoodListData.self)
         let myRamenList = realm.objects(MyRamenListData.self)
