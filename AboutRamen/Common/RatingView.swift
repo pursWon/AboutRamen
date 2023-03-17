@@ -11,24 +11,17 @@ open class RatingView: UIView {
     open weak var delegate: RatingViewDelegate?
     private var emptyImageViews: [UIImageView] = []
     private var fullImageViews: [UIImageView] = []
+    
     @IBInspectable open var emptyImage: UIImage? {
         didSet {
-            
-            for imageView in emptyImageViews {
-                imageView.image = emptyImage
-            }
-            
+            emptyImageViews.forEach{ $0.image = emptyImage }
             refresh()
         }
     }
     
     @IBInspectable open var fullImage: UIImage? {
         didSet {
-            
-            for imageView in fullImageViews {
-                imageView.image = fullImage
-            }
-            
+            emptyImageViews.forEach{ $0.image = emptyImage }
             refresh()
         }
     }
@@ -112,10 +105,10 @@ open class RatingView: UIView {
         for i in 0..<fullImageViews.count {
             let imageView = fullImageViews[i]
             
-            if rating >= Double(i+1) {
+            if rating >= Double(i + 1) {
                 imageView.layer.mask = nil
                 imageView.isHidden = false
-            } else if rating > Double(i) && rating < Double(i+1) {
+            } else if rating > Double(i) && rating < Double(i + 1) {
                 let maskLayer = CALayer()
                 maskLayer.frame = CGRect(
                     x: 0, y: 0,
@@ -138,12 +131,10 @@ open class RatingView: UIView {
         if imageRatio < viewRatio {
             let scale = size.height / image.size.height
             let width = scale * image.size.width
-            
             return CGSize(width: width, height: size.height)
         } else {
             let scale = size.width / image.size.width
             let height = scale * image.size.height
-            
             return CGSize(width: size.width, height: height)
         }
     }
