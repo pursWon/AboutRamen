@@ -113,7 +113,7 @@ extension RegionPickerController: UIPickerViewDelegate, UIPickerViewDataSource {
         delegateRegion?.sendRegionData(city: address.city ?? "-", gu: address.gu ?? "-")
         
         if let long = longlat.long, let lat = longlat.lat {
-        delegateLocation?.sendCurrentLocation(longlat: (long, lat))
+            delegateLocation?.sendCurrentLocation(location: (long: long, lat: lat))
         }
     }
     

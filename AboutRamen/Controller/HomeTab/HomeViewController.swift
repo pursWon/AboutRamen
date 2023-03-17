@@ -1,12 +1,12 @@
 import UIKit
+import CoreLocation
 import Alamofire
 import Kingfisher
 import RealmSwift
-import CoreLocation
 
 // MARK: - Protocols
 protocol LocationDataProtocol {
-    func sendCurrentLocation(longlat: (Double, Double))
+    func sendCurrentLocation(location: (long: Double, lat: Double))
 }
 
 protocol RegionDataProtocol {
@@ -25,7 +25,7 @@ class HomeViewController: UIViewController {
     let url: String = "https://dapi.kakao.com/v2/local/search/keyword.json"
     /// kakao 키워드 이미지 검색 API 주소
     let imageUrl: String = "https://dapi.kakao.com/v2/search/image"
-    let beige = UIColor(red: 255/255, green: 231/255, blue: 204/255, alpha: 1.0)
+    let beige = UIColor(red: 255 / 255, green: 231 / 255, blue: 204 / 255, alpha: 1)
     /// API를 통해서 가져온 라멘집 리스트 정보를 담고 있는 배열
     var ramenList: List<Information>?
     /// 라멘집 이미지들의 image_url 값들의 배열
@@ -34,7 +34,8 @@ class HomeViewController: UIViewController {
     var storeNames: [String] = []
     var allRamenData: List<Information>?
     var locationManager = CLLocationManager()
-    var currentLocation: (Double?, Double?)
+    var currentLocation: (long: Double?,lat: Double?)
+    // TODO: Distance를 Optional String 값을 가져오기
     var distance: String = "0"
     var goodStoreName: [String] = []
     
@@ -49,23 +50,23 @@ class HomeViewController: UIViewController {
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         locationManager.requestWhenInUseAuthorization()
-      
+        
+        /// - NOTE : coordinate 확인을 위해 프린트문 유지,,
         if CLLocationManager.locationServicesEnabled() {
-            print("위치 서비스 On 상태")
+            // print("위치 서비스 On 상태")
             locationManager.startUpdatingLocation()
-            print(locationManager.location?.coordinate)
+            // print(locationManager.location?.coordinate)
         } else {
-            print("위치 서비스 Off 상태")
+            // print("위치 서비스 Off 상태")
         }
         
         view.backgroundColor = beige
-        print(realm.configuration.fileURL)
+        /// - NOTE : Realm 파일 위치를 확인하기 위해 프린트문 유지...
+        // print(realm.configuration.fileURL)
         
         let goodList = realm.objects(GoodListData.self)
         
-        for i in 0..<goodList.count {
-            goodStoreName.append(goodList[i].storeName)
-        }
+        goodList.forEach { goodStoreName.append($0.storeName) }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -92,12 +93,12 @@ class HomeViewController: UIViewController {
         collectionView.backgroundColor = beige
     }
     
-    func getRamenData(url: String, currentLocation: (Double, Double)) {
+    func getRamenData(url: String, currentLocation: (long: Double, lat: Double)) {
         let headers: HTTPHeaders = ["Authorization": "KakaoAK d8b066a3dbb0e888b857f37b667d96d2"]
         let parameters: [String: Any] = [
             "query" : "라멘",
-            "x": "\(currentLocation.0)",
-            "y": "\(currentLocation.1)",
+            "x": "\(currentLocation.long)",
+            "y": "\(currentLocation.lat)",
             "radius": 7000,
             "size": 10,
             "page": 1
@@ -108,11 +109,8 @@ class HomeViewController: UIViewController {
             if let data = response.value {
                 self.ramenList = data.documents
                 guard let ramenList = self.ramenList else { return }
-                
-                for index in 0..<ramenList.count {
-                    self.storeNames.append(ramenList[index].place_name)
-                }
-                
+                ramenList.forEach{ self.storeNames.append($0.place_name) }
+
                 DispatchQueue.main.async {
                     self.getRamenImages()
                 }
@@ -123,6 +121,7 @@ class HomeViewController: UIViewController {
     func getRamenImages() {
         imageUrlList.removeAll()
         
+        // TODO: API KEY 숨기기
         let headers: HTTPHeaders = ["Authorization": "KakaoAK d8b066a3dbb0e888b857f37b667d96d2"]
         for name in storeNames {
             let params: [String: Any] = ["query": name]
@@ -173,10 +172,11 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectionViewCell", for: indexPath) as? CollectionViewCell else { return UICollectionViewCell() }
         guard let ramenList = ramenList else { return UICollectionViewCell() }
+        // TODO: 좋아요 리스트를 통해서 홈 vc에서 별점을 보여줄 예정
         let goodList = realm.objects(GoodListData.self)
         let ramenData = ramenList[indexPath.row]
         
-        let myLocation = CLLocation(latitude: currentLocation.0 ?? 0 , longitude: currentLocation.1 ?? 0 )
+        let myLocation = CLLocation(latitude: currentLocation.long ?? 0, longitude: currentLocation.lat ?? 0)
         let storeLocation = CLLocation(latitude: Double(ramenList[indexPath.row].y) ?? 0, longitude: Double(ramenList[indexPath.row].x) ?? 0)
         distance = String(format: "%.2f" , myLocation.distance(from: storeLocation) / 1000)
         
@@ -213,8 +213,8 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard let detailVC = self.storyboard?.instantiateViewController(withIdentifier: "DetailViewController") as? DetailViewController else { return }
         guard let ramenList = ramenList else { return }
-        
         detailVC.store = ramenList[indexPath.row].place_name
+        
         if let x = Double(ramenList[indexPath.row].x), let y = Double(ramenList[indexPath.row].y) {
             detailVC.location = (x,y)
         }
@@ -225,11 +225,7 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
             $0.y == Double(ramenList[indexPath.row].y)
         }
         
-        if goodData.isEmpty {
-            detailVC.goodPressed = false
-        } else {
-            detailVC.goodPressed = true
-        }
+        detailVC.goodPressed = goodData.isEmpty ? false : true
         
         let myRamenData = realm.objects(MyRamenListData.self).filter {
             $0.storeName == ramenList[indexPath.row].place_name &&
@@ -237,22 +233,14 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
             $0.y == Double(ramenList[indexPath.row].y)
         }
         
-        if myRamenData.isEmpty {
-            detailVC.myRamenPressed = false
-        } else {
-            detailVC.myRamenPressed = true
-        }
+        detailVC.myRamenPressed = myRamenData.isEmpty ? false : true
         
         let reviewListData = realm.objects(ReviewListData.self).filter {
             $0.storeName == ramenList[indexPath.row].place_name &&
             $0.addressName == ramenList[indexPath.row].road_address_name
         }
         
-        if reviewListData.isEmpty {
-            detailVC.reviewState = .yet
-        } else {
-            detailVC.reviewState = .done
-        }
+        detailVC.reviewState = reviewListData.isEmpty ? .yet : .done
         
         detailVC.index = indexPath.row
         detailVC.information = ramenList
@@ -278,18 +266,15 @@ extension HomeViewController: RegionDataProtocol {
 
 // MARK: - LocationDataProtocol
 extension HomeViewController: LocationDataProtocol {
-    func sendCurrentLocation(longlat: (Double, Double)) {
-        regionLocation = longlat
+    func sendCurrentLocation(location: (long: Double, lat: Double)) {
+        regionLocation = location
     }
 }
 
 // MARK: - CLLocationManagerDelegate
 extension HomeViewController: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        print("didUpdateLocations")
         if let location = locations.first {
-            print("위도 : \(location.coordinate.latitude)")
-            print("경도 : \(location.coordinate.longitude)")
             currentLocation = (Double(location.coordinate.latitude), Double(location.coordinate.longitude))
         }
     }
