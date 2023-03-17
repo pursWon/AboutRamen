@@ -12,7 +12,5 @@ class ReviewListData: Object {
         self.addressName = addressName
         self.reviewContent = reviewContent
     }
-    
-    static var reviewList: [ReviewListData] = []
 }
 

@@ -19,5 +19,7 @@ class GoodListData: Object {
         self.isGoodPressed = isGoodPressed
     }
     
+    
+    // TODO: - DetailVC에서 해당 객체를 사용하지 않고 realm에서 데이터 가져오도록 수정하기
     static var goodList: [GoodListData] = []
 }

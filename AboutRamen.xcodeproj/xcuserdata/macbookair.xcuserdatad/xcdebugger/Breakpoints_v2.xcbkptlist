@@ -46,9 +46,166 @@
             filePath = "AboutRamen/Controller/HomeTab/HomeViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "208"
-            endingLineNumber = "208"
+            startingLineNumber = "214"
+            endingLineNumber = "214"
             landmarkName = "collectionView(_:didSelectItemAt:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "B8BFE2E0-180B-41A8-B5AE-F2CD28B648A5"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "AboutRamen/Model/MyRamenListData.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "9"
+            endingLineNumber = "9"
+            landmarkName = "MyRamenListData"
+            landmarkType = "3">
+            <Locations>
+               <Location
+                  uuid = "B8BFE2E0-180B-41A8-B5AE-F2CD28B648A5 - 455b9d65b0b6350b"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "property wrapper backing initializer of AboutRamen.MyRamenListData.myRamenPressed : Swift.Bool"
+                  moduleName = "AboutRamen"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/macbookair/AboutRamen/AboutRamen/Model/MyRamenListData.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "9"
+                  endingLineNumber = "9"
+                  offsetFromSymbolStart = "36">
+               </Location>
+               <Location
+                  uuid = "B8BFE2E0-180B-41A8-B5AE-F2CD28B648A5 - 8915fc2c85682a21"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "AboutRamen.MyRamenListData.myRamenPressed.getter : Swift.Bool"
+                  moduleName = "AboutRamen"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/macbookair/AboutRamen/AboutRamen/Model/MyRamenListData.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "9"
+                  endingLineNumber = "9"
+                  offsetFromSymbolStart = "112">
+               </Location>
+               <Location
+                  uuid = "B8BFE2E0-180B-41A8-B5AE-F2CD28B648A5 - 69a0d6b37a3cf3d5"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "AboutRamen.MyRamenListData.myRamenPressed.setter : Swift.Bool"
+                  moduleName = "AboutRamen"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/macbookair/AboutRamen/AboutRamen/Model/MyRamenListData.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "9"
+                  endingLineNumber = "9"
+                  offsetFromSymbolStart = "144">
+               </Location>
+               <Location
+                  uuid = "B8BFE2E0-180B-41A8-B5AE-F2CD28B648A5 - 3a2a6a09abfdabd5"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "AboutRamen.MyRamenListData.myRamenPressed.modify : Swift.Bool with unmangled suffix &quot;.resume.0&quot;"
+                  moduleName = "AboutRamen"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/macbookair/AboutRamen/AboutRamen/Model/MyRamenListData.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "9"
+                  endingLineNumber = "9"
+                  offsetFromSymbolStart = "16">
+               </Location>
+               <Location
+                  uuid = "B8BFE2E0-180B-41A8-B5AE-F2CD28B648A5 - dc3c2cc5458bba2d"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "AboutRamen.MyRamenListData.init() -&gt; AboutRamen.MyRamenListData"
+                  moduleName = "AboutRamen"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/macbookair/AboutRamen/AboutRamen/Model/MyRamenListData.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "9"
+                  endingLineNumber = "9"
+                  offsetFromSymbolStart = "388">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "6BB07039-88AF-4C3C-8C84-39F1ABF27E5A"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "AboutRamen/Controller/ListTab/ReviewListViewController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "75"
+            endingLineNumber = "75"
+            landmarkName = "tableView(_:commit:forRowAt:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "192CB2BC-79A7-4135-BA54-DBFF7CCCB04F"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "AboutRamen/Controller/ListTab/ReviewListViewController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "78"
+            endingLineNumber = "78"
+            landmarkName = "tableView(_:commit:forRowAt:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "D9404997-46EC-4615-9251-879C3A40B727"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "AboutRamen/Controller/ListTab/ReviewListViewController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "77"
+            endingLineNumber = "77"
+            landmarkName = "tableView(_:commit:forRowAt:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "69007245-9F5F-4997-BAAC-028E41B524AE"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "AboutRamen/Controller/ListTab/ReviewListViewController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "80"
+            endingLineNumber = "80"
+            landmarkName = "tableView(_:commit:forRowAt:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
