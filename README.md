@@ -8,7 +8,11 @@ https://user-images.githubusercontent.com/99719661/224327277-4037392f-cf84-469f-
 </div>
 
 ## 기능명세서 표 및 공수산정
+- 1월 8일부터 3월말까지 목표를 잡고 공수산정을 하였습니다.    
+- 화면별로 기능을 정의하고 명세하였습니다.   
+- 우선순위를 정하여 우선순위가 낮은 것부터 오름차순으로 진행하였습니다.   
 
-<img width="1183" alt="스크린샷 2023-03-10 오후 10 57 52" src="https://user-images.githubusercontent.com/99719661/224335383-416753a5-5038-4b39-808f-b9a1d0fee79c.png">
-
-<img width="1188" alt="스크린샷 2023-03-10 오후 10 58 28" src="https://user-images.githubusercontent.com/99719661/224336266-03684305-dc4c-4d76-9b5f-989a126d8791.png">
+<img width="700" src="https://user-images.githubusercontent.com/99719661/225807620-7f110a93-5404-455e-884e-4dab3b0bfea6.png">
+<img width="700" src="https://user-images.githubusercontent.com/99719661/225807651-27d6e410-3e18-4f07-b109-a618485da10a.png">
+<img width="700" src="https://user-images.githubusercontent.com/99719661/225807670-58cf68d6-f943-49f1-b6f9-b14d031e4d9d.png">
+<img width="700" src="https://user-images.githubusercontent.com/99719661/225807685-75627a75-8eef-46d0-9859-e84ebe5f2363.png">
