@@ -5,23 +5,23 @@ extension CALayer {
         for edge in arr_edge {
             let border = CALayer()
             switch edge {
-            case UIRectEdge.top:
-                border.frame = CGRect.init(x: 0, y: 0, width: frame.width, height: width)
+            case .top:
+                border.frame = .init(x: 0, y: 0, width: frame.width, height: width)
                 break
-            case UIRectEdge.bottom:
-                border.frame = CGRect.init(x: 0, y: frame.height - width, width: frame.width, height: width)
+            case .bottom:
+                border.frame = .init(x: 0, y: frame.height - width, width: frame.width, height: width)
                 break
-            case UIRectEdge.left:
-                border.frame = CGRect.init(x: 0, y: 0, width: width, height: frame.height)
+            case .left:
+                border.frame = .init(x: 0, y: 0, width: width, height: frame.height)
                 break
-            case UIRectEdge.right:
-                border.frame = CGRect.init(x: frame.width - width, y: 0, width: width, height: frame.height)
+            case .right:
+                border.frame = .init(x: frame.width - width, y: 0, width: width, height: frame.height)
                 break
             default:
                 break
             }
             
-            border.backgroundColor = color.cgColor;
+            border.backgroundColor = color.cgColor
             self.addSublayer(border)
         }
     }
