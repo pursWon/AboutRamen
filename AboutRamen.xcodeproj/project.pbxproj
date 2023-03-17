@@ -33,6 +33,7 @@
 		D0B171C6296EF4C5002AD35D /* MyListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0B171C5296EF4C5002AD35D /* MyListCell.swift */; };
 		D0BB719429B87037002C47D0 /* MyRamenListData.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0BB719329B87037002C47D0 /* MyRamenListData.swift */; };
 		D0BB719629B8703E002C47D0 /* GoodListData.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0BB719529B8703E002C47D0 /* GoodListData.swift */; };
+		D0BB8AB529C42F95000DE01E /* CustomColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0BB8AB429C42F95000DE01E /* CustomColor.swift */; };
 		D0D71EB929AC5A0A00D40C62 /* CALayer+.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0D71EB829AC5A0A00D40C62 /* CALayer+.swift */; };
 		D0E23DDC299F3BE9006C1C7C /* Realm in Frameworks */ = {isa = PBXBuildFile; productRef = D0E23DDB299F3BE9006C1C7C /* Realm */; };
 		D0E23DDE299F3BE9006C1C7C /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = D0E23DDD299F3BE9006C1C7C /* RealmSwift */; };
@@ -86,6 +87,7 @@
 		D0B171C5296EF4C5002AD35D /* MyListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MyListCell.swift; path = AboutRamen/View/MyListCell.swift; sourceTree = SOURCE_ROOT; };
 		D0BB719329B87037002C47D0 /* MyRamenListData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyRamenListData.swift; sourceTree = "<group>"; };
 		D0BB719529B8703E002C47D0 /* GoodListData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GoodListData.swift; sourceTree = "<group>"; };
+		D0BB8AB429C42F95000DE01E /* CustomColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomColor.swift; sourceTree = "<group>"; };
 		D0D71EB829AC5A0A00D40C62 /* CALayer+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CALayer+.swift"; sourceTree = "<group>"; };
 		D0E23DE329A46D68006C1C7C /* RatingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatingView.swift; sourceTree = "<group>"; };
 		D0E8154029978BD7007DBC55 /* BlankTextAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlankTextAlert.swift; sourceTree = "<group>"; };
@@ -233,6 +235,7 @@
 			children = (
 				D0E23DE329A46D68006C1C7C /* RatingView.swift */,
 				D0D71EB829AC5A0A00D40C62 /* CALayer+.swift */,
+				D0BB8AB429C42F95000DE01E /* CustomColor.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -346,6 +349,7 @@
 				D0B170C7295D39EA002AD35D /* SearchViewController.swift in Sources */,
 				D0E23DE429A46D68006C1C7C /* RatingView.swift in Sources */,
 				D0B171BE2966D738002AD35D /* SearchViewCell.swift in Sources */,
+				D0BB8AB529C42F95000DE01E /* CustomColor.swift in Sources */,
 				D0E815452998BD0F007DBC55 /* ListAlert.swift in Sources */,
 				D0E8154129978BD7007DBC55 /* BlankTextAlert.swift in Sources */,
 				D01307B1296FF19200672422 /* ReviewListViewController.swift in Sources */,

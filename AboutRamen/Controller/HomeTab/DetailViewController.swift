@@ -45,8 +45,6 @@ class DetailViewController: UIViewController {
     let realm = try! Realm()
     let imageUrl: String = "https://dapi.kakao.com/v2/search/image"
     let defaultImage: UIImage = UIImage(named: "Ramen") ?? UIImage(systemName: "fork.knife")!
-    let beige = UIColor(red: 255/255, green: 231/255, blue: 204/255, alpha: 1.0)
-    let sage = UIColor(red: 225/255, green: 238/255, blue: 221/255, alpha: 1.0)
     var index: Int = 0
     var searchIndex: Int = 0
     var information = List<Information>()
@@ -54,7 +52,7 @@ class DetailViewController: UIViewController {
     var goodPressed: Bool = false
     var myRamenPressed: Bool = false
     var store: String = ""
-    var location: (Double, Double) = (0, 0)
+    var location: (long: Double, lat: Double) = (0, 0)
     var storeRating: Double = 0
     var distance: String = "0"
     /// DetailVC에서 보여줄 두 개의 이미지 URL을 담는 배열
@@ -80,16 +78,20 @@ class DetailViewController: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        var reviewImage: UIImage?
+        
         switch reviewState {
         case .yet:
-            reviewLabel.text = reviewState.rawValue
-            guard let reviewImage = UIImage(named: "ReviewWhite") else { return }
-            reviewImageView.image = reviewImage
+            reviewImage = UIImage(named: "ReviewWhite")
         case .done:
-            reviewLabel.text = reviewState.rawValue
-            guard let reviewImage = UIImage(named: "ReviewBlack") else { return }
+            reviewImage = UIImage(named: "ReviewBlack")
+        }
+        
+        if let reviewImage = reviewImage {
             reviewImageView.image = reviewImage
         }
+        
+        reviewLabel.text = reviewState.rawValue
         
         setPressedValue()
     }
@@ -114,7 +116,7 @@ class DetailViewController: UIViewController {
     
     func getRamenImages() {
         existImageUrlList = []
-        
+        // TODO: API KEY 숨기기
         let headers: HTTPHeaders = ["Authorization": "KakaoAK d8b066a3dbb0e888b857f37b667d96d2"]
         let params: [String: Any] = ["query": information[index].place_name]
         AF.request(imageUrl, method: .get, parameters: params, headers: headers).responseDecodable(of: RamenImage.self) { response in
@@ -172,7 +174,7 @@ class DetailViewController: UIViewController {
     
     func setUpBackgroundColor() {
         [view, addressLabel, numberLabel, timeLabel].forEach {
-            $0.backgroundColor = beige
+            $0.backgroundColor = CustomColor.beige
         }
     }
     
@@ -186,27 +188,25 @@ class DetailViewController: UIViewController {
     }
     
     func setUpTabImageView() {
-        let goodTabGesture = UITapGestureRecognizer(target: self, action: #selector(goodMark))
-        goodImageView.addGestureRecognizer(goodTabGesture)
-        goodImageView.isUserInteractionEnabled = true
-        
-        let reviewTabGesture = UITapGestureRecognizer(target: self, action: #selector(reviewMark))
-        reviewImageView.addGestureRecognizer(reviewTabGesture)
-        reviewImageView.isUserInteractionEnabled = true
-        
-        let addTabGesture = UITapGestureRecognizer(target: self, action: #selector(addMyListMark))
-        myListAddImageView.addGestureRecognizer(addTabGesture)
-        myListAddImageView.isUserInteractionEnabled = true
+        addTabGesture(target: goodImageView, action: #selector(goodMark))
+        addTabGesture(target: reviewImageView, action: #selector(reviewMark))
+        addTabGesture(target: myListAddImageView, action:  #selector(addMyListMark))
     }
+
+     func addTabGesture(target: UIImageView, action: Selector) {
+         let addTabGesture = UITapGestureRecognizer(target: self, action: action)
+         target.addGestureRecognizer(addTabGesture)
+         target.isUserInteractionEnabled = true
+     }
     
-    @objc func goodMark() -> String {
+    @objc func goodMark() {
         let goodObject = realm.objects(GoodListData.self).where {
             $0.storeName == store
-            && $0.x == location.0
-            && $0.y == location.1
+            && $0.x == location.long
+            && $0.y == location.lat
         }.first
         
-        guard let rating = ratingLabel.text else { return "0" }
+        guard let rating = ratingLabel.text else { return }
         
         let myRating = (rating as NSString).doubleValue
         storeRating = myRating
@@ -215,7 +215,7 @@ class DetailViewController: UIViewController {
             goodPressed = false
             goodLabel.text = "좋아요"
             goodImageView.image = UIImage(named: "ThumbsUpWhite")
-            guard let goodObject = goodObject else { return "" }
+            guard let goodObject = goodObject else { return }
             
             if let index = GoodListData.goodList.firstIndex(of: goodObject) {
                 GoodListData.goodList.remove(at: index)
@@ -229,7 +229,7 @@ class DetailViewController: UIViewController {
             goodLabel.text = "좋아요 취소"
             goodImageView.image = UIImage(named: "ThumbsUpBlack")
             
-            guard let address = addressLabel.text else { return "" }
+            guard let address = addressLabel.text else { return }
             
             let goodData = GoodListData(storeName: store, addressName: address, x: location.0, y: location.1, rating: storeRating, isGoodPressed: goodPressed)
             GoodListData.goodList.append(goodData)
@@ -239,8 +239,6 @@ class DetailViewController: UIViewController {
                 goodData.rating = storeRating
             }
         }
-        
-        return ""
     }
     
     @objc func reviewMark() {
@@ -267,8 +265,8 @@ class DetailViewController: UIViewController {
         
         let myListObject = realm.objects(MyRamenListData.self).where {
             $0.storeName == storeName
-            && $0.x == location.0
-            && $0.y == location.1
+            && $0.x == location.long
+            && $0.y == location.lat
         }.first
         
         if myRamenPressed {
@@ -292,7 +290,7 @@ class DetailViewController: UIViewController {
             
             guard let address = addressLabel.text else { return }
             
-            let myRamenData = MyRamenListData(storeName: store, address: address, x: location.0, y: location.1, myRamenPressed: myRamenPressed)
+            let myRamenData = MyRamenListData(storeName: store, address: address, x: location.long, y: location.lat, myRamenPressed: myRamenPressed)
             MyRamenListData.myRamenList.append(myRamenData)
             
             try! realm.write {

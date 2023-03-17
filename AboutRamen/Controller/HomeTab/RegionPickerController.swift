@@ -11,9 +11,6 @@ class RegionPickerController: UIViewController {
     // MARK: - Properties
     let regionData = RegionData()
     let list = RegionData.list
-    let beige = UIColor(red: 255/255, green: 231/255, blue: 204/255, alpha: 1.0)
-    let sage = UIColor(red: 225/255, green: 238/255, blue: 221/255, alpha: 1.0)
-    let deepGreen = UIColor(red: 24/255, green: 58/255, blue: 29/255, alpha: 1.0)
     /// 지역명 프로토콜 변수
     var delegateRegion: RegionDataProtocol?
     /// 경도, 위도 프로토콜 변수
@@ -32,10 +29,10 @@ class RegionPickerController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = beige
-        pickerView.backgroundColor = beige
-        regionPickerView.backgroundColor = sage
-        chooseLabel.textColor = deepGreen
+        view.backgroundColor = CustomColor.beige
+        pickerView.backgroundColor = CustomColor.beige
+        regionPickerView.backgroundColor = CustomColor.sage
+        chooseLabel.textColor = CustomColor.deepGreen
         
         let attributes = [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 100)]
         navigationController?.navigationBar.backItem?.backBarButtonItem?.setTitleTextAttributes(attributes, for: .normal)

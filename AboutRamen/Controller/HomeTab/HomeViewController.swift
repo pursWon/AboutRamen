@@ -25,7 +25,6 @@ class HomeViewController: UIViewController {
     let url: String = "https://dapi.kakao.com/v2/local/search/keyword.json"
     /// kakao 키워드 이미지 검색 API 주소
     let imageUrl: String = "https://dapi.kakao.com/v2/search/image"
-    let beige = UIColor(red: 255 / 255, green: 231 / 255, blue: 204 / 255, alpha: 1)
     /// API를 통해서 가져온 라멘집 리스트 정보를 담고 있는 배열
     var ramenList: List<Information>?
     /// 라멘집 이미지들의 image_url 값들의 배열
@@ -60,7 +59,7 @@ class HomeViewController: UIViewController {
             // print("위치 서비스 Off 상태")
         }
         
-        view.backgroundColor = beige
+        view.backgroundColor = CustomColor.beige
         /// - NOTE : Realm 파일 위치를 확인하기 위해 프린트문 유지...
         // print(realm.configuration.fileURL)
         
@@ -75,7 +74,7 @@ class HomeViewController: UIViewController {
     
     func setUpNavigationBar() {
         title = "어바웃라멘"
-        navigationController?.navigationBar.backgroundColor = beige
+        navigationController?.navigationBar.backgroundColor = CustomColor.beige
         
         let attributes = [NSAttributedString.Key.font: UIFont(name: "BlackHanSans-Regular", size: 20)!]
         regionChangeButton.setTitleTextAttributes(attributes, for: .normal)
@@ -90,7 +89,7 @@ class HomeViewController: UIViewController {
     func setUpCollectionView() {
         collectionView.dataSource = self
         collectionView.delegate = self
-        collectionView.backgroundColor = beige
+        collectionView.backgroundColor = CustomColor.beige
     }
     
     func getRamenData(url: String, currentLocation: (long: Double, lat: Double)) {

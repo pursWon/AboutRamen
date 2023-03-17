@@ -8,7 +8,6 @@ class ReviewViewController: UIViewController {
     
     //MARK: - Properties
     let realm = try! Realm()
-    let beige = UIColor(red: 255/255, green: 231/255, blue: 204/255, alpha: 1.0)
     var delegate: ReviewCompleteProtocol?
     var storeName: String = ""
     var addressName: String = ""
@@ -19,17 +18,19 @@ class ReviewViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = beige
-        reviewView.backgroundColor = beige
+        view.backgroundColor = CustomColor.beige
+        reviewView.backgroundColor = CustomColor.beige
         
         setUpTextViewBorder()
         setUpNavigationBarButton()
         
-        if modifyReview.isEmpty {
-            reviewTextView.text = ""
-        } else {
-            reviewTextView.text = modifyReview
-        }
+        reviewTextView.text = modifyReview.isEmpty ? "" : modifyReview
+        
+        // if modifyReview.isEmpty {
+        //     reviewTextView.text = ""
+        // } else {
+        //     reviewTextView.text = modifyReview
+        // }
     }
     
     func setUpTextViewBorder() {
@@ -57,35 +58,31 @@ class ReviewViewController: UIViewController {
             storeNameArray.append(reviewList[i].storeName)
         }
         
-        switch modifyReview.isEmpty {
-        
-        case true:
-        if reviewTextView.text.isEmpty {
-            blankTextAlert()
-        } else {
-            if storeNameArray.contains(storeName) {
-                listAlert()
+        if modifyReview.isEmpty {
+            if reviewTextView.text.isEmpty {
+                blankTextAlert()
             } else {
-                try! realm.write {
-                    realm.add(ReviewListData(storeName: storeName, addressName: addressName, reviewContent: reviewTextView.text))
+                if storeNameArray.contains(storeName) {
+                    listAlert()
+                } else {
+                    try! realm.write {
+                        realm.add(ReviewListData(storeName: storeName, addressName: addressName, reviewContent: reviewTextView.text))
+                    }
+                    
+                    delegate?.sendReview(state: .done)
+                    navigationController?.popViewController(animated: true)
                 }
-                
-                delegate?.sendReview(state: .done)
-                navigationController?.popViewController(animated: true)
             }
-        }
-            
-        case false:
+        } else {
             if reviewTextView.text.isEmpty {
                 blankTextAlert()
             } else {
                 correctAlert()
                 modifyReview = reviewTextView.text
                 let reviewUpdate = realm.objects(ReviewListData.self).where {
-                    $0.storeName == storeName &&
-                    $0.addressName == addressName
+                    $0.storeName == storeName && $0.addressName == addressName
                 }.first
-            
+                
                 try! realm.write {
                     if let reviewUpdate = reviewUpdate {
                         reviewUpdate.reviewContent = reviewTextView.text
