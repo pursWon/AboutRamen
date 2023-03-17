@@ -73,20 +73,10 @@ extension MyRamenListViewController: UITableViewDelegate, UITableViewDataSource 
         
         switch title {
         case "좋아요 목록":
-            switch goodList.count {
-            case 0:
-                return 1
-            default:
-                return goodList.count
-            }
+            return goodList.count
             
         case "나의 라멘 가게":
-            switch myRamenList.count {
-            case 0:
-                return 1
-            default:
-                return myRamenList.count
-            }
+            return myRamenList.count
             
         default:
             fatalError()

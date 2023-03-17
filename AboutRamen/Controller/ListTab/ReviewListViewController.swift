@@ -28,12 +28,7 @@ class ReviewListViewController: UIViewController {
 extension ReviewListViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         let reviewList = realm.objects(ReviewListData.self)
-        switch reviewList.count {
-        case 0:
-            return 1
-        default:
-            return reviewList.count
-        }
+        return reviewList.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -50,20 +45,20 @@ extension ReviewListViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let reviewVC = self.storyboard?.instantiateViewController(withIdentifier: "ReviewViewController") as? ReviewViewController else { return }
         let reviewList = realm.objects(ReviewListData.self)
-        let content = reviewList.where {
-            $0.storeName == reviewList[indexPath.row].storeName &&
-            $0.addressName == reviewList[indexPath.row].addressName
-        }.first
-        
-        guard let content = content else { return }
         
         if reviewList.count != 0 {
+            let content = reviewList.where {
+                $0.storeName == reviewList[indexPath.row].storeName &&
+                $0.addressName == reviewList[indexPath.row].addressName
+            }.first
+            
+            guard let content = content else { return }
+            
             reviewVC.storeName = reviewList[indexPath.row].storeName
             reviewVC.addressName = reviewList[indexPath.row].addressName
             reviewVC.modifyReview = content.reviewContent
+            navigationController?.pushViewController(reviewVC, animated: true)
         }
-        
-        navigationController?.pushViewController(reviewVC, animated: true)
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -76,15 +71,16 @@ extension ReviewListViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         let reviewList = realm.objects(ReviewListData.self)
-        var reviewArray = Array(reviewList)
-        
+        let reviewArray = Array(reviewList)
         
         if editingStyle == .delete {
             let item = reviewArray[indexPath.row]
+            
             try! realm.write {
                 realm.delete(item)
             }
-            reviewListTableView.deleteRows(at: [indexPath], with: .automatic)
+            
+            reviewListTableView.reloadData()
         }
     }
 }
