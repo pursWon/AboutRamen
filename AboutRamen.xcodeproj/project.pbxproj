@@ -42,7 +42,6 @@
 		D0E815472998D712007DBC55 /* CorrectAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0E815462998D712007DBC55 /* CorrectAlert.swift */; };
 		D0E8154F2999E4C7007DBC55 /* RegionData.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0E8154E2999E4C7007DBC55 /* RegionData.swift */; };
 		D0E815512999E4CC007DBC55 /* ReviewListData.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0E815502999E4CC007DBC55 /* ReviewListData.swift */; };
-		D0E815532999E6A2007DBC55 /* ListDataStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0E815522999E6A2007DBC55 /* ListDataStorage.swift */; };
 		D0F15DE72988E4AF00A48EE5 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = D0F15DE62988E4AF00A48EE5 /* Kingfisher */; };
 /* End PBXBuildFile section */
 
@@ -94,7 +93,6 @@
 		D0E815462998D712007DBC55 /* CorrectAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CorrectAlert.swift; sourceTree = "<group>"; };
 		D0E8154E2999E4C7007DBC55 /* RegionData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegionData.swift; sourceTree = "<group>"; };
 		D0E815502999E4CC007DBC55 /* ReviewListData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReviewListData.swift; sourceTree = "<group>"; };
-		D0E815522999E6A2007DBC55 /* ListDataStorage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListDataStorage.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -146,7 +144,6 @@
 			children = (
 				D01308522976699000672422 /* RamenStore.swift */,
 				D01308552976B4AF00672422 /* RamenImage.swift */,
-				D0E815522999E6A2007DBC55 /* ListDataStorage.swift */,
 				D0E8154E2999E4C7007DBC55 /* RegionData.swift */,
 				D0BB719529B8703E002C47D0 /* GoodListData.swift */,
 				D0E815502999E4CC007DBC55 /* ReviewListData.swift */,
@@ -352,7 +349,6 @@
 				D0E815452998BD0F007DBC55 /* ListAlert.swift in Sources */,
 				D0E8154129978BD7007DBC55 /* BlankTextAlert.swift in Sources */,
 				D01307B1296FF19200672422 /* ReviewListViewController.swift in Sources */,
-				D0E815532999E6A2007DBC55 /* ListDataStorage.swift in Sources */,
 				D0B171C4296ED964002AD35D /* MyListViewController.swift in Sources */,
 				D0797CFD2959913900B14AC8 /* HomeViewController.swift in Sources */,
 				D0797CF92959913900B14AC8 /* AppDelegate.swift in Sources */,
