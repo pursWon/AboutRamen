@@ -4,23 +4,33 @@ import RealmSwift
 class ReviewListViewController: UIViewController {
     // MARK: - UI
     @IBOutlet var reviewListTableView: UITableView!
+    @IBOutlet var editButton: UIButton!
     
     // MARK: - Properties
     let realm = try! Realm()
-    let beige = UIColor(red: 255/255, green: 231/255, blue: 204/255, alpha: 1.0)
-    
+   
     // MARK: - View Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         
         setUpTableView()
-        view.backgroundColor = beige
+        view.backgroundColor = CustomColor.beige
         title = "리뷰 목록"
     }
     
     func setUpTableView() {
         reviewListTableView.dataSource = self
         reviewListTableView.delegate = self
+    }
+    
+    @IBAction func editButton(_ sender: UIButton) {
+        if reviewListTableView.isEditing {
+            editButton.setTitle("편집", for: .normal)
+            reviewListTableView.setEditing(false, animated: true)
+        } else {
+            editButton.setTitle("완료", for: .normal)
+            reviewListTableView.setEditing(true, animated: true)
+        }
     }
 }
 
@@ -68,6 +78,8 @@ extension ReviewListViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         return true
     }
+    
+    
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         let reviewList = realm.objects(ReviewListData.self)
