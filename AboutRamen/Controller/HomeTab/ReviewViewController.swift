@@ -24,13 +24,7 @@ class ReviewViewController: UIViewController {
         setUpTextViewBorder()
         setUpNavigationBarButton()
         
-        reviewTextView.text = modifyReview.isEmpty ? "" : modifyReview
-        
-        // if modifyReview.isEmpty {
-        //     reviewTextView.text = ""
-        // } else {
-        //     reviewTextView.text = modifyReview
-        // }
+        reviewTextView.text = modifyReview.isEmpty ? " " : modifyReview
     }
     
     func setUpTextViewBorder() {
