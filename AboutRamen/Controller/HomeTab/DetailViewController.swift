@@ -54,7 +54,7 @@ class DetailViewController: UIViewController {
     var store: String = ""
     var location: (long: Double, lat: Double) = (0, 0)
     var storeRating: Double = 0
-    var distance: String = "0"
+    var distance: String?
     /// DetailVC에서 보여줄 두 개의 이미지 URL을 담는 배열
     var existImageUrlList: [String] = []
     
@@ -182,7 +182,9 @@ class DetailViewController: UIViewController {
         let info = Array(information)
         storeLabel.font = .boldSystemFont(ofSize: 35)
         storeLabel.text = info[index].place_name
+        if let distance = distance {
         distanceLabel.text = "\(distance)km"
+        }
         addressLabel.text = info[index].road_address_name
         numberLabel.text = info[index].phone
     }
