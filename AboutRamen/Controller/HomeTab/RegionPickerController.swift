@@ -47,7 +47,6 @@ class RegionPickerController: UIViewController {
     }
 }
 
-// TODO: 수정된 RegionData 기반으로 picker 데이터 수정해보기 
 extension RegionPickerController: UIPickerViewDelegate, UIPickerViewDataSource {
     // MARK: - PickerView
     func numberOfComponents(in pickerView: UIPickerView) -> Int {

@@ -3,8 +3,6 @@ import Alamofire
 import RealmSwift
 import CoreLocation
 
-//TODO: - 현재 좌표를 중심으로 보여지는 가게 10개를 tableView에 보여주기
-
 class SearchViewController: UIViewController {
     // MARK: - UI
     @IBOutlet var searchTableView: UITableView!
