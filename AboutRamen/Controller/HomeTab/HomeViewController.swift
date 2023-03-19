@@ -35,7 +35,7 @@ class HomeViewController: UIViewController {
     var locationManager = CLLocationManager()
     var currentLocation: (long: Double?,lat: Double?)
     // TODO: Distance를 Optional String 값을 가져오기
-    var distance: String = "0"
+    var distance: String?
     var goodStoreName: [String] = []
     
     // MARK: - View Life Cycle
@@ -177,11 +177,14 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
         
         let myLocation = CLLocation(latitude: currentLocation.long ?? 0, longitude: currentLocation.lat ?? 0)
         let storeLocation = CLLocation(latitude: Double(ramenList[indexPath.row].y) ?? 0, longitude: Double(ramenList[indexPath.row].x) ?? 0)
+        
         distance = String(format: "%.2f" , myLocation.distance(from: storeLocation) / 1000)
         
         cell.cellConfigure()
         cell.nameLabel.text = ramenData.place_name
+        if let distance = distance {
         cell.distanceLabel.text = "\(distance)km"
+        }
         cell.ramenImageView.layer.borderWidth = 1.5
         cell.ramenImageView.layer.borderColor = UIColor.black.cgColor
         cell.ramenImageView.layer.cornerRadius = 10
@@ -243,7 +246,9 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
         
         detailVC.index = indexPath.row
         detailVC.information = ramenList
+        if let distance = distance {
         detailVC.distance = distance
+        }
         
         let backButton = UIBarButtonItem(title: "홈", style: .plain, target: self, action: nil)
         let attributes = [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 16)]
