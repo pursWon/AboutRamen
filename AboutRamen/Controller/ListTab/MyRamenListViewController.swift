@@ -15,12 +15,11 @@ class MyRamenListViewController: UIViewController {
     // MARK: - Properties
     let realm = try! Realm()
     let url: String = "https://dapi.kakao.com/v2/local/search/keyword.json"
-    let beige = UIColor(red: 255/255, green: 231/255, blue: 204/255, alpha: 1.0)
     var ramenList = List<Information>()
     var viewType: ViewType = .ramenList
     var locationManager = CLLocationManager()
     var currentLocation: (Double?, Double?)
-    var distance: String = "0"
+    var distance: String?
     
     // MARK: - View Life Cycle
     override func viewDidLoad() {
@@ -28,7 +27,7 @@ class MyRamenListViewController: UIViewController {
         
         title = viewType.rawValue
         setUpTableView()
-        view.backgroundColor = beige
+        view.backgroundColor = CustomColor.beige
         
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
@@ -145,7 +144,9 @@ extension MyRamenListViewController: UITableViewDelegate, UITableViewDataSource 
                 
                 let storeLocation = CLLocation(latitude: goodList[indexPath.row].y, longitude: goodList[indexPath.row].x)
                 
+                if distance != nil {
                 distance = String(format: "%.2f", myLocation.distance(from: storeLocation) / 1000)
+                }
                 
                 if let information = information.first {
                     detailVC.information.append(information)
