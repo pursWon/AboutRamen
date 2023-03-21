@@ -48,23 +48,15 @@ class RegionPickerController: UIViewController {
     
     @IBAction func saveButton(_ sender: UIBarButtonItem) {
         if let city = address.city, let gu = address.gu {
-            resultLabel.text = "\(city) \(gu)"
             delegateRegion?.sendRegionData(city: city, gu: gu)
             
             if let long = longlat.long, let lat = longlat.lat {
                 delegateLocation?.sendCurrentLocation(location: (long: long, lat: lat))
+                navigationController?.popViewController(animated: true)
             }
         } else {
-            
+            showAlert(title: "두 지역을 모두 지정해주세요.", alertStyle: .oneButton)
         }
-        
-        // resultLabel.text = "\(address.city ?? "-") \(address.gu ?? "-")"
-        //
-        // delegateRegion?.sendRegionData(city: address.city ?? "-", gu: address.gu ?? "-")
-        //
-        // if let long = longlat.long, let lat = longlat.lat {
-        //     delegateLocation?.sendCurrentLocation(location: (long: long, lat: lat))
-        // }
     }
 }
 
@@ -124,6 +116,8 @@ extension RegionPickerController: UIPickerViewDelegate, UIPickerViewDataSource {
                 }
             }
         }
+        
+        resultLabel.text = "\(address.city ?? "-") \(address.gu ?? "-")"
     }
     
     func pickerView(_ pickerView: UIPickerView, rowHeightForComponent component: Int) -> CGFloat {

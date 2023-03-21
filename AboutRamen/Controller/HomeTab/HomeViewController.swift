@@ -44,7 +44,7 @@ class HomeViewController: UIViewController {
         
         setUpCollectionView()
         setUpNavigationBar()
-    
+        
         myLocationLabel.text = "\(RegionData.list[0].city.rawValue) \(RegionData.list[0].guList[0].gu)"
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
@@ -64,14 +64,11 @@ class HomeViewController: UIViewController {
         // print(realm.configuration.fileURL)
         
         let goodList = realm.objects(GoodListData.self)
-        
         goodList.forEach { goodStoreName.append($0.storeName) }
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
+        
         getRamenData(url: url, currentLocation: regionLocation)
     }
-    
+
     func setUpNavigationBar() {
         title = "어바웃라멘"
         navigationController?.navigationBar.backgroundColor = CustomColor.beige
@@ -273,6 +270,7 @@ extension HomeViewController: RegionDataProtocol {
 extension HomeViewController: LocationDataProtocol {
     func sendCurrentLocation(location: (long: Double, lat: Double)) {
         regionLocation = location
+        getRamenData(url: url, currentLocation: regionLocation)
     }
 }
 
