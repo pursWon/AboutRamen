@@ -97,6 +97,38 @@ class DetailViewController: UIViewController {
         setPressedValue()
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(true)
+        
+   
+            guard let rating = ratingLabel.text else { return }
+            
+            let myRating = (rating as NSString).doubleValue
+            storeRating = myRating
+            
+            if goodPressed {
+                guard let address = addressLabel.text else { return }
+                
+                let goodData = GoodListData(storeName: store, addressName: address, x: location.0, y: location.1, rating: storeRating, isGoodPressed: goodPressed)
+                
+                try! realm.write {
+                    realm.add(goodData)
+                    goodData.rating = storeRating
+                }
+            } else {
+                let goodObject = realm.objects(GoodListData.self).where {
+                    $0.storeName == store
+                    && $0.x == location.long
+                    && $0.y == location.lat
+                }
+                if let firstItem = goodObject.first {
+                try! realm.write {
+                    realm.delete(firstItem)
+                }
+            }
+        }
+    }
+    
     func setPressedValue() {
         if goodPressed {
             goodLabel.text = "좋아요 취소"
@@ -183,7 +215,7 @@ class DetailViewController: UIViewController {
         storeLabel.font = .boldSystemFont(ofSize: 35)
         storeLabel.text = info[index].place_name
         if let distance = distance {
-        distanceLabel.text = "\(distance)km"
+            distanceLabel.text = "\(distance)km"
         }
         addressLabel.text = info[index].road_address_name
         numberLabel.text = info[index].phone
@@ -194,47 +226,22 @@ class DetailViewController: UIViewController {
         addTabGesture(target: reviewImageView, action: #selector(reviewMark))
         addTabGesture(target: myListAddImageView, action:  #selector(addMyListMark))
     }
-
-     func addTabGesture(target: UIImageView, action: Selector) {
-         let addTabGesture = UITapGestureRecognizer(target: self, action: action)
-         target.addGestureRecognizer(addTabGesture)
-         target.isUserInteractionEnabled = true
-     }
+    
+    func addTabGesture(target: UIImageView, action: Selector) {
+        let addTabGesture = UITapGestureRecognizer(target: self, action: action)
+        target.addGestureRecognizer(addTabGesture)
+        target.isUserInteractionEnabled = true
+    }
     
     @objc func goodMark() {
-        let goodObject = realm.objects(GoodListData.self).where {
-            $0.storeName == store
-            && $0.x == location.long
-            && $0.y == location.lat
-        }.first
-        
-        guard let rating = ratingLabel.text else { return }
-        
-        let myRating = (rating as NSString).doubleValue
-        storeRating = myRating
-        
         if goodPressed {
             goodPressed = false
             goodLabel.text = "좋아요"
             goodImageView.image = UIImage(named: "ThumbsUpWhite")
-            guard let goodObject = goodObject else { return }
-            
-            try! realm.write {
-                realm.delete(goodObject)
-            }
         } else {
             goodPressed = true
             goodLabel.text = "좋아요 취소"
             goodImageView.image = UIImage(named: "ThumbsUpBlack")
-            
-            guard let address = addressLabel.text else { return }
-            
-            let goodData = GoodListData(storeName: store, addressName: address, x: location.0, y: location.1, rating: storeRating, isGoodPressed: goodPressed)
-            
-            try! realm.write {
-                realm.add(goodData)
-                goodData.rating = storeRating
-            }
         }
     }
     

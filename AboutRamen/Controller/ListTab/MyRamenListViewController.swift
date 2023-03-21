@@ -41,6 +41,10 @@ class MyRamenListViewController: UIViewController {
         }
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        myRamenListTableView.reloadData()
+    }
+    
     func setUpTableView() {
         myRamenListTableView.delegate = self
         myRamenListTableView.dataSource = self

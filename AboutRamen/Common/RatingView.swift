@@ -21,7 +21,7 @@ open class RatingView: UIView {
     
     @IBInspectable open var fullImage: UIImage? {
         didSet {
-            emptyImageViews.forEach{ $0.image = emptyImage }
+            fullImageViews.forEach{ $0.image = fullImage }
             refresh()
         }
     }
