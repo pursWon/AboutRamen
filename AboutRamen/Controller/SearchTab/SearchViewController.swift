@@ -11,8 +11,7 @@ class SearchViewController: UIViewController {
     // MARK: - Properties
     let url: String = "https://dapi.kakao.com/v2/local/search/keyword.json"
     let realm = try! Realm()
-    let beige = UIColor(red: 255/255, green: 231/255, blue: 204/255, alpha: 1.0)
-    let sage = UIColor(red: 225/255, green: 238/255, blue: 221/255, alpha: 1.0)
+    let appid = Bundle.main.apiKey
     var locationManager = CLLocationManager()
     /// 검색어에 해당되는 String값들의 모음 배열
     var filterArray: [String] = []
@@ -55,12 +54,12 @@ class SearchViewController: UIViewController {
     }
     
     func navigationBarSetUp() {
-        navigationController?.navigationBar.backgroundColor = beige
+        navigationController?.navigationBar.backgroundColor = CustomColor.beige
         
         view.backgroundColor = .white
         navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font : UIFont(name: "Recipekorea", size: 20)!]
         introduceLabel.font = .boldSystemFont(ofSize: 15)
-        introduceLabel.backgroundColor = sage
+        introduceLabel.backgroundColor = CustomColor.sage
         searchTableView.backgroundColor = .white
     }
     
@@ -69,7 +68,7 @@ class SearchViewController: UIViewController {
     }
     
     func getRamenData(url: String, currentLocation: (Double, Double)) {
-        let headers: HTTPHeaders = ["Authorization": "KakaoAK d8b066a3dbb0e888b857f37b667d96d2"]
+        let headers: HTTPHeaders = ["Authorization": appid]
         let parameters: [String: Any] = [
             "query" : "라멘",
             "x": "\(currentLocation.0)",
@@ -223,7 +222,7 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
         navigationItem.backBarButtonItem?.tintColor = .black
         navigationItem.backBarButtonItem?.setTitleTextAttributes(attributes, for: .normal)
         
-        navigationController?.navigationBar.backgroundColor = beige
+        navigationController?.navigationBar.backgroundColor = CustomColor.beige
     }
 }
 

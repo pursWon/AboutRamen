@@ -45,6 +45,7 @@ class DetailViewController: UIViewController {
     let realm = try! Realm()
     let imageUrl: String = "https://dapi.kakao.com/v2/search/image"
     let defaultImage: UIImage = UIImage(named: "Ramen") ?? UIImage(systemName: "fork.knife")!
+    let appid = Bundle.main.apiKey
     var index: Int = 0
     var searchIndex: Int = 0
     var information = List<Information>()
@@ -117,7 +118,7 @@ class DetailViewController: UIViewController {
     func getRamenImages() {
         existImageUrlList = []
         // TODO: API KEY 숨기기
-        let headers: HTTPHeaders = ["Authorization": "KakaoAK d8b066a3dbb0e888b857f37b667d96d2"]
+        let headers: HTTPHeaders = ["Authorization": appid]
         let params: [String: Any] = ["query": information[index].place_name]
         AF.request(imageUrl, method: .get, parameters: params, headers: headers).responseDecodable(of: RamenImage.self) { response in
             if let dataImage = response.value {

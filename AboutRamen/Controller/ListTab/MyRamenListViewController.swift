@@ -15,6 +15,7 @@ class MyRamenListViewController: UIViewController {
     // MARK: - Properties
     let realm = try! Realm()
     let url: String = "https://dapi.kakao.com/v2/local/search/keyword.json"
+    let appid = Bundle.main.apiKey
     var ramenList = List<Information>()
     var viewType: ViewType = .ramenList
     var locationManager = CLLocationManager()
@@ -46,7 +47,7 @@ class MyRamenListViewController: UIViewController {
     }
     
     func getData(url: String, storeName: String, x: String, y: String) {
-        let headers: HTTPHeaders = ["Authorization": "KakaoAK d8b066a3dbb0e888b857f37b667d96d2"]
+        let headers: HTTPHeaders = ["Authorization": appid]
         let parameters: [String: Any] = [
             "query" : storeName,
             "x" : x,

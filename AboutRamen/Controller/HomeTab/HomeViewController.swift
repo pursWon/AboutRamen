@@ -25,6 +25,7 @@ class HomeViewController: UIViewController {
     let url: String = "https://dapi.kakao.com/v2/local/search/keyword.json"
     /// kakao 키워드 이미지 검색 API 주소
     let imageUrl: String = "https://dapi.kakao.com/v2/search/image"
+    let appid = Bundle.main.apiKey
     /// API를 통해서 가져온 라멘집 리스트 정보를 담고 있는 배열
     var ramenList: List<Information>?
     /// 라멘집 이미지들의 image_url 값들의 배열
@@ -34,7 +35,6 @@ class HomeViewController: UIViewController {
     var allRamenData: List<Information>?
     var locationManager = CLLocationManager()
     var currentLocation: (long: Double?,lat: Double?)
-    // TODO: Distance를 Optional String 값을 가져오기
     var distance: String?
     var goodStoreName: [String] = []
     
@@ -93,7 +93,7 @@ class HomeViewController: UIViewController {
     }
     
     func getRamenData(url: String, currentLocation: (long: Double, lat: Double)) {
-        let headers: HTTPHeaders = ["Authorization": "KakaoAK d8b066a3dbb0e888b857f37b667d96d2"]
+        let headers: HTTPHeaders = ["Authorization": appid]
         let parameters: [String: Any] = [
             "query" : "라멘",
             "x": "\(currentLocation.long)",
@@ -121,7 +121,7 @@ class HomeViewController: UIViewController {
         imageUrlList.removeAll()
         
         // TODO: API KEY 숨기기
-        let headers: HTTPHeaders = ["Authorization": "KakaoAK d8b066a3dbb0e888b857f37b667d96d2"]
+        let headers: HTTPHeaders = ["Authorization": appid]
         for name in storeNames {
             let params: [String: Any] = ["query": name]
             AF.request(imageUrl, method: .get, parameters: params, headers: headers).responseDecodable(of: RamenImage.self) { response in
