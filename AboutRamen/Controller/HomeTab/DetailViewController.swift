@@ -58,6 +58,7 @@ class DetailViewController: UIViewController {
     var distance: String?
     /// DetailVC에서 보여줄 두 개의 이미지 URL을 담는 배열
     var existImageUrlList: [String] = []
+    var isButtonClicked: Bool = false
     
     // MARK: - View Life Cycle
     override func viewDidLoad() {
@@ -100,27 +101,29 @@ class DetailViewController: UIViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(true)
         
-   
+        guard isButtonClicked else { return }
             guard let rating = ratingLabel.text else { return }
             
             let myRating = (rating as NSString).doubleValue
             storeRating = myRating
             
+            let goodObject = realm.objects(GoodListData.self).where {
+            $0.storeName == store
+            && $0.x == location.long
+            && $0.y == location.lat
+            }
+        
             if goodPressed {
                 guard let address = addressLabel.text else { return }
                 
                 let goodData = GoodListData(storeName: store, addressName: address, x: location.0, y: location.1, rating: storeRating, isGoodPressed: goodPressed)
                 
-                try! realm.write {
-                    realm.add(goodData)
-                    goodData.rating = storeRating
+                if !goodObject.contains(goodData) {
+                    try! realm.write {
+                        realm.add(goodData)
+                    }
                 }
             } else {
-                let goodObject = realm.objects(GoodListData.self).where {
-                    $0.storeName == store
-                    && $0.x == location.long
-                    && $0.y == location.lat
-                }
                 if let firstItem = goodObject.first {
                 try! realm.write {
                     realm.delete(firstItem)
@@ -243,6 +246,8 @@ class DetailViewController: UIViewController {
             goodLabel.text = "좋아요 취소"
             goodImageView.image = UIImage(named: "ThumbsUpBlack")
         }
+        
+        isButtonClicked = true
     }
     
     @objc func reviewMark() {
