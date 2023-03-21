@@ -120,7 +120,6 @@ class HomeViewController: UIViewController {
     func getRamenImages() {
         imageUrlList.removeAll()
         
-        // TODO: API KEY 숨기기
         let headers: HTTPHeaders = ["Authorization": appid]
         for name in storeNames {
             let params: [String: Any] = ["query": name]
@@ -174,17 +173,19 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
         // TODO: 좋아요 리스트를 통해서 홈 vc에서 별점을 보여줄 예정
         let goodList = realm.objects(GoodListData.self)
         let ramenData = ramenList[indexPath.row]
-        
         let myLocation = CLLocation(latitude: currentLocation.long ?? 0, longitude: currentLocation.lat ?? 0)
         let storeLocation = CLLocation(latitude: Double(ramenList[indexPath.row].y) ?? 0, longitude: Double(ramenList[indexPath.row].x) ?? 0)
+
         
         distance = String(format: "%.2f" , myLocation.distance(from: storeLocation) / 1000)
         
         cell.cellConfigure()
         cell.nameLabel.text = ramenData.place_name
+        
         if let distance = distance {
         cell.distanceLabel.text = "\(distance)km"
         }
+        
         cell.ramenImageView.layer.borderWidth = 1.5
         cell.ramenImageView.layer.borderColor = UIColor.black.cgColor
         cell.ramenImageView.layer.cornerRadius = 10

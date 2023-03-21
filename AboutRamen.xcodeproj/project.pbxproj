@@ -34,13 +34,13 @@
 		D0BB719429B87037002C47D0 /* MyRamenListData.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0BB719329B87037002C47D0 /* MyRamenListData.swift */; };
 		D0BB719629B8703E002C47D0 /* GoodListData.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0BB719529B8703E002C47D0 /* GoodListData.swift */; };
 		D0BB8AB529C42F95000DE01E /* CustomColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0BB8AB429C42F95000DE01E /* CustomColor.swift */; };
+		D0BB8AB729C979EE000DE01E /* RamenInfo.plist in Resources */ = {isa = PBXBuildFile; fileRef = D0BB8AB629C979EE000DE01E /* RamenInfo.plist */; };
+		D0BB8AB929C97AF7000DE01E /* AboutRamen++Bundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0BB8AB829C97AF7000DE01E /* AboutRamen++Bundle.swift */; };
 		D0D71EB929AC5A0A00D40C62 /* CALayer+.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0D71EB829AC5A0A00D40C62 /* CALayer+.swift */; };
 		D0E23DDC299F3BE9006C1C7C /* Realm in Frameworks */ = {isa = PBXBuildFile; productRef = D0E23DDB299F3BE9006C1C7C /* Realm */; };
 		D0E23DDE299F3BE9006C1C7C /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = D0E23DDD299F3BE9006C1C7C /* RealmSwift */; };
 		D0E23DE429A46D68006C1C7C /* RatingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0E23DE329A46D68006C1C7C /* RatingView.swift */; };
-		D0E8154129978BD7007DBC55 /* BlankTextAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0E8154029978BD7007DBC55 /* BlankTextAlert.swift */; };
-		D0E815452998BD0F007DBC55 /* ListAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0E815442998BD0F007DBC55 /* ListAlert.swift */; };
-		D0E815472998D712007DBC55 /* CorrectAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0E815462998D712007DBC55 /* CorrectAlert.swift */; };
+		D0E8154129978BD7007DBC55 /* UIViewController+.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0E8154029978BD7007DBC55 /* UIViewController+.swift */; };
 		D0E8154F2999E4C7007DBC55 /* RegionData.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0E8154E2999E4C7007DBC55 /* RegionData.swift */; };
 		D0E815512999E4CC007DBC55 /* ReviewListData.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0E815502999E4CC007DBC55 /* ReviewListData.swift */; };
 		D0F15DE72988E4AF00A48EE5 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = D0F15DE62988E4AF00A48EE5 /* Kingfisher */; };
@@ -88,11 +88,11 @@
 		D0BB719329B87037002C47D0 /* MyRamenListData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyRamenListData.swift; sourceTree = "<group>"; };
 		D0BB719529B8703E002C47D0 /* GoodListData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GoodListData.swift; sourceTree = "<group>"; };
 		D0BB8AB429C42F95000DE01E /* CustomColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomColor.swift; sourceTree = "<group>"; };
+		D0BB8AB629C979EE000DE01E /* RamenInfo.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = RamenInfo.plist; sourceTree = "<group>"; };
+		D0BB8AB829C97AF7000DE01E /* AboutRamen++Bundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AboutRamen++Bundle.swift"; sourceTree = "<group>"; };
 		D0D71EB829AC5A0A00D40C62 /* CALayer+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CALayer+.swift"; sourceTree = "<group>"; };
 		D0E23DE329A46D68006C1C7C /* RatingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatingView.swift; sourceTree = "<group>"; };
-		D0E8154029978BD7007DBC55 /* BlankTextAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlankTextAlert.swift; sourceTree = "<group>"; };
-		D0E815442998BD0F007DBC55 /* ListAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListAlert.swift; sourceTree = "<group>"; };
-		D0E815462998D712007DBC55 /* CorrectAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CorrectAlert.swift; sourceTree = "<group>"; };
+		D0E8154029978BD7007DBC55 /* UIViewController+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+.swift"; sourceTree = "<group>"; };
 		D0E8154E2999E4C7007DBC55 /* RegionData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegionData.swift; sourceTree = "<group>"; };
 		D0E815502999E4CC007DBC55 /* ReviewListData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReviewListData.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -182,6 +182,8 @@
 				D0B171BB2966D460002AD35D /* View */,
 				D0E8153F29978BA9007DBC55 /* Alert */,
 				D0797D062959913A00B14AC8 /* Info.plist */,
+				D0BB8AB629C979EE000DE01E /* RamenInfo.plist */,
+				D0BB8AB829C97AF7000DE01E /* AboutRamen++Bundle.swift */,
 				D0BB11F92959C7FF001E33A6 /* Fonts */,
 			);
 			path = AboutRamen;
@@ -243,9 +245,7 @@
 		D0E8153F29978BA9007DBC55 /* Alert */ = {
 			isa = PBXGroup;
 			children = (
-				D0E8154029978BD7007DBC55 /* BlankTextAlert.swift */,
-				D0E815462998D712007DBC55 /* CorrectAlert.swift */,
-				D0E815442998BD0F007DBC55 /* ListAlert.swift */,
+				D0E8154029978BD7007DBC55 /* UIViewController+.swift */,
 			);
 			path = Alert;
 			sourceTree = "<group>";
@@ -322,6 +322,7 @@
 			files = (
 				D013084C2972747800672422 /* BlackHanSans-Regular.ttf in Resources */,
 				D0797D052959913A00B14AC8 /* LaunchScreen.storyboard in Resources */,
+				D0BB8AB729C979EE000DE01E /* RamenInfo.plist in Resources */,
 				D013084E2972748300672422 /* Recipekorea.ttf in Resources */,
 				D0797D022959913A00B14AC8 /* Assets.xcassets in Resources */,
 				D0797D002959913900B14AC8 /* Main.storyboard in Resources */,
@@ -336,7 +337,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				D0459DB6298121D700FFE9E3 /* ReviewViewController.swift in Sources */,
-				D0E815472998D712007DBC55 /* CorrectAlert.swift in Sources */,
 				D01308532976699100672422 /* RamenStore.swift in Sources */,
 				D01307B3296FF1BF00672422 /* ReviewListCell.swift in Sources */,
 				D0D71EB929AC5A0A00D40C62 /* CALayer+.swift in Sources */,
@@ -346,12 +346,12 @@
 				D0BB719629B8703E002C47D0 /* GoodListData.swift in Sources */,
 				D0BB719429B87037002C47D0 /* MyRamenListData.swift in Sources */,
 				D013087A2977C9E600672422 /* RegionPickerController.swift in Sources */,
+				D0BB8AB929C97AF7000DE01E /* AboutRamen++Bundle.swift in Sources */,
 				D0B170C7295D39EA002AD35D /* SearchViewController.swift in Sources */,
 				D0E23DE429A46D68006C1C7C /* RatingView.swift in Sources */,
 				D0B171BE2966D738002AD35D /* SearchViewCell.swift in Sources */,
 				D0BB8AB529C42F95000DE01E /* CustomColor.swift in Sources */,
-				D0E815452998BD0F007DBC55 /* ListAlert.swift in Sources */,
-				D0E8154129978BD7007DBC55 /* BlankTextAlert.swift in Sources */,
+				D0E8154129978BD7007DBC55 /* UIViewController+.swift in Sources */,
 				D01307B1296FF19200672422 /* ReviewListViewController.swift in Sources */,
 				D0B171C4296ED964002AD35D /* MyListViewController.swift in Sources */,
 				D0797CFD2959913900B14AC8 /* HomeViewController.swift in Sources */,

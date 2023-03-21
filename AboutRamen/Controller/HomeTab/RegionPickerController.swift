@@ -45,6 +45,27 @@ class RegionPickerController: UIViewController {
         regionStackView.layer.borderWidth = 2
         regionStackView.layer.borderColor = UIColor.black.cgColor
     }
+    
+    @IBAction func saveButton(_ sender: UIBarButtonItem) {
+        if let city = address.city, let gu = address.gu {
+            resultLabel.text = "\(city) \(gu)"
+            delegateRegion?.sendRegionData(city: city, gu: gu)
+            
+            if let long = longlat.long, let lat = longlat.lat {
+                delegateLocation?.sendCurrentLocation(location: (long: long, lat: lat))
+            }
+        } else {
+            
+        }
+        
+        // resultLabel.text = "\(address.city ?? "-") \(address.gu ?? "-")"
+        //
+        // delegateRegion?.sendRegionData(city: address.city ?? "-", gu: address.gu ?? "-")
+        //
+        // if let long = longlat.long, let lat = longlat.lat {
+        //     delegateLocation?.sendCurrentLocation(location: (long: long, lat: lat))
+        // }
+    }
 }
 
 extension RegionPickerController: UIPickerViewDelegate, UIPickerViewDataSource {
@@ -102,14 +123,6 @@ extension RegionPickerController: UIPickerViewDelegate, UIPickerViewDataSource {
                     }
                 }
             }
-        }
-        
-        resultLabel.text = "\(address.city ?? "-") \(address.gu ?? "-")"
-        
-        delegateRegion?.sendRegionData(city: address.city ?? "-", gu: address.gu ?? "-")
-        
-        if let long = longlat.long, let lat = longlat.lat {
-            delegateLocation?.sendCurrentLocation(location: (long: long, lat: lat))
         }
     }
     

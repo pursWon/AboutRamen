@@ -54,10 +54,10 @@ class ReviewViewController: UIViewController {
         
         if modifyReview.isEmpty {
             if reviewTextView.text.isEmpty {
-                blankTextAlert()
+                showAlert(title: "리뷰 항목이 비어있습니다.", alertStyle: .oneButton)
             } else {
                 if storeNameArray.contains(storeName) {
-                    listAlert()
+                    showAlert(title: "해당 가게가 이미 리스트에 존재합니다.", alertStyle: .oneButton)
                 } else {
                     try! realm.write {
                         realm.add(ReviewListData(storeName: storeName, addressName: addressName, reviewContent: reviewTextView.text))
@@ -69,9 +69,9 @@ class ReviewViewController: UIViewController {
             }
         } else {
             if reviewTextView.text.isEmpty {
-                blankTextAlert()
+                showAlert(title: "리뷰 항목이 비어있습니다.", alertStyle: .oneButton)
             } else {
-                correctAlert()
+                showAlert(title: "수정하시겠습니까?", alertStyle: .twoButton)
                 modifyReview = reviewTextView.text
                 let reviewUpdate = realm.objects(ReviewListData.self).where {
                     $0.storeName == storeName && $0.addressName == addressName

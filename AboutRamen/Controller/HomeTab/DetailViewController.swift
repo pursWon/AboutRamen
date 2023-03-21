@@ -117,7 +117,6 @@ class DetailViewController: UIViewController {
     
     func getRamenImages() {
         existImageUrlList = []
-        // TODO: API KEY 숨기기
         let headers: HTTPHeaders = ["Authorization": appid]
         let params: [String: Any] = ["query": information[index].place_name]
         AF.request(imageUrl, method: .get, parameters: params, headers: headers).responseDecodable(of: RamenImage.self) { response in
@@ -220,10 +219,6 @@ class DetailViewController: UIViewController {
             goodImageView.image = UIImage(named: "ThumbsUpWhite")
             guard let goodObject = goodObject else { return }
             
-            if let index = GoodListData.goodList.firstIndex(of: goodObject) {
-                GoodListData.goodList.remove(at: index)
-            }
-            
             try! realm.write {
                 realm.delete(goodObject)
             }
@@ -235,7 +230,6 @@ class DetailViewController: UIViewController {
             guard let address = addressLabel.text else { return }
             
             let goodData = GoodListData(storeName: store, addressName: address, x: location.0, y: location.1, rating: storeRating, isGoodPressed: goodPressed)
-            GoodListData.goodList.append(goodData)
             
             try! realm.write {
                 realm.add(goodData)
@@ -278,10 +272,6 @@ class DetailViewController: UIViewController {
             myListAddImageView.image = UIImage(named: "MyListWhite")
             guard let myListObject = myListObject else { return }
             
-            if let index = MyRamenListData.myRamenList.firstIndex(of: myListObject) {
-                MyRamenListData.myRamenList.remove(at: index)
-            }
-            
             try! realm.write {
                 realm.delete(myListObject)
             }
@@ -294,7 +284,6 @@ class DetailViewController: UIViewController {
             guard let address = addressLabel.text else { return }
             
             let myRamenData = MyRamenListData(storeName: store, address: address, x: location.long, y: location.lat, myRamenPressed: myRamenPressed)
-            MyRamenListData.myRamenList.append(myRamenData)
             
             try! realm.write {
                 realm.add(myRamenData)
