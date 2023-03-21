@@ -148,10 +148,7 @@ extension MyRamenListViewController: UITableViewDelegate, UITableViewDataSource 
                 }.first
                 
                 let storeLocation = CLLocation(latitude: goodList[indexPath.row].y, longitude: goodList[indexPath.row].x)
-                
-                if distance != nil {
                 distance = String(format: "%.2f", myLocation.distance(from: storeLocation) / 1000)
-                }
                 
                 if let information = information.first {
                     detailVC.information.append(information)
