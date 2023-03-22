@@ -49,8 +49,6 @@ class SearchViewController: UIViewController {
         } else {
             print("위치 서비스 OFF 상태")
         }
-        
-        getRamenData(url: url, currentLocation: (currentLocation.0 ?? 0, currentLocation.1 ?? 0))
     }
     
     func navigationBarSetUp() {
@@ -64,15 +62,16 @@ class SearchViewController: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        navigationController?.navigationBar.backgroundColor = .white
+    navigationController?.navigationBar.backgroundColor = .white
     }
     
     func getRamenData(url: String, currentLocation: (Double, Double)) {
+        print(currentLocation.0)
         let headers: HTTPHeaders = ["Authorization": appid]
         let parameters: [String: Any] = [
             "query" : "라멘",
-            "x": "\(currentLocation.0)",
-            "y": "\(currentLocation.1)",
+            "x": "\(currentLocation.1)",
+            "y": "\(currentLocation.0)",
             "radius": 7000,
             "size": 15,
             "page": 1
@@ -82,7 +81,7 @@ class SearchViewController: UIViewController {
             response in
             if let data = response.value {
                 self.ramenList = data.documents
-                
+
                 for i in 0..<self.ramenList.count {
                     self.storeNames.append(self.ramenList[i].place_name)
                 }
@@ -233,7 +232,9 @@ extension SearchViewController: CLLocationManagerDelegate {
             print("위도 : \(location.coordinate.latitude)")
             print("경도 : \(location.coordinate.longitude)")
             currentLocation = (location.coordinate.latitude, location.coordinate.longitude)
-            print("현재 위치 : \(currentLocation)")
+            if let lat = currentLocation.0, let long = currentLocation.1 {
+                getRamenData(url: url, currentLocation: (lat, long))
+            }
         }
     }
     
