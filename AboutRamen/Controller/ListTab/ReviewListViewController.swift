@@ -18,6 +18,10 @@ class ReviewListViewController: UIViewController {
         title = "리뷰 목록"
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        reviewListTableView.reloadData()
+    }
+    
     func setUpTableView() {
         reviewListTableView.dataSource = self
         reviewListTableView.delegate = self
