@@ -374,18 +374,27 @@
                     <navigationItem key="navigationItem" id="VjK-Ff-emF">
                         <barButtonItem key="rightBarButtonItem" title="편집" style="plain" id="RQI-sX-zpQ">
                             <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" id="Tfu-Ny-s6X">
-                                <rect key="frame" x="313" y="5" width="95" height="34.333333333333336"/>
+                                <rect key="frame" x="313" y="3" width="95" height="38"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="plain" title="편집"/>
+                                <buttonConfiguration key="configuration" style="plain">
+                                    <attributedString key="attributedTitle">
+                                        <fragment content="편집">
+                                            <attributes>
+                                                <font key="NSFont" size="20" name="AppleSDGothicNeo-Bold"/>
+                                            </attributes>
+                                        </fragment>
+                                    </attributedString>
+                                </buttonConfiguration>
                                 <connections>
                                     <action selector="editButton:" destination="Kcz-4c-yyS" eventType="touchUpInside" id="Fsd-Ue-hHs"/>
                                 </connections>
                             </button>
+                            <color key="tintColor" systemColor="labelColor"/>
                         </barButtonItem>
                     </navigationItem>
                     <connections>
-                        <outlet property="editButton" destination="Tfu-Ny-s6X" id="wIH-SC-9jb"/>
+                        <outlet property="editButton" destination="Tfu-Ny-s6X" id="BHx-8s-L65"/>
                         <outlet property="reviewListTableView" destination="3v8-W0-iGc" id="IrO-qj-fCx"/>
                     </connections>
                 </viewController>
@@ -1063,6 +1072,7 @@
                         <outlet property="regionPickerView" destination="S9g-tA-zpv" id="Ei4-CI-faB"/>
                         <outlet property="regionStackView" destination="Oyh-y3-B6X" id="5fi-cm-6cR"/>
                         <outlet property="resultLabel" destination="t0G-wY-1Wv" id="CUI-L6-HIF"/>
+                        <outlet property="saveButton" destination="qGa-iT-54Z" id="X9F-Ml-8ZV"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="caJ-rE-kLf" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -1100,6 +1110,9 @@
         <image name="star" catalog="system" width="128" height="116"/>
         <image name="star.fill" catalog="system" width="128" height="116"/>
         <image name="timer" catalog="system" width="128" height="121"/>
+        <systemColor name="labelColor">
+            <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

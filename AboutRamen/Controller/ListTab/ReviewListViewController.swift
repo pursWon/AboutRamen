@@ -16,6 +16,12 @@ class ReviewListViewController: UIViewController {
         setUpTableView()
         view.backgroundColor = CustomColor.beige
         title = "리뷰 목록"
+        
+        if reviewListTableView.isEditing {
+            editButton.titleLabel?.font = .boldSystemFont(ofSize: 20)
+        } else {
+            editButton.titleLabel?.font = .boldSystemFont(ofSize: 20)
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {

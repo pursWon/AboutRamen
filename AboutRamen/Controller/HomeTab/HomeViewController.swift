@@ -172,7 +172,6 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
         let ramenData = ramenList[indexPath.row]
         let myLocation = CLLocation(latitude: currentLocation.long ?? 0, longitude: currentLocation.lat ?? 0)
         let storeLocation = CLLocation(latitude: Double(ramenList[indexPath.row].y) ?? 0, longitude: Double(ramenList[indexPath.row].x) ?? 0)
-
         
         distance = String(format: "%.2f" , myLocation.distance(from: storeLocation) / 1000)
         

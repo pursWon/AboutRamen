@@ -7,6 +7,7 @@ class RegionPickerController: UIViewController {
     @IBOutlet var regionStackView: UIStackView!
     @IBOutlet var resultLabel: UILabel!
     @IBOutlet var chooseLabel: UILabel!
+    @IBOutlet var saveButton: UIBarButtonItem!
     
     // MARK: - Properties
     let regionData = RegionData()
@@ -34,7 +35,9 @@ class RegionPickerController: UIViewController {
         regionPickerView.backgroundColor = CustomColor.sage
         chooseLabel.textColor = CustomColor.deepGreen
         
-        let attributes = [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 100)]
+        let attributes = [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 20)]
+        saveButton.setTitleTextAttributes(attributes, for: .normal)
+        
         navigationController?.navigationBar.backItem?.backBarButtonItem?.setTitleTextAttributes(attributes, for: .normal)
         chooseLabel.font = UIFont.boldSystemFont(ofSize: 22)
         setUpBorder()
