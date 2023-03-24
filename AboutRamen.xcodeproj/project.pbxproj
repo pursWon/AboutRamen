@@ -18,6 +18,7 @@
 		D013087A2977C9E600672422 /* RegionPickerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01308792977C9E600672422 /* RegionPickerController.swift */; };
 		D01308C529799D6200672422 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = D01308C429799D6200672422 /* Alamofire */; };
 		D0459DB6298121D700FFE9E3 /* ReviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0459DB5298121D700FFE9E3 /* ReviewViewController.swift */; };
+		D0714EF429CD4EC900CBE609 /* CustomImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0714EF329CD4EC900CBE609 /* CustomImage.swift */; };
 		D0797CF92959913900B14AC8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0797CF82959913900B14AC8 /* AppDelegate.swift */; };
 		D0797CFB2959913900B14AC8 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0797CFA2959913900B14AC8 /* SceneDelegate.swift */; };
 		D0797CFD2959913900B14AC8 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0797CFC2959913900B14AC8 /* HomeViewController.swift */; };
@@ -70,6 +71,7 @@
 		D01308552976B4AF00672422 /* RamenImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RamenImage.swift; sourceTree = "<group>"; };
 		D01308792977C9E600672422 /* RegionPickerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegionPickerController.swift; sourceTree = "<group>"; };
 		D0459DB5298121D700FFE9E3 /* ReviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewViewController.swift; sourceTree = "<group>"; };
+		D0714EF329CD4EC900CBE609 /* CustomImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomImage.swift; sourceTree = "<group>"; };
 		D0797CF52959913900B14AC8 /* AboutRamen.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AboutRamen.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D0797CF82959913900B14AC8 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D0797CFA2959913900B14AC8 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -238,6 +240,7 @@
 				D0E23DE329A46D68006C1C7C /* RatingView.swift */,
 				D0D71EB829AC5A0A00D40C62 /* CALayer+.swift */,
 				D0BB8AB429C42F95000DE01E /* CustomColor.swift */,
+				D0714EF329CD4EC900CBE609 /* CustomImage.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -350,6 +353,7 @@
 				D0B170C7295D39EA002AD35D /* SearchViewController.swift in Sources */,
 				D0E23DE429A46D68006C1C7C /* RatingView.swift in Sources */,
 				D0B171BE2966D738002AD35D /* SearchViewCell.swift in Sources */,
+				D0714EF429CD4EC900CBE609 /* CustomImage.swift in Sources */,
 				D0BB8AB529C42F95000DE01E /* CustomColor.swift in Sources */,
 				D0E8154129978BD7007DBC55 /* UIViewController+.swift in Sources */,
 				D01307B1296FF19200672422 /* ReviewListViewController.swift in Sources */,

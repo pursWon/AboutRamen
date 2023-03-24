@@ -17,17 +17,17 @@ protocol ReviewCompleteProtocol {
 class DetailViewController: UIViewController {
     // MARK: - UI
     @IBOutlet var informationView: UIView!
-    @IBOutlet var storeLabel: UILabel!
-    @IBOutlet var distanceLabel: UILabel!
     @IBOutlet var addressView: UIView!
     @IBOutlet var numberView: UIView!
     @IBOutlet var timeView: UIView!
+    @IBOutlet var pictureView: UIView!
+    @IBOutlet var buttonsView: UIView!
+    @IBOutlet var ratingLabel: UILabel!
+    @IBOutlet var storeLabel: UILabel!
+    @IBOutlet var distanceLabel: UILabel!
     @IBOutlet var addressLabel: UILabel!
     @IBOutlet var numberLabel: UILabel!
     @IBOutlet var timeLabel: UILabel!
-    @IBOutlet var buttonsView: UIView!
-    @IBOutlet var ratingLabel: UILabel!
-    @IBOutlet var pictureView: UIView!
     @IBOutlet var pictureImageViewOne: UIImageView!
     @IBOutlet var pictureImageViewTwo: UIImageView!
     

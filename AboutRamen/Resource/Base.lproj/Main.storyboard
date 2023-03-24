@@ -440,13 +440,13 @@
                                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="3" translatesAutoresizingMaskIntoConstraints="NO" id="I3a-aE-GTB">
                                                     <rect key="frame" x="70.000000000000014" y="7" width="209.33333333333337" height="36.666666666666664"/>
                                                     <subviews>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="가게 이름" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fXt-Hm-tP0">
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="가게 이름" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fXt-Hm-tP0">
                                                             <rect key="frame" x="0.0" y="0.0" width="209.33333333333334" height="18"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="주소" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ye7-Y7-6ek">
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="주소" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ye7-Y7-6ek">
                                                             <rect key="frame" x="0.0" y="21" width="209.33333333333334" height="15.666666666666664"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                                             <nil key="textColor"/>
@@ -827,8 +827,8 @@
                     </navigationItem>
                     <connections>
                         <outlet property="addressLabel" destination="WYn-ac-BcD" id="5dU-Hd-UDd"/>
-                        <outlet property="addressView" destination="c6h-2F-pHb" id="vvn-IX-p03"/>
-                        <outlet property="buttonsView" destination="qsH-YN-FXm" id="8Sx-7M-1y1"/>
+                        <outlet property="addressView" destination="c6h-2F-pHb" id="tXp-Cy-JO0"/>
+                        <outlet property="buttonsView" destination="qsH-YN-FXm" id="958-gk-QDO"/>
                         <outlet property="distanceLabel" destination="GcQ-3z-HRA" id="7YD-aZ-SzX"/>
                         <outlet property="goodImageView" destination="MZN-Jd-653" id="vi5-sZ-R6X"/>
                         <outlet property="goodLabel" destination="6Pp-PG-pIe" id="bRU-pT-T5p"/>
@@ -836,17 +836,17 @@
                         <outlet property="myListAddImageView" destination="INh-2c-WIQ" id="dIk-0j-sig"/>
                         <outlet property="myListLabel" destination="dGI-kN-9ub" id="7r0-LR-zz9"/>
                         <outlet property="numberLabel" destination="xG0-TF-ubZ" id="2EJ-WO-CR5"/>
-                        <outlet property="numberView" destination="33g-R5-wEu" id="GRj-QU-M7t"/>
+                        <outlet property="numberView" destination="33g-R5-wEu" id="gOZ-VB-wmT"/>
                         <outlet property="pictureImageViewOne" destination="qHh-wX-Ccy" id="1qZ-I3-0dr"/>
                         <outlet property="pictureImageViewTwo" destination="Sss-fL-FSh" id="V8k-KJ-bu5"/>
-                        <outlet property="pictureView" destination="S8n-Rr-xnL" id="Vzq-qm-6UC"/>
-                        <outlet property="ratingLabel" destination="Mft-MG-uRn" id="4mw-VT-Xsa"/>
+                        <outlet property="pictureView" destination="S8n-Rr-xnL" id="K4C-Wt-8vU"/>
+                        <outlet property="ratingLabel" destination="Mft-MG-uRn" id="Yk8-qq-Bx7"/>
                         <outlet property="reviewImageView" destination="8ef-Tf-OVY" id="RBB-U5-EnJ"/>
                         <outlet property="reviewLabel" destination="hMI-Ff-hCi" id="aRM-gr-ARs"/>
                         <outlet property="starRatingView" destination="hqH-GK-5C8" id="uce-Wf-LDW"/>
                         <outlet property="storeLabel" destination="loG-hU-rhL" id="buJ-LK-krJ"/>
                         <outlet property="timeLabel" destination="Kk6-qs-zpO" id="fbc-uF-0WP"/>
-                        <outlet property="timeView" destination="tmS-ad-nhT" id="CUP-Ft-fgr"/>
+                        <outlet property="timeView" destination="tmS-ad-nhT" id="eo6-sw-tcr"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ZCg-fe-WtM" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

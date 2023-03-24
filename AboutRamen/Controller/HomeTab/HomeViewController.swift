@@ -68,7 +68,7 @@ class HomeViewController: UIViewController {
         
         getRamenData(url: url, currentLocation: regionLocation)
     }
-
+    
     func setUpNavigationBar() {
         title = "어바웃라멘"
         navigationController?.navigationBar.backgroundColor = CustomColor.beige
@@ -106,7 +106,7 @@ class HomeViewController: UIViewController {
                 self.ramenList = data.documents
                 guard let ramenList = self.ramenList else { return }
                 ramenList.forEach{ self.storeNames.append($0.place_name) }
-
+                
                 DispatchQueue.main.async {
                     self.getRamenImages()
                 }
@@ -141,7 +141,7 @@ class HomeViewController: UIViewController {
     @IBAction func regionChangeButton(_ sender: UIBarButtonItem) {
         guard let regionPickerVC = self.storyboard?.instantiateViewController(withIdentifier: "RegionPickerController") as? RegionPickerController else { return }
         
-        regionPickerVC.delegateRegion = self 
+        regionPickerVC.delegateRegion = self
         regionPickerVC.delegateLocation = self
         
         let backButton = UIBarButtonItem(title: "홈", style: .plain, target: self, action: nil)
@@ -169,6 +169,20 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
         guard let ramenList = ramenList else { return UICollectionViewCell() }
         // TODO: 좋아요 리스트를 통해서 홈 vc에서 별점을 보여줄 예정
         let goodList = realm.objects(GoodListData.self)
+        
+        if !goodList.isEmpty {
+            for item in goodList {
+                if ramenList[indexPath.row].x == String(item.x) && ramenList[indexPath.row].y ==
+                    String(item.y) {
+                    cell.starLabel.text = "\(item.rating)"
+                } else {
+                    cell.starLabel.text = "별점 없음"
+                }
+            }
+        } else {
+            cell.starLabel.text = "별점 없음"
+        }
+        
         let ramenData = ramenList[indexPath.row]
         let myLocation = CLLocation(latitude: currentLocation.long ?? 0, longitude: currentLocation.lat ?? 0)
         let storeLocation = CLLocation(latitude: Double(ramenList[indexPath.row].y) ?? 0, longitude: Double(ramenList[indexPath.row].x) ?? 0)
@@ -179,13 +193,13 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
         cell.nameLabel.text = ramenData.place_name
         
         if let distance = distance {
-        cell.distanceLabel.text = "\(distance)km"
+            cell.distanceLabel.text = "\(distance)km"
         }
         
         cell.ramenImageView.layer.borderWidth = 1.5
         cell.ramenImageView.layer.borderColor = UIColor.black.cgColor
         cell.ramenImageView.layer.cornerRadius = 10
-            
+        
         if imageUrlList.count == ramenList.count {
             let url = URL(string: imageUrlList[indexPath.row])
             cell.ramenImageView.kf.setImage(with: url)
@@ -244,7 +258,7 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
         detailVC.index = indexPath.row
         detailVC.information = ramenList
         if let distance = distance {
-        detailVC.distance = distance
+            detailVC.distance = distance
         }
         
         let backButton = UIBarButtonItem(title: "홈", style: .plain, target: self, action: nil)
