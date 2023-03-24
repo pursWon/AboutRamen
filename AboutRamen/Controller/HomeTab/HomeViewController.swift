@@ -212,15 +212,11 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let width = collectionView.frame.width
-        let height = collectionView.frame.height
         let widthSpacing: CGFloat = 20
-        let heightSpacing: CGFloat = 60
         let widthCount: CGFloat = 2
-        let heightCount: CGFloat = 3
         let totalWidth = (width - (widthSpacing * (widthCount - 1))) / widthCount
-        let totalHeight = (height - (heightSpacing * (heightCount - 1))) / heightCount
         
-        return CGSize(width: totalWidth, height: totalHeight)
+        return CGSize(width: totalWidth, height: totalWidth)
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
