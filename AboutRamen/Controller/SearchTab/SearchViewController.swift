@@ -31,6 +31,7 @@ class SearchViewController: UIViewController {
         
         return false
     }
+    var searchText: String = ""
     
     // MARK: - ViewLifeCycle
     override func viewDidLoad() {
@@ -62,7 +63,7 @@ class SearchViewController: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-    navigationController?.navigationBar.backgroundColor = .white
+        navigationController?.navigationBar.backgroundColor = .white
     }
     
     func getRamenData(url: String, currentLocation: (Double, Double)) {
@@ -81,7 +82,7 @@ class SearchViewController: UIViewController {
             response in
             if let data = response.value {
                 self.ramenList = data.documents
-
+                
                 for i in 0..<self.ramenList.count {
                     self.storeNames.append(self.ramenList[i].place_name)
                 }
@@ -114,14 +115,30 @@ class SearchViewController: UIViewController {
 extension SearchViewController: UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
         guard let text = searchController.searchBar.text else { return }
+        searchText = text
+        
         filterArray = storeNames.filter { $0.contains(text) }
         searchTableView.reloadData()
+        
+        if searchText.isEmpty {
+            introduceLabel.text = "현재 지역을 중심으로 가게를 검색해줍니다."
+            introduceLabel.backgroundColor = CustomColor.sage
+        } else {
+            if filterArray.isEmpty {
+                introduceLabel.text = "검색결과가 없습니다. 다시시도해주세요."
+                introduceLabel.backgroundColor = .gray
+            } else {
+                introduceLabel.text = "검색 결과 : \(filterArray.count)개"
+                introduceLabel.backgroundColor = CustomColor.sage
+            }
+        }
     }
 }
 
 // MARK: - TableView UITableViewDelegate & UITableViewDataSource
 extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        
         if isFiltered {
             return filterArray.count
         } else {
@@ -142,7 +159,7 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 90
+        return 60
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -172,8 +189,8 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
             detailVC.distance = distance
             
             if let long = Double(information[indexPath.row].x), let lat = Double(information[indexPath.row].y) {
-            detailVC.location.0 = long
-            detailVC.location.1 = lat
+                detailVC.location.0 = long
+                detailVC.location.1 = lat
             }
             
             if goodListNames.contains(filterArray[indexPath.row]) {
@@ -195,8 +212,8 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
             detailVC.distance = distance
             
             if let long = Double(information[indexPath.row].x), let lat = Double(information[indexPath.row].y) {
-            detailVC.location.0 = long
-            detailVC.location.1 = lat
+                detailVC.location.0 = long
+                detailVC.location.1 = lat
             }
             
             if goodListNames.contains(storeNames[indexPath.row]) {
@@ -242,3 +259,4 @@ extension SearchViewController: CLLocationManagerDelegate {
         print(error)
     }
 }
+
