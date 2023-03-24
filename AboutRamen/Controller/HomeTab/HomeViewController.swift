@@ -204,7 +204,7 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
             let url = URL(string: imageUrlList[indexPath.row])
             cell.ramenImageView.kf.setImage(with: url)
         } else {
-            cell.ramenImageView.image = UIImage(named: "Ramen")
+            cell.ramenImageView.image = CustomImage.ramen
         }
         
         return cell

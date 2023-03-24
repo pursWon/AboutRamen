@@ -3,31 +3,18 @@ import UIKit
 class MyListViewController: UIViewController {
     // MARK: - UI
     @IBOutlet var myListTableView: UITableView!
+    
     // MARK: - Properties
-    let listNameArray: [String] = ["좋아요 목록", "리뷰 목록", "나의 라멘 가게"]
     let beige = UIColor(red: 255/255, green: 231/255, blue: 204/255, alpha: 1.0)
-    var iconImages: [UIImage] = []
+    let menuItems: [(title: String, icon: UIImage)] = [("좋아요 목록", CustomImage.thumbsUp), ("리뷰 목록", CustomImage.reviewBlack), ("나의 라멘 가게", CustomImage.ramen)]
     
     // MARK: - View Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        addIconImages()
         setUptableView()
         view.backgroundColor = beige
         navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font : UIFont(name: "Recipekorea", size: 20)!]
-    }
-    
-    func addIconImages() {
-        if let iconImageOne = UIImage(named: "ThumbsUp"),
-        let iconImageTwo = UIImage(named: "ReviewBlack"), let iconImageThree = UIImage(named: "Ramen") {
-            iconImages.append(iconImageOne)
-            iconImages.append(iconImageTwo)
-            iconImages.append(iconImageThree)
-        } else {
-            guard let systemImage = UIImage(systemName: "list.bullet.circle") else { return }
-            iconImages.append(systemImage)
-        }
     }
     
     func setUptableView() {
@@ -39,14 +26,14 @@ class MyListViewController: UIViewController {
 // MARK: - TableView
 extension MyListViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return listNameArray.count
+        return menuItems.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = myListTableView.dequeueReusableCell(withIdentifier: "MyListCell", for: indexPath) as? MyListCell else { return UITableViewCell() }
-        cell.contentLabel.text = listNameArray[indexPath.row]
+        cell.contentLabel.text = menuItems[indexPath.row].title
         cell.contentLabel.font = UIFont.boldSystemFont(ofSize: 30)
-        cell.listImageView.image = iconImages[indexPath.row]
+        cell.listImageView.image = menuItems[indexPath.row].icon
         
         return cell
     }

@@ -44,7 +44,7 @@ class DetailViewController: UIViewController {
     // MARK: - Properties
     let realm = try! Realm()
     let imageUrl: String = "https://dapi.kakao.com/v2/search/image"
-    let defaultImage: UIImage = UIImage(named: "Ramen") ?? UIImage(systemName: "fork.knife")!
+    let defaultImage: UIImage = CustomImage.ramen ?? UIImage(systemName: "fork.knife")!
     let appid = Bundle.main.apiKey
     var index: Int = 0
     var searchIndex: Int = 0
@@ -84,9 +84,9 @@ class DetailViewController: UIViewController {
         
         switch reviewState {
         case .yet:
-            reviewImage = UIImage(named: "ReviewWhite")
+            reviewImage = CustomImage.reviewWhite
         case .done:
-            reviewImage = UIImage(named: "ReviewBlack")
+            reviewImage = CustomImage.reviewBlack
         }
         
         if let reviewImage = reviewImage {
@@ -135,18 +135,18 @@ class DetailViewController: UIViewController {
     func setPressedValue() {
         if goodPressed {
             goodLabel.text = "좋아요 취소"
-            goodImageView.image = UIImage(named: "ThumbsUpBlack")
+            goodImageView.image = CustomImage.reviewBlack
         } else {
             goodLabel.text = "좋아요"
-            goodImageView.image = UIImage(named: "ThumbsUpWhite")
+            goodImageView.image = CustomImage.reviewWhite
         }
         
         if myRamenPressed {
             myListLabel.text = "추가하기 취소"
-            myListAddImageView.image = UIImage(named: "MyListBlack")
+            myListAddImageView.image = CustomImage.reviewBlack
         } else {
             myListLabel.text = "추가하기"
-            myListAddImageView.image = UIImage(named: "MyListWhite")
+            myListAddImageView.image = CustomImage.reviewWhite
         }
     }
     
@@ -240,11 +240,11 @@ class DetailViewController: UIViewController {
         if goodPressed {
             goodPressed = false
             goodLabel.text = "좋아요"
-            goodImageView.image = UIImage(named: "ThumbsUpWhite")
+            goodImageView.image = CustomImage.thumbsUpWhite
         } else {
             goodPressed = true
             goodLabel.text = "좋아요 취소"
-            goodImageView.image = UIImage(named: "ThumbsUpBlack")
+            goodImageView.image = CustomImage.thumbsUpBlack
         }
         
         isButtonClicked = true
@@ -281,7 +281,7 @@ class DetailViewController: UIViewController {
         if myRamenPressed {
             myRamenPressed = false
             myListLabel.text = "추가하기"
-            myListAddImageView.image = UIImage(named: "MyListWhite")
+            myListAddImageView.image = CustomImage.myListWhite
             guard let myListObject = myListObject else { return }
             
             try! realm.write {
@@ -291,7 +291,7 @@ class DetailViewController: UIViewController {
             myRamenPressed = true
             myListLabel.text = "추가하기 취소"
             
-            myListAddImageView.image = UIImage(named: "MyListBlack")
+            myListAddImageView.image = CustomImage.myListBlack
             
             guard let address = addressLabel.text else { return }
             
