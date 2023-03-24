@@ -323,13 +323,13 @@
                                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="3" translatesAutoresizingMaskIntoConstraints="NO" id="o6k-N1-yUj">
                                                     <rect key="frame" x="50.000000000000014" y="2" width="229.33333333333337" height="36.666666666666664"/>
                                                     <subviews>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="가게 이름" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YnK-YZ-Tt4">
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="가게 이름" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YnK-YZ-Tt4">
                                                             <rect key="frame" x="0.0" y="0.0" width="229.33333333333334" height="18"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="주소 " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="j19-ve-X5G">
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="주소 " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="j19-ve-X5G">
                                                             <rect key="frame" x="0.0" y="21" width="229.33333333333334" height="15.666666666666664"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                                             <nil key="textColor"/>
@@ -682,9 +682,11 @@
                                                         <rect key="frame" x="50" y="0.0" width="378" height="60"/>
                                                         <subviews>
                                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nKE-R2-BMx">
-                                                                <rect key="frame" x="0.0" y="0.0" width="378" height="60"/>
+                                                                <rect key="frame" x="129.33333333333334" y="14.666666666666629" width="119.33333333333334" height="31"/>
                                                                 <state key="normal" title="Button"/>
-                                                                <buttonConfiguration key="configuration" style="plain" title="지도 링크로 이동 "/>
+                                                                <buttonConfiguration key="configuration" style="plain" title="지도 링크로 이동 ">
+                                                                    <fontDescription key="titleFontDescription" type="boldSystem" pointSize="14"/>
+                                                                </buttonConfiguration>
                                                                 <connections>
                                                                     <action selector="urlButton:" destination="rdf-hl-RCn" eventType="touchUpInside" id="P3C-CT-Qdi"/>
                                                                 </connections>
@@ -693,9 +695,7 @@
                                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                         <constraints>
                                                             <constraint firstItem="nKE-R2-BMx" firstAttribute="centerY" secondItem="rWQ-Es-BGf" secondAttribute="centerY" id="0kM-uB-cr8"/>
-                                                            <constraint firstItem="nKE-R2-BMx" firstAttribute="leading" secondItem="rWQ-Es-BGf" secondAttribute="leading" id="16d-dT-YMc"/>
                                                             <constraint firstItem="nKE-R2-BMx" firstAttribute="centerX" secondItem="rWQ-Es-BGf" secondAttribute="centerX" id="QwJ-tg-UmO"/>
-                                                            <constraint firstItem="nKE-R2-BMx" firstAttribute="top" secondItem="rWQ-Es-BGf" secondAttribute="top" id="oTH-n1-MT7"/>
                                                         </constraints>
                                                     </view>
                                                 </subviews>

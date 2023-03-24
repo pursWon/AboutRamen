@@ -201,7 +201,7 @@ class DetailViewController: UIViewController {
             $0!.layer.borderColor = UIColor.black.cgColor
         }
         
-        [buttonsView, ratingLabel].forEach {
+        [buttonsView, ratingLabel, urlButton].forEach {
             $0.layer.cornerRadius = 10
         }
         
