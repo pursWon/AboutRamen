@@ -24,8 +24,7 @@ class SearchViewController: UIViewController {
     var isFiltered: Bool {
         let searchController = self.navigationItem.searchController
         
-        if let isActive = searchController?.isActive,
-           let isSearchTextEmpty = searchController?.searchBar.text?.isEmpty {
+        if let isActive = searchController?.isActive, let isSearchTextEmpty = searchController?.searchBar.text?.isEmpty {
             return isActive && !isSearchTextEmpty
         }
         
@@ -45,11 +44,17 @@ class SearchViewController: UIViewController {
         locationManager.requestWhenInUseAuthorization()
         
         if CLLocationManager.locationServicesEnabled() {
-            print("위치 서비스 ON 상태")
             locationManager.startUpdatingLocation()
-        } else {
-            print("위치 서비스 OFF 상태")
         }
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        navigationController?.navigationBar.backgroundColor = .white
+    }
+    
+    func setUpTableView() {
+        searchTableView.dataSource = self
+        searchTableView.delegate = self
     }
     
     func navigationBarSetUp() {
@@ -62,12 +67,18 @@ class SearchViewController: UIViewController {
         searchTableView.backgroundColor = .white
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        navigationController?.navigationBar.backgroundColor = .white
+    func setUpSearchController() {
+        let searchController = UISearchController()
+        searchController.searchBar.placeholder = "가게 이름을 입력해주세요"
+        searchController.searchResultsUpdater = self
+        searchController.hidesNavigationBarDuringPresentation = true
+        
+        navigationItem.searchController = searchController
+        navigationItem.title = "가게 검색"
+        navigationItem.hidesSearchBarWhenScrolling = false
     }
     
     func getRamenData(url: String, currentLocation: (Double, Double)) {
-        print(currentLocation.0)
         let headers: HTTPHeaders = ["Authorization": appid]
         let parameters: [String: Any] = [
             "query" : "라멘",
@@ -92,22 +103,6 @@ class SearchViewController: UIViewController {
                 }
             }
         }
-    }
-    
-    func setUpSearchController() {
-        let searchController = UISearchController()
-        searchController.searchBar.placeholder = "가게 이름을 입력해주세요"
-        searchController.searchResultsUpdater = self
-        searchController.hidesNavigationBarDuringPresentation = true
-        
-        navigationItem.searchController = searchController
-        navigationItem.title = "가게 검색"
-        navigationItem.hidesSearchBarWhenScrolling = false
-    }
-    
-    func setUpTableView() {
-        searchTableView.dataSource = self
-        searchTableView.delegate = self
     }
 }
 
@@ -138,23 +133,13 @@ extension SearchViewController: UISearchResultsUpdating {
 // MARK: - TableView UITableViewDelegate & UITableViewDataSource
 extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        
-        if isFiltered {
-            return filterArray.count
-        } else {
-            return storeNames.count
-        }
+        return isFiltered ? filterArray.count : storeNames.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = searchTableView.dequeueReusableCell(withIdentifier: "SearchViewCell", for: indexPath) as? SearchViewCell else { return UITableViewCell() }
         
-        if isFiltered {
-            cell.textLabel?.text = filterArray[indexPath.row]
-        } else {
-            cell.textLabel?.text = storeNames[indexPath.row]
-        }
-        
+        cell.textLabel?.text = isFiltered ? filterArray[indexPath.row] : storeNames[indexPath.row]
         return cell
     }
     
@@ -193,17 +178,8 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
                 detailVC.location.1 = lat
             }
             
-            if goodListNames.contains(filterArray[indexPath.row]) {
-                detailVC.goodPressed = true
-            } else {
-                detailVC.goodPressed = false
-            }
-            
-            if myRamenListNames.contains(filterArray[indexPath.row]) {
-                detailVC.myRamenPressed = true
-            } else {
-                detailVC.myRamenPressed = false
-            }
+            detailVC.goodPressed = goodListNames.contains(filterArray[indexPath.row]) ? true : false
+            detailVC.myRamenPressed = myRamenListNames.contains(filterArray[indexPath.row]) ? true : false
             
             navigationController?.pushViewController(detailVC, animated: true)
         } else {
@@ -216,17 +192,8 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
                 detailVC.location.1 = lat
             }
             
-            if goodListNames.contains(storeNames[indexPath.row]) {
-                detailVC.goodPressed = true
-            } else {
-                detailVC.goodPressed = false
-            }
-            
-            if myRamenListNames.contains(storeNames[indexPath.row]) {
-                detailVC.myRamenPressed = true
-            } else {
-                detailVC.myRamenPressed = false
-            }
+            detailVC.goodPressed = goodListNames.contains(storeNames[indexPath.row]) ? true : false
+            detailVC.myRamenPressed = myRamenListNames.contains(storeNames[indexPath.row]) ? true : false
             
             navigationController?.pushViewController(detailVC, animated: true)
         }
@@ -244,11 +211,9 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
 
 extension SearchViewController: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        print("didUpdateLocations")
         if let location = locations.first {
-            print("위도 : \(location.coordinate.latitude)")
-            print("경도 : \(location.coordinate.longitude)")
             currentLocation = (location.coordinate.latitude, location.coordinate.longitude)
+            
             if let lat = currentLocation.0, let long = currentLocation.1 {
                 getRamenData(url: url, currentLocation: (lat, long))
             }
@@ -259,4 +224,3 @@ extension SearchViewController: CLLocationManagerDelegate {
         print(error)
     }
 }
-
