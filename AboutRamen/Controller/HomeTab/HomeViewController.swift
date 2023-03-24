@@ -167,7 +167,7 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectionViewCell", for: indexPath) as? CollectionViewCell else { return UICollectionViewCell() }
         guard let ramenList = ramenList else { return UICollectionViewCell() }
-        // TODO: 좋아요 리스트를 통해서 홈 vc에서 별점을 보여줄 예정
+        
         let goodList = realm.objects(GoodListData.self)
         
         if !goodList.isEmpty {
