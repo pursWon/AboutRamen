@@ -19,7 +19,7 @@ class DetailViewController: UIViewController {
     @IBOutlet var informationView: UIView!
     @IBOutlet var addressView: UIView!
     @IBOutlet var numberView: UIView!
-    @IBOutlet var timeView: UIView!
+    @IBOutlet var urlView: UIView!
     @IBOutlet var pictureView: UIView!
     @IBOutlet var buttonsView: UIView!
     @IBOutlet var ratingLabel: UILabel!
@@ -27,7 +27,7 @@ class DetailViewController: UIViewController {
     @IBOutlet var distanceLabel: UILabel!
     @IBOutlet var addressLabel: UILabel!
     @IBOutlet var numberLabel: UILabel!
-    @IBOutlet var timeLabel: UILabel!
+    @IBOutlet var urlButton: UIButton!
     @IBOutlet var pictureImageViewOne: UIImageView!
     @IBOutlet var pictureImageViewTwo: UIImageView!
     
@@ -71,12 +71,6 @@ class DetailViewController: UIViewController {
         getRamenImages()
         setPressedValue()
         starRatingView.delegate = self
-        
-        if let storeName = storeLabel.text {
-            store = storeName
-        } else {
-            store = "가게 이름 없음"
-        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -132,21 +126,28 @@ class DetailViewController: UIViewController {
         }
     }
     
+    @IBAction func urlButton(_ sender: UIButton) {
+        let info = Array(information)
+        if let url = URL(string: info[index].place_url) {
+            UIApplication.shared.open(url)
+        }
+    }
+    
     func setPressedValue() {
         if goodPressed {
             goodLabel.text = "좋아요 취소"
-            goodImageView.image = CustomImage.reviewBlack
+            goodImageView.image = CustomImage.thumbsUpBlack
         } else {
             goodLabel.text = "좋아요"
-            goodImageView.image = CustomImage.reviewWhite
+            goodImageView.image = CustomImage.thumbsUpWhite
         }
         
         if myRamenPressed {
             myListLabel.text = "추가하기 취소"
-            myListAddImageView.image = CustomImage.reviewBlack
+            myListAddImageView.image = CustomImage.myListBlack
         } else {
             myListLabel.text = "추가하기"
-            myListAddImageView.image = CustomImage.reviewWhite
+            myListAddImageView.image = CustomImage.myListWhite
         }
     }
     
@@ -195,7 +196,7 @@ class DetailViewController: UIViewController {
     
     func setUpBorder() {
         // TODO: $0이 Optional인 이유 찾기
-        [addressView, numberView, timeView, pictureView, buttonsView, ratingLabel].forEach {
+        [addressView, numberView, urlView, pictureView, buttonsView, ratingLabel].forEach {
             $0!.layer.borderWidth = 2
             $0!.layer.borderColor = UIColor.black.cgColor
         }
@@ -208,7 +209,7 @@ class DetailViewController: UIViewController {
     }
     
     func setUpBackgroundColor() {
-        [view, addressLabel, numberLabel, timeLabel].forEach {
+        [view, addressLabel, numberLabel, urlButton].forEach {
             $0.backgroundColor = CustomColor.beige
         }
     }
@@ -217,9 +218,15 @@ class DetailViewController: UIViewController {
         let info = Array(information)
         storeLabel.font = .boldSystemFont(ofSize: 35)
         storeLabel.text = info[index].place_name
+        
         if let distance = distance {
             distanceLabel.text = "\(distance)km"
         }
+        
+        if info[index].place_url.isEmpty {
+            urlButton.setTitle("가게 위치정보가 존재하지 않습니다", for: .normal)
+        }
+        
         addressLabel.text = info[index].road_address_name
         numberLabel.text = info[index].phone
     }
