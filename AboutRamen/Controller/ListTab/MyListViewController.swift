@@ -5,7 +5,6 @@ class MyListViewController: UIViewController {
     @IBOutlet var myListTableView: UITableView!
     
     // MARK: - Properties
-    let beige = UIColor(red: 255/255, green: 231/255, blue: 204/255, alpha: 1.0)
     let menuItems: [(title: String, icon: UIImage)] = [("좋아요 목록", CustomImage.thumbsUp), ("리뷰 목록", CustomImage.reviewBlack), ("나의 라멘 가게", CustomImage.ramen)]
     
     // MARK: - View Life Cycle
@@ -13,7 +12,7 @@ class MyListViewController: UIViewController {
         super.viewDidLoad()
         
         setUptableView()
-        view.backgroundColor = beige
+        view.backgroundColor = CustomColor.beige
         navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font : UIFont(name: "Recipekorea", size: 20)!]
     }
     
