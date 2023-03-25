@@ -60,8 +60,6 @@ class HomeViewController: UIViewController {
         }
         
         view.backgroundColor = CustomColor.beige
-        /// - NOTE : Realm 파일 위치를 확인하기 위해 프린트문 유지...
-        // print(realm.configuration.fileURL)
         
         let goodList = realm.objects(GoodListData.self)
         goodList.forEach { goodStoreName.append($0.storeName) }
@@ -250,7 +248,6 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
         }
         
         detailVC.reviewState = reviewListData.isEmpty ? .yet : .done
-        
         detailVC.index = indexPath.row
         detailVC.information = ramenList
         if let distance = distance {
