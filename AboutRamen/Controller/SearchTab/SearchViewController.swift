@@ -113,18 +113,20 @@ extension SearchViewController: UISearchResultsUpdating {
         searchText = text
         
         filterArray = storeNames.filter { $0.contains(text) }
-        searchTableView.reloadData()
-        
+       
         if searchText.isEmpty {
             introduceLabel.text = "현재 지역을 중심으로 가게를 검색해줍니다."
             introduceLabel.backgroundColor = CustomColor.sage
+            searchTableView.reloadData()
         } else {
             if filterArray.isEmpty {
                 introduceLabel.text = "검색결과가 없습니다. 다시시도해주세요."
                 introduceLabel.backgroundColor = .gray
+                searchTableView.reloadData()
             } else {
                 introduceLabel.text = "검색 결과 : \(filterArray.count)개"
                 introduceLabel.backgroundColor = CustomColor.sage
+                searchTableView.reloadData()
             }
         }
     }
@@ -168,14 +170,14 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
         }
         
         if isFiltered {
-            let information = ramenList.filter { $0.place_name == self.filterArray[indexPath.row] }
-            
-            detailVC.information.append(objectsIn: information)
+            let information = ramenList.filter{ $0.place_name == self.filterArray[indexPath.row] }
+            detailVC.information.append(information.first!)
             detailVC.distance = distance
+            detailVC.store = filterArray[indexPath.row]
             
             if let long = Double(information[indexPath.row].x), let lat = Double(information[indexPath.row].y) {
-                detailVC.location.0 = long
-                detailVC.location.1 = lat
+                            detailVC.location.0 = long
+                            detailVC.location.1 = lat
             }
             
             detailVC.goodPressed = goodListNames.contains(filterArray[indexPath.row]) ? true : false
@@ -183,13 +185,14 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
             
             navigationController?.pushViewController(detailVC, animated: true)
         } else {
-            let information = ramenList.filter { $0.place_name == self.storeNames[indexPath.row] }
-            detailVC.information.append(objectsIn: information)
+            let information = ramenList.filter{ $0.place_name == self.storeNames[indexPath.row] }
+            detailVC.information.append(information.first!)
             detailVC.distance = distance
+            detailVC.store = storeNames[indexPath.row]
             
             if let long = Double(information[indexPath.row].x), let lat = Double(information[indexPath.row].y) {
-                detailVC.location.0 = long
-                detailVC.location.1 = lat
+                            detailVC.location.0 = long
+                            detailVC.location.1 = lat
             }
             
             detailVC.goodPressed = goodListNames.contains(storeNames[indexPath.row]) ? true : false
