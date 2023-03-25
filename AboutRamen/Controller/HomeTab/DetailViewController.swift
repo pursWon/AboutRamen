@@ -96,29 +96,38 @@ class DetailViewController: UIViewController {
         super.viewWillDisappear(true)
         
         guard isButtonClicked else { return }
-            guard let rating = ratingLabel.text else { return }
-            
-            let myRating = (rating as NSString).doubleValue
-            storeRating = myRating
-            
-            let goodObject = realm.objects(GoodListData.self).where {
+        guard let rating = ratingLabel.text else { return }
+        guard let address = addressLabel.text else { return }
+        
+        let goodObject = realm.objects(GoodListData.self).where {
             $0.storeName == store
             && $0.x == location.long
             && $0.y == location.lat
-            }
+        }
         
-            if goodPressed {
-                guard let address = addressLabel.text else { return }
-                
-                let goodData = GoodListData(storeName: store, addressName: address, x: location.0, y: location.1, rating: storeRating, isGoodPressed: goodPressed)
-                
-                if !goodObject.contains(goodData) {
-                    try! realm.write {
-                        realm.add(goodData)
-                    }
+        let myRating = (rating as NSString).doubleValue
+        storeRating = myRating
+        
+        let goodData = GoodListData(storeName: store, addressName: address, x: location.0, y: location.1, rating: storeRating, isGoodPressed: goodPressed)
+        
+        if goodPressed {
+            if goodObject.isEmpty {
+                try! realm.write {
+                    realm.add(goodData)
                 }
             } else {
-                if let firstItem = goodObject.first {
+                for item in goodObject {
+                    if item.rating != storeRating {
+                        if let update = goodObject.filter(NSPredicate(format: "storeName = %@", store)).first {
+                            try! realm.write {
+                                update.rating = storeRating
+                            }
+                        }
+                    }
+                }
+            }
+        } else {
+            if let firstItem = goodObject.first {
                 try! realm.write {
                     realm.delete(firstItem)
                 }
@@ -137,9 +146,11 @@ class DetailViewController: UIViewController {
         if goodPressed {
             goodLabel.text = "좋아요 취소"
             goodImageView.image = CustomImage.thumbsUpBlack
+            isButtonClicked = true
         } else {
             goodLabel.text = "좋아요"
             goodImageView.image = CustomImage.thumbsUpWhite
+            isButtonClicked = false
         }
         
         if myRamenPressed {
@@ -195,7 +206,6 @@ class DetailViewController: UIViewController {
     }
     
     func setUpBorder() {
-        // TODO: $0이 Optional인 이유 찾기
         [addressView, numberView, urlView, pictureView, buttonsView, ratingLabel].forEach {
             $0!.layer.borderWidth = 2
             $0!.layer.borderColor = UIColor.black.cgColor
@@ -216,19 +226,39 @@ class DetailViewController: UIViewController {
     
     func setUpLableText() {
         let info = Array(information)
+        let selectedInfo = info[index]
+        let goodList = realm.objects(GoodListData.self)
+        
         storeLabel.font = .boldSystemFont(ofSize: 35)
-        storeLabel.text = info[index].place_name
+        storeLabel.text = selectedInfo.place_name
         
         if let distance = distance {
             distanceLabel.text = "\(distance)km"
         }
         
-        if info[index].place_url.isEmpty {
-            urlButton.setTitle("가게 위치정보가 존재하지 않습니다", for: .normal)
+        for item in goodList {
+            if String(item.x) == selectedInfo.x && String(item.y) == selectedInfo.y {
+                ratingLabel.text = "\(item.rating)"
+                starRatingView.rating = item.rating
+                break
+            }
         }
         
-        addressLabel.text = info[index].road_address_name
-        numberLabel.text = info[index].phone
+        if info[index].place_url.isEmpty {
+            urlButton.setTitle("가게 위치 정보 없음", for: .normal)
+        }
+        
+        if selectedInfo.road_address_name.isEmpty {
+            addressLabel.text = "주소 정보 없음"
+        } else {
+            addressLabel.text = selectedInfo.road_address_name
+        }
+        
+        if selectedInfo.phone.isEmpty {
+            numberLabel.text = "전화번호 정보 없음"
+        } else {
+            numberLabel.text = selectedInfo.phone
+        }
     }
     
     func setUpTabImageView() {
