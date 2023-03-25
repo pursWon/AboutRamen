@@ -36,8 +36,6 @@ class MyRamenListViewController: UIViewController {
         
         if CLLocationManager.locationServicesEnabled() {
             locationManager.startUpdatingLocation()
-        } else {
-            print("위치 서비스 Off 상태")
         }
     }
     
@@ -233,8 +231,6 @@ extension MyRamenListViewController: UITableViewDelegate, UITableViewDataSource 
 extension MyRamenListViewController: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         if let location = locations.first {
-            print("위도 : \(location.coordinate.latitude)")
-            print("경도 : \(location.coordinate.longitude)")
             currentLocation.0 = location.coordinate.latitude
             currentLocation.1 = location.coordinate.longitude
         }
