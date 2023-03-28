@@ -1,10 +1,10 @@
 import UIKit
 
+/// 지역 선택 화면
 class RegionPickerController: UIViewController {
     // MARK: - UI
     @IBOutlet var pickerView: UIView!
     @IBOutlet var regionPickerView: UIPickerView!
-    @IBOutlet var regionStackView: UIStackView!
     @IBOutlet var resultLabel: UILabel!
     @IBOutlet var chooseLabel: UILabel!
     @IBOutlet var saveButton: UIBarButtonItem!
@@ -20,35 +20,37 @@ class RegionPickerController: UIViewController {
     var selectedCity: String = ""
     /// 구, 군이름 데이터를 담을 변수
     var selectedGu: String = ""
-    var firstPickerRow: Int = 0
     /// 현재 지역 위치를 알려줄 변수
     var address: (city: String?, gu: String?)
     /// 경도, 위도 데이터를 담을 변수
     var longlat: (long: Double?, lat: Double?)
+    var firstPickerRow: Int = 0
     
     // MARK: - View Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        setInitData()
+        setupBorder()
+        setupNavigationbar()
+    }
+    
+    // MARK: - Set up
+    func setInitData() {
         view.backgroundColor = CustomColor.beige
         pickerView.backgroundColor = CustomColor.beige
         regionPickerView.backgroundColor = CustomColor.sage
         chooseLabel.textColor = CustomColor.deepGreen
-        
-        let attributes = [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 20)]
-        saveButton.setTitleTextAttributes(attributes, for: .normal)
-        
-        navigationController?.navigationBar.backItem?.backBarButtonItem?.setTitleTextAttributes(attributes, for: .normal)
         chooseLabel.font = UIFont.boldSystemFont(ofSize: 22)
-        setupBorder()
         delegateRegion?.sendRegionData(city: "서울시", gu: "강남구")
     }
     
-    // MARK: - Set up
     func setupNavigationbar() {
-        let backButton = UIBarButtonItem(title: "홈", style: .plain, target: self, action: nil)
         let attributes = [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 16)]
+        saveButton.setTitleTextAttributes(attributes, for: .normal)
+        navigationController?.navigationBar.backItem?.backBarButtonItem?.setTitleTextAttributes(attributes, for: .normal)
         
+        let backButton = UIBarButtonItem(title: "홈", style: .plain, target: self, action: nil)
         self.navigationItem.backBarButtonItem = backButton
         self.navigationItem.backBarButtonItem?.tintColor = .black
         backButton.setTitleTextAttributes(attributes, for: .normal)
@@ -59,6 +61,7 @@ class RegionPickerController: UIViewController {
         regionPickerView.layer.borderColor = UIColor.black.cgColor
     }
     
+    // MARK: - Action
     @IBAction func saveButton(_ sender: UIBarButtonItem) {
         if let city = address.city, let gu = address.gu {
             delegateRegion?.sendRegionData(city: city, gu: gu)
@@ -73,8 +76,8 @@ class RegionPickerController: UIViewController {
     }
 }
 
+// MARK: - UIPickerViewDelegate, UIPickerViewDataSource
 extension RegionPickerController: UIPickerViewDelegate, UIPickerViewDataSource {
-    // MARK: - PickerView
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 2
     }
@@ -113,9 +116,11 @@ extension RegionPickerController: UIPickerViewDelegate, UIPickerViewDataSource {
             let city = selectedItem.city.rawValue
             address = (city, nil)
             regionPickerView.reloadAllComponents()
+            
         case 1:
             let selectedItem = list[firstPickerRow]
             address.gu = selectedItem.guList[row].gu
+            
         default:
             return
         }

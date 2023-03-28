@@ -1,8 +1,9 @@
 import UIKit
+import CoreLocation
 import Alamofire
 import RealmSwift
-import CoreLocation
 
+/// 검색 화면
 class SearchViewController: UIViewController {
     // MARK: - UI
     @IBOutlet var searchTableView: UITableView!
@@ -14,16 +15,12 @@ class SearchViewController: UIViewController {
     let appid = Bundle.main.apiKey
     
     var locationManager = CLLocationManager()
-    /// 검색어에 해당되는 String값들의 모음 배열
-    var filterArray: [String] = []
-    /// 전국에 있는 라멘 가게들의 이름 모음 배열
-    var storeNames: [String] = []
-    /// 검색어를 기반으로 데이터 송신을 통해 담아온 라멘 가게 정보들의 배열
-    var ramenList = List<Information>()
-    
     var currentLocation: CLLocation?
-    var distance: String = ""
     
+    /// 검색어를 기반으로 선별된 가게 정보들의 배열
+    var searchedList: [RamenData] = []
+    /// 현재 위치를 기반으로 데이터 송신을 통해 담아온 라멘 가게 정보들의 배열
+    var defaultList: [RamenData] = []
     var isFiltered: Bool {
         let searchController = self.navigationItem.searchController
         
@@ -33,30 +30,37 @@ class SearchViewController: UIViewController {
         
         return false
     }
-    /// 검색어
-    var searchText: String = ""
     
     // MARK: - ViewLifeCycle
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        setInitData()
         setupNavigationbar()
         setupSearchController()
         setupTableView()
-        locationManager.delegate = self
-        locationManager.desiredAccuracy = kCLLocationAccuracyBest
-        locationManager.requestWhenInUseAuthorization()
-        
-        if CLLocationManager.locationServicesEnabled() {
-            locationManager.startUpdatingLocation()
-        }
+        setLocationManager()
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        navigationController?.navigationBar.backgroundColor = .white
+        deleteNoDataItem()
     }
     
-    // MARK: - Set up
+    // MARK: - Set Up
+    func setInitData() {
+        view.backgroundColor = .white
+        introduceLabel.font = .boldSystemFont(ofSize: 15)
+        introduceLabel.backgroundColor = CustomColor.sage
+        searchTableView.backgroundColor = .white
+    }
+    
+    func setLocationManager() {
+        locationManager.delegate = self
+        locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        locationManager.requestWhenInUseAuthorization()
+        locationManager.startUpdatingLocation()
+    }
+    
     func setupTableView() {
         searchTableView.dataSource = self
         searchTableView.delegate = self
@@ -64,12 +68,7 @@ class SearchViewController: UIViewController {
     
     func setupNavigationbar() {
         navigationController?.navigationBar.backgroundColor = CustomColor.beige
-        
-        view.backgroundColor = .white
         navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font : UIFont(name: "Recipekorea", size: 20)!]
-        introduceLabel.font = .boldSystemFont(ofSize: 15)
-        introduceLabel.backgroundColor = CustomColor.sage
-        searchTableView.backgroundColor = .white
     }
     
     func setupSearchController() {
@@ -95,18 +94,27 @@ class SearchViewController: UIViewController {
             "page": 1
         ]
         
-        AF.request(url, method: .get, parameters: parameters, headers: headers).responseDecodable(of: RamenStore.self) {
-            response in
+        AF.request(url, method: .get, parameters: parameters, headers: headers).responseDecodable(of: RamenStore.self) { response in
             if let data = response.value {
-                self.ramenList = data.documents
-                
-                for i in 0..<self.ramenList.count {
-                    self.storeNames.append(self.ramenList[i].place_name)
+                for ramen in data.documents {
+                    self.defaultList.append(ramen.toRameDataType())
                 }
                 
                 DispatchQueue.main.async {
                     self.searchTableView.reloadData()
                 }
+            }
+        }
+    }
+    
+    // MARK: - ETC
+    /// 평가가 모두 안되어 있는 아이템 삭제
+    func deleteNoDataItem() {
+        let shouldDeleteItems = realm.objects(RamenData.self).filter { !$0.isGood && !$0.isReviewed && !$0.isFavorite }
+        
+        if !shouldDeleteItems.isEmpty {
+            try! realm.write {
+                realm.delete(shouldDeleteItems)
             }
         }
     }
@@ -116,18 +124,17 @@ class SearchViewController: UIViewController {
 extension SearchViewController: UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
         guard let text = searchController.searchBar.text else { return }
-        searchText = text
-        filterArray = storeNames.filter { $0.contains(text) }
-       
-        if searchText.isEmpty {
+        searchedList = defaultList.filter { $0.storeName.contains(text) }
+        
+        if text.isEmpty {
             introduceLabel.text = "현재 지역을 중심으로 가게를 검색합니다."
             introduceLabel.backgroundColor = CustomColor.sage
         } else {
-            if filterArray.isEmpty {
+            if searchedList.isEmpty {
                 introduceLabel.text = "검색결과가 없습니다. 다시 시도해 주세요."
                 introduceLabel.backgroundColor = .gray
             } else {
-                introduceLabel.text = "검색 결과: \(filterArray.count)개"
+                introduceLabel.text = "검색 결과: \(searchedList.count)개"
                 introduceLabel.backgroundColor = CustomColor.sage
             }
         }
@@ -139,32 +146,31 @@ extension SearchViewController: UISearchResultsUpdating {
 // MARK: - UITableViewDelegate & UITableViewDataSource
 extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return isFiltered ? filterArray.count : storeNames.count
+        return isFiltered ? searchedList.count : defaultList.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = searchTableView.dequeueReusableCell(withIdentifier: "SearchViewCell", for: indexPath) as? SearchViewCell else { return UITableViewCell() }
         
-        cell.textLabel?.text = isFiltered ? filterArray[indexPath.row] : storeNames[indexPath.row]
+        if isFiltered {
+            cell.textLabel?.text = searchedList[indexPath.row].storeName
+        } else {
+            cell.textLabel?.text = defaultList[indexPath.row].storeName
+        }
+        
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let detailVC = self.storyboard?.instantiateViewController(withIdentifier: "DetailViewController") as? DetailViewController else { return }
         
-        // 렘에 저장한 라면 리스트
-        let storedRamenList = realm.objects(RamenData.self)
-        
         if isFiltered {
-            let goodList = storedRamenList.filter{ $0.isGood }
-            let selectedRamen = Array(goodList)[indexPath.row]
+            let selectedRamen = searchedList[indexPath.row]
             detailVC.viewType = .search
             detailVC.selectedRamen = selectedRamen
         } else {
-            let myRamenList = storedRamenList.filter{ $0.isFavorite }
-            let selectedRamen = Array(myRamenList)[indexPath.row]
+            let selectedRamen = defaultList[indexPath.row]
             detailVC.selectedRamen = selectedRamen
-            
         }
         
         navigationController?.pushViewController(detailVC, animated: true)

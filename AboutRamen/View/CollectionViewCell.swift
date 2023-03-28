@@ -1,5 +1,6 @@
 import UIKit
 
+/// 홈 - 라면 정보 셀
 class CollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var ramenView: UIView!
     @IBOutlet weak var nameLabel: UILabel!

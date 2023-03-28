@@ -1,31 +1,36 @@
 import UIKit
 import RealmSwift
 
+/// 리뷰 목록 화면
 class ReviewListViewController: UIViewController {
     // MARK: - UI
     @IBOutlet var reviewListTableView: UITableView!
     @IBOutlet var editButton: UIButton!
+    @IBOutlet var emptyLabel: UILabel!
     
     // MARK: - Properties
     let realm = try! Realm()
-   
+    var reviewList: Results<RamenData>?
+    
     // MARK: - View Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         
         setUpTableView()
-        view.backgroundColor = CustomColor.beige
-        title = "리뷰 목록"
-        
-        if reviewListTableView.isEditing {
-            editButton.titleLabel?.font = .boldSystemFont(ofSize: 20)
-        } else {
-            editButton.titleLabel?.font = .boldSystemFont(ofSize: 20)
-        }
+        setInitData()
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
         reviewListTableView.reloadData()
+    }
+    
+    // MARK: - Set Up
+    func setInitData() {
+        title = "리뷰 목록"
+        view.backgroundColor = CustomColor.beige
+        editButton.titleLabel?.font = .boldSystemFont(ofSize: 20)
     }
     
     func setUpTableView() {
@@ -33,6 +38,7 @@ class ReviewListViewController: UIViewController {
         reviewListTableView.delegate = self
     }
     
+    // MARK: - Action
     @IBAction func editButton(_ sender: UIButton) {
         if reviewListTableView.isEditing {
             editButton.setTitle("편집", for: .normal)
@@ -44,30 +50,29 @@ class ReviewListViewController: UIViewController {
     }
 }
 
-// MARK: - TableView
+// MARK: - UITableViewDelegate, UITableViewDataSource
 extension ReviewListViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        let reviewList = realm.objects(RamenData.self)
+        guard let reviewList = reviewList else { return 0 }
+        emptyLabel.isHidden = reviewList.isEmpty ? false : true
         return reviewList.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = reviewListTableView.dequeueReusableCell(withIdentifier: "ReviewListCell", for: indexPath) as? ReviewListCell else { return UITableViewCell() }
-        let realmList = realm.objects(RamenData.self).filter{ $0.isReviewed }
-        let item = realmList[indexPath.row]
+        guard let reviewList = reviewList else { return UITableViewCell() }
+        let item = reviewList[indexPath.row]
         cell.nameLabel.text = item.storeName
         cell.addressLabel.text = item.addressName
+        cell.reviewImageView.tintColor = .systemOrange
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let reviewVC = self.storyboard?.instantiateViewController(withIdentifier: "ReviewViewController") as? ReviewViewController else { return }
-        let realmList = realm.objects(RamenData.self).filter{ $0.isReviewed }
-        
-        if !realmList.isEmpty {
-            reviewVC.selectedRamen = realmList[indexPath.row]
-            navigationController?.pushViewController(reviewVC, animated: true)
-        }
+        guard let reviewList = reviewList else { return }
+        reviewVC.selectedRamen = reviewList[indexPath.row]
+        navigationController?.pushViewController(reviewVC, animated: true)
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -79,11 +84,10 @@ extension ReviewListViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        let reviewList = realm.objects(RamenData.self)
-        let reviewArray = Array(reviewList)
+        guard let reviewList = reviewList else { return }
         
         if editingStyle == .delete {
-            let item = reviewArray[indexPath.row]
+            let item = reviewList[indexPath.row]
             
             try! realm.write {
                 realm.delete(item)

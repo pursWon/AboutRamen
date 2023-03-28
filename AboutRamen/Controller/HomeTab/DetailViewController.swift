@@ -1,10 +1,8 @@
 import UIKit
+import CoreLocation
 import Alamofire
 import Kingfisher
 import RealmSwift
-
-// TODO: Review 데이터 관리
-// TODO: 별점 정보 저장
 
 // MARK: - Enum
 enum ReviewState: String {
@@ -17,7 +15,16 @@ protocol ReviewCompleteProtocol {
     func sendReview(state: ReviewState)
 }
 
+/// 상세 화면
 class DetailViewController: UIViewController {
+    // MARK: - View Type
+    enum ViewType: String {
+        case detail = "가게 정보" // 기본 상세 화면
+        case goodList = "좋아요 가게"// 좋아요 목록
+        case search = "가게 검색" // 가게 검색 상세 화면
+        case favoriteList = "나의 라면 가게" // 나의 라면 가게
+    }
+    
     // MARK: - UI
     @IBOutlet var informationView: UIView!
     @IBOutlet var addressView: UIView!
@@ -44,90 +51,67 @@ class DetailViewController: UIViewController {
     
     @IBOutlet var starRatingView: RatingView!
     
-    // TODO: case 중 필요없는게 있는지 체크
-    enum ViewType: String {
-        case detail = "가게 정보" // 기본 상세 화면
-        case goodList = "좋아요 가게"// 좋아요 목록
-        case search = "가게 검색" // 가게 검색 상세 화면
-        case favoriteList = "나의 라면 가게" // 나의 라면 가게
-    }
-    
     // MARK: - Properties
     let realm = try! Realm()
     let imageUrl: String = "https://dapi.kakao.com/v2/search/image"
     let appid = Bundle.main.apiKey
-    let loadingView = UIActivityIndicatorView(style: .medium)
     
-    var searchIndex: Int = 0
+    let locationManager = CLLocationManager()
+    var currentLocation: CLLocation? {
+        didSet {
+            guard let selectedRamen = selectedRamen else { return }
+            let targetLocation = CLLocation(latitude: selectedRamen.y, longitude: selectedRamen.x)
+            distanceLabel.text = getDistance(from: currentLocation, to: targetLocation)
+        }
+    }
+    
     var reviewState: ReviewState = .yet
     var viewType: ViewType = .detail
     
+    /// 테이블뷰에서 눌른 셀에 해당하는 데이터 (이전 화면에서 넘겨받은 데이터)
+    var selectedRamen: RamenData?
     /// DetailVC에서 보여줄 두 개의 이미지 URL을 담는 배열
     var existImageUrlList: [String] = []
     /// 별점이 수정되었을 경우 true
     var newRating: Double = 0
-    /// 좋아요, 추가하기 버튼이 놀렸을 경우 true
-    var isButtonClicked: Bool = false
-    /// 테이블뷰에서 눌른 셀에 해당하는 데이터 (이전 화면에서 넘겨받은 데이터)
-    var selectedRamen: RamenData?
-    
-    /// 현재 위치로 부터 선택한 가게까지의 거리
-    var distance: String = ""
+    /// 리뷰 여부
     var isReviewed: Bool = false
     
     // MARK: - View Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        starRatingView.delegate = self
+        setLocationManager()
         setNavigationbar()
         setUpBorder()
         setUpBackgroundColor()
         setUpLableText()
         setUpTabImageView()
         getRamenImages()
-        initButtonState()
-        starRatingView.delegate = self
-        
-        if let selectedRamen = selectedRamen {
-            print(">>> id: \(selectedRamen._id), name: \(selectedRamen.storeName) - rating: \(selectedRamen.rating), fav: \(selectedRamen.isFavorite), good: \(selectedRamen.isGood), review: \(selectedRamen.isReviewed)")
-        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        var reviewImage: UIImage?
-        
-        switch reviewState {
-        case .yet:
-            reviewImage = CustomImage.reviewWhite
-        case .done:
-            reviewImage = CustomImage.reviewBlack
-        }
-        
-        if let reviewImage = reviewImage {
-            reviewImageView.image = reviewImage
-        }
-        
-        reviewLabel.text = reviewState.rawValue
         initButtonState()
+        setInitData()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(true)
         
         saveData()
-        
-        let shouldDeleteItems = realm.objects(RamenData.self).filter { !$0.isGood && !$0.isReviewed && !$0.isReviewed }
-        
-        if !shouldDeleteItems.isEmpty {
-            try! realm.write {
-                realm.delete(shouldDeleteItems)
-            }
-        }
     }
     
     // MARK: - Set up
+    func setLocationManager() {
+        locationManager.delegate = self
+        locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        locationManager.requestWhenInUseAuthorization()
+        locationManager.startUpdatingLocation()
+    }
+    
     func setNavigationbar() {
         // 타이틀 설정
         navigationItem.title = viewType.rawValue
@@ -148,16 +132,16 @@ class DetailViewController: UIViewController {
         [view, addressLabel, numberLabel, urlButton].forEach { $0.backgroundColor = CustomColor.beige }
     }
     
-    func addTabGesture(target: UIImageView, action: Selector) {
-        let addTabGesture = UITapGestureRecognizer(target: self, action: action)
-        target.addGestureRecognizer(addTabGesture)
-        target.isUserInteractionEnabled = true
-    }
-    
     func setUpTabImageView() {
         addTabGesture(target: goodImageView, action: #selector(goodMark))
         addTabGesture(target: reviewImageView, action: #selector(reviewMark))
         addTabGesture(target: myListAddImageView, action:  #selector(addMyListMark))
+    }
+    
+    func addTabGesture(target: UIImageView, action: Selector) {
+        let addTabGesture = UITapGestureRecognizer(target: self, action: action)
+        target.addGestureRecognizer(addTabGesture)
+        target.isUserInteractionEnabled = true
     }
     
     // MARK: - Action
@@ -183,13 +167,20 @@ class DetailViewController: UIViewController {
         myListAddImageView.image = selectedRamen.isFavorite ? CustomImage.myListBlack : CustomImage.myListWhite
     }
     
+    func setInitData() {
+        guard let selectedRamen = selectedRamen else { return }
+        
+        reviewState = selectedRamen.isReviewed ? .done : .yet
+        reviewImageView.image = reviewState == .yet ? CustomImage.reviewWhite : CustomImage.reviewBlack
+        reviewLabel.text = reviewState.rawValue
+        isReviewed = selectedRamen.isReviewed
+    }
+    
     func setUpLableText() {
         guard let selectedRamen = selectedRamen else { return }
         
         storeLabel.font = .boldSystemFont(ofSize: 35)
         storeLabel.text = selectedRamen.storeName
-        // TODO: distance 계산 해서 대입하기
-        distanceLabel.text = "-- km (구해야 됨)"
         ratingLabel.text = "\(selectedRamen.rating)"
         starRatingView.rating = selectedRamen.rating
         newRating = selectedRamen.rating
@@ -202,6 +193,7 @@ class DetailViewController: UIViewController {
         numberLabel.text = selectedRamen.phone.isEmpty ? "전화번호 정보 없음" : selectedRamen.phone
     }
     
+    // MARK: - API
     func getRamenImages() {
         guard let selectedRamen = selectedRamen else { return }
         existImageUrlList = []
@@ -266,8 +258,6 @@ extension DetailViewController {
             goodLabel.text = "좋아요"
             goodImageView.image = CustomImage.thumbsUpWhite
         }
-        
-        isButtonClicked = true
     }
     
     /// '리뷰 추가' 버튼 액션
@@ -293,7 +283,6 @@ extension DetailViewController {
     
     /// '나의 라면 가게' 버튼 액션
     @objc func addMyListMark() {
-        
         guard let selectedRamen = selectedRamen else { return }
         
         try! realm.write {
@@ -307,32 +296,14 @@ extension DetailViewController {
             myListLabel.text = "추가하기"
             myListAddImageView.image = CustomImage.myListWhite
         }
-        
-        isButtonClicked = true
     }
     
     func saveData() {
         guard let selectedRamen = selectedRamen else { return }
         
-        let realmList = realm.objects(RamenData.self).where {
-            $0.storeName == selectedRamen.storeName
-            && $0.x == selectedRamen.x
-            && $0.y == selectedRamen.y
-        }
-        
-        // 기존에 존재하는 데이터면
-        if let existItem = realmList.filter(NSPredicate(format: "_id == %@", selectedRamen._id)).first {
-            try! realm.write {
-                print(">>> good update...")
-                existItem.isGood = selectedRamen.isGood
-                existItem.isFavorite = selectedRamen.isFavorite
-                existItem.rating = newRating
-            }
-        } else {
-            try! realm.write {
-                print(">>> good add...")
-                realm.add(selectedRamen)
-            }
+        try! realm.write {
+            selectedRamen.rating = newRating
+            realm.add(selectedRamen)
         }
     }
 }
@@ -349,6 +320,18 @@ extension DetailViewController: RatingViewDelegate {
     func ratingView(_ ratingView: RatingView, isUpdating rating: Double) {
         ratingLabel.text = String(rating)
         newRating = rating
-        print(">>> rating: \(newRating)")
+    }
+}
+
+// MARK: - CLLocationManagerDelegate
+extension DetailViewController: CLLocationManagerDelegate {
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        if let location = locations.first {
+            currentLocation = location
+        }
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+        print(error)
     }
 }

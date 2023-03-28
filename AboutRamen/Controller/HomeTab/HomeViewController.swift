@@ -13,6 +13,7 @@ protocol RegionDataProtocol {
     func sendRegionData(city: String, gu: String)
 }
 
+/// 홈 화면
 class HomeViewController: UIViewController {
     // MARK: - UI
     @IBOutlet weak var collectionView: UICollectionView!
@@ -27,56 +28,57 @@ class HomeViewController: UIViewController {
     let imageUrl: String = "https://dapi.kakao.com/v2/search/image"
     let appid = Bundle.main.apiKey
     
+    let locationManager = CLLocationManager()
+    var currentLocation: CLLocation?
+    
     /// API를 통해서 가져온 라멘집 리스트 정보를 담고 있는 배열
     var ramenList: List<Information>?
-    var allRamenData: List<Information>?
     /// 라멘집 이미지들의 image_url 값들의 배열
     var imageUrlList: [String] = []
     var storeNames: [String] = []
     var goodStoreName: [String] = []
     var distance: String?
     
-    var regionLocation: CLLocation = .init(latitude: RegionData.list[0].guList[0].location.long, longitude: RegionData.list[0].guList[0].location.lat)
-    var currentLocation: CLLocation?
-    var locationManager = CLLocationManager()
-
+    var regionLocation: CLLocation = .init(
+        latitude: RegionData.list[0].guList[0].location.long,
+        longitude: RegionData.list[0].guList[0].location.lat)
+    
     // MARK: - View Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        print(">>> location: \(realm.configuration.fileURL)")
+        /// - NOTE: Realm 위치 찾을 때 사용
+        // print(">>> location: \(realm.configuration.fileURL)")
+        setLocationManager()
         setUpCollectionView()
         setupNavigationbar()
-        
-        myLocationLabel.text = "\(RegionData.list[0].city.rawValue) \(RegionData.list[0].guList[0].gu)"
-        locationManager.delegate = self
-        locationManager.desiredAccuracy = kCLLocationAccuracyBest
-        locationManager.requestWhenInUseAuthorization()
-        
-        switch locationManager.authorizationStatus {
-        case .authorizedAlways, .authorizedWhenInUse:
-            locationManager.startUpdatingLocation()
-            break
-        default:
-            // TODO: 허용 후에 얼럿뜨는것 해결하기
-            showAlert(title: "위치 권한이 없습니다.", message: "설정에서 권한을 허용해주세요.",alertStyle: .oneButton)
-        }
-        
-        view.backgroundColor = CustomColor.beige
-        
-        let goodList = realm.objects(RamenData.self)
-        goodList.forEach { goodStoreName.append($0.storeName) }
-        
-        getRamenData(url: url, currentLocation: regionLocation)
+        setInitData()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
+        deleteNoDataItem()
         collectionView.reloadData()
     }
     
-    // MARK: - Set up
+    // MARK: - Set Up
+    func setInitData() {
+        view.backgroundColor = CustomColor.beige
+        myLocationLabel.text = "\(RegionData.list[0].city.rawValue) \(RegionData.list[0].guList[0].gu)"
+        
+        let goodList = realm.objects(RamenData.self)
+        goodList.forEach { goodStoreName.append($0.storeName) }
+        getRamenData(url: url, currentLocation: regionLocation)
+    }
+    
+    func setLocationManager() {
+        locationManager.delegate = self
+        locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        locationManager.requestWhenInUseAuthorization()
+        locationManager.startUpdatingLocation()
+    }
+    
     func setupNavigationbar() {
         title = "어바웃라멘"
         navigationController?.navigationBar.backgroundColor = CustomColor.beige
@@ -148,6 +150,17 @@ class HomeViewController: UIViewController {
     }
     
     // MARK: - ETC
+    /// 평가가 모두 안되어 있는 아이템 삭제
+    func deleteNoDataItem() {
+        let shouldDeleteItems = realm.objects(RamenData.self).filter { !$0.isGood && !$0.isReviewed && !$0.isFavorite }
+        
+        if !shouldDeleteItems.isEmpty {
+            try! realm.write {
+                realm.delete(shouldDeleteItems)
+            }
+        }
+    }
+    
     func isReviewExist(item: Information) -> Bool {
         let reviewList = realm.objects(RamenData.self).filter { $0.isReviewed }.filter {
             $0.storeName == item.place_name && String($0.x) == item.x && String($0.y) == item.y
@@ -168,29 +181,26 @@ class HomeViewController: UIViewController {
 // MARK: - CollectionView Delegate & Datasource
 extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        if let ramenList = ramenList {
-            return ramenList.count
-        } else {
-            return 0
-        }
+        guard let ramenList = ramenList else { return 0 }
+        return ramenList.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectionViewCell", for: indexPath) as? CollectionViewCell else { return UICollectionViewCell() }
+        guard let ramenList = ramenList else { return UICollectionViewCell() }
+        let ramenData = ramenList[indexPath.row].toRameDataType()
+        
         cell.cellConfigure()
         
-        guard let ramenList = ramenList else { return UICollectionViewCell() }
-        let ramenData = ramenList[indexPath.row]
-        
         // 거리
-        let targetLocation = CLLocation(latitude: Double(ramenData.y) ?? 0, longitude: Double(ramenData.x) ?? 0)
+        let targetLocation = CLLocation(latitude: ramenData.y, longitude: ramenData.x)
         cell.distanceLabel.text = getDistance(from: currentLocation, to: targetLocation)
         
         // 별점
         let goodList = realm.objects(RamenData.self)
         
         if !goodList.isEmpty {
-            let existItem = goodList.filter { String($0.x) == ramenData.x && String($0.y) == ramenData.y }
+            let existItem = goodList.filter { $0.x == ramenData.x && $0.y == ramenData.y }
             
             if let item = existItem.first {
                 cell.starLabel.text = "\(item.rating)"
@@ -210,7 +220,7 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
         }
         
         // 가게 이름
-        cell.nameLabel.text = ramenData.place_name
+        cell.nameLabel.text = ramenData.storeName
         
         return cell
     }
