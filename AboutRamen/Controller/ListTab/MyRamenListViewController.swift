@@ -144,31 +144,49 @@ extension MyRamenListViewController: UITableViewDelegate, UITableViewDataSource 
                 let storeLocation = CLLocation(latitude: goodList[indexPath.row].y, longitude: goodList[indexPath.row].x)
                 distance = String(format: "%.2f", myLocation.distance(from: storeLocation) / 1000)
                 
-                let information = ramenList.filter{ $0.place_name == goodList[indexPath.row].storeName
+                print("거리 = \(distance)")
+                
+                let information = ramenList.filter {
+                    $0.place_name == goodList[indexPath.row].storeName
                     && $0.x == String(goodList[indexPath.row].x)
                     && $0.y == String(goodList[indexPath.row].y)
                 }
                 
                 if let information = information.first {
-                        detailVC.information.append(information)
-                        if let store = goodObject?.storeName {
-                            detailVC.store = store
-                        }
-                        detailVC.goodPressed = goodObject?.isGoodPressed ?? false
-                        detailVC.myRamenPressed = myRamenListObject?.myRamenPressed ?? false
-                        detailVC.distance = distance
-                        detailVC.location.0 = goodList[indexPath.row].x
-                        detailVC.location.1 = goodList[indexPath.row].y
-                        
-                        let backButton = UIBarButtonItem(title: "나의 라멘 가게", style: .plain, target: self, action: nil)
-                        let attributes = [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 16)]
-                        
-                        self.navigationItem.backBarButtonItem = backButton
-                        self.navigationItem.backBarButtonItem?.tintColor = .black
-                        backButton.setTitleTextAttributes(attributes, for: .normal)
-                        
-                        navigationController?.pushViewController(detailVC, animated: true)
+                    detailVC.viewType = .notSearched
+                    detailVC.information.append(information)
+                    if let store = goodObject?.storeName {
+                        detailVC.store = store
                     }
+                    detailVC.goodPressed = goodObject?.isGoodPressed ?? false
+                    detailVC.myRamenPressed = myRamenListObject?.myRamenPressed ?? false
+                    detailVC.distance = distance
+                  
+                    detailVC.location.0 = goodList[indexPath.row].x
+                    detailVC.location.1 = goodList[indexPath.row].y
+                    
+                    let backButton = UIBarButtonItem(title: "좋아요 목록", style: .plain, target: self, action: nil)
+                    let attributes = [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 16)]
+                    
+                    self.navigationItem.backBarButtonItem = backButton
+                    self.navigationItem.backBarButtonItem?.tintColor = .black
+                    backButton.setTitleTextAttributes(attributes, for: .normal)
+                    
+                    navigationController?.pushViewController(detailVC, animated: true)
+                } else {
+                    detailVC.viewType = .searched
+                    detailVC.searchedData = Array(goodList)[indexPath.row]
+                    detailVC.distance = distance
+                    
+                    let backButton = UIBarButtonItem(title: "좋아요 목록", style: .plain, target: self, action: nil)
+                    let attributes = [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 16)]
+                    
+                    self.navigationItem.backBarButtonItem = backButton
+                    self.navigationItem.backBarButtonItem?.tintColor = .black
+                    backButton.setTitleTextAttributes(attributes, for: .normal)
+                    
+                    navigationController?.pushViewController(detailVC, animated: true)
+                }
                 
                 getData(url: url, storeName: goodList[indexPath.row].storeName, x: String(goodList[indexPath.row].x),
                         y: String(goodList[indexPath.row].y))
@@ -197,6 +215,7 @@ extension MyRamenListViewController: UITableViewDelegate, UITableViewDataSource 
                 distance = String(format: "%.2f", myLocation.distance(from: storeLocation) / 1000)
                 
                 if let information = information.first {
+                    detailVC.viewType = .notSearched
                     detailVC.information.append(information)
                     detailVC.goodPressed = goodObject?.isGoodPressed ?? false
                     detailVC.myRamenPressed = myRamenListObject?.myRamenPressed ?? false
@@ -204,6 +223,19 @@ extension MyRamenListViewController: UITableViewDelegate, UITableViewDataSource 
                     detailVC.location.0 = myRamenList[indexPath.row].x
                     detailVC.location.1 = myRamenList[indexPath.row].y
                     detailVC.store = myRamenList[indexPath.row].storeName
+                    
+                    let backButton = UIBarButtonItem(title: "나의 라멘 가게", style: .plain, target: self, action: nil)
+                    let attributes = [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 16)]
+                    
+                    self.navigationItem.backBarButtonItem = backButton
+                    self.navigationItem.backBarButtonItem?.tintColor = .black
+                    backButton.setTitleTextAttributes(attributes, for: .normal)
+                    
+                    navigationController?.pushViewController(detailVC, animated: true)
+                } else {
+                    detailVC.viewType = .searched
+                    detailVC.searchedData
+                    detailVC.distance = distance
                     
                     let backButton = UIBarButtonItem(title: "나의 라멘 가게", style: .plain, target: self, action: nil)
                     let attributes = [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 16)]

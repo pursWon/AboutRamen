@@ -169,46 +169,31 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
             myRamenListNames.append(myRamenList[i].storeName)
         }
         
+        var searchResults: [String] = []
+        
         if isFiltered {
-            let information = ramenList.filter{ $0.place_name == self.filterArray[indexPath.row] }
-            detailVC.information.append(information.first!)
-            detailVC.distance = distance
-            detailVC.store = filterArray[indexPath.row]
-            
-            if let long = Double(information[indexPath.row].x), let lat = Double(information[indexPath.row].y) {
-                            detailVC.location.0 = long
-                            detailVC.location.1 = lat
-            }
-            
-            detailVC.goodPressed = goodListNames.contains(filterArray[indexPath.row]) ? true : false
-            detailVC.myRamenPressed = myRamenListNames.contains(filterArray[indexPath.row]) ? true : false
-            
-            navigationController?.pushViewController(detailVC, animated: true)
+        searchResults = filterArray
+            print(">>> if : \(filterArray)")
         } else {
-            let information = ramenList.filter{ $0.place_name == self.storeNames[indexPath.row] }
-            detailVC.information.append(information.first!)
-            detailVC.distance = distance
-            detailVC.store = storeNames[indexPath.row]
-            
-            if let long = Double(information[indexPath.row].x), let lat = Double(information[indexPath.row].y) {
-                            detailVC.location.0 = long
-                            detailVC.location.1 = lat
-            }
-            
-            detailVC.goodPressed = goodListNames.contains(storeNames[indexPath.row]) ? true : false
-            detailVC.myRamenPressed = myRamenListNames.contains(storeNames[indexPath.row]) ? true : false
-            
-            navigationController?.pushViewController(detailVC, animated: true)
+        searchResults = storeNames
+            print(">>> else : \(storeNames)")
         }
         
-        let backButton = UIBarButtonItem(title: "가게 검색", style: .plain, target: self, action: nil)
-        let attributes = [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 16)]
+        let information = ramenList.filter{ $0.place_name == searchResults[indexPath.row] }
+        detailVC.information.append(information.first!)
+        detailVC.distance = distance
+        detailVC.store = searchResults[indexPath.row]
         
-        navigationItem.backBarButtonItem = backButton
-        navigationItem.backBarButtonItem?.tintColor = .black
-        navigationItem.backBarButtonItem?.setTitleTextAttributes(attributes, for: .normal)
+        if let long = Double(information[indexPath.row].x), let lat = Double(information[indexPath.row].y) {
+            detailVC.location.0 = long
+            detailVC.location.1 = lat
+        }
         
-        navigationController?.navigationBar.backgroundColor = CustomColor.beige
+        detailVC.goodPressed = goodListNames.contains(searchResults[indexPath.row]) ? true : false
+        detailVC.myRamenPressed = myRamenListNames.contains(searchResults[indexPath.row]) ? true : false
+        detailVC.navigationTitle = "가게 검색"
+        
+        navigationController?.pushViewController(detailVC, animated: true)
     }
 }
 

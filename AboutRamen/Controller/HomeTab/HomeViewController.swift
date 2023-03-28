@@ -42,6 +42,8 @@ class HomeViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        print(realm.configuration.fileURL)
+        
         setUpCollectionView()
         setUpNavigationBar()
         
@@ -250,6 +252,7 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
         detailVC.reviewState = reviewListData.isEmpty ? .yet : .done
         detailVC.index = indexPath.row
         detailVC.information = ramenList
+        
         if let distance = distance {
             detailVC.distance = distance
         }

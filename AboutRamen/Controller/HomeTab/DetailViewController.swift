@@ -41,6 +41,11 @@ class DetailViewController: UIViewController {
     
     @IBOutlet var starRatingView: RatingView!
     
+    enum ViewType {
+        case searched
+        case notSearched
+    }
+    
     // MARK: - Properties
     let realm = try! Realm()
     let imageUrl: String = "https://dapi.kakao.com/v2/search/image"
@@ -53,12 +58,19 @@ class DetailViewController: UIViewController {
     var goodPressed: Bool = false
     var myRamenPressed: Bool = false
     var store: String = ""
+    var url: String = ""
     var location: (long: Double, lat: Double) = (0, 0)
     var storeRating: Double = 0
     var distance: String?
     /// DetailVC에서 보여줄 두 개의 이미지 URL을 담는 배열
     var existImageUrlList: [String] = []
     var isButtonClicked: Bool = false
+    var phoneNumber: String = ""
+    
+    // 검색해서 저장한 데이터의 경우 goodListData 타입의 데이터 보여주기
+    var viewType: ViewType = .notSearched
+    var searchedData: GoodListData?
+    var navigationTitle: String = "가게 검색"
     
     // MARK: - View Life Cycle
     override func viewDidLoad() {
@@ -99,58 +111,110 @@ class DetailViewController: UIViewController {
         guard let rating = ratingLabel.text else { return }
         guard let address = addressLabel.text else { return }
         
-        let goodObject = realm.objects(GoodListData.self).where {
-            $0.storeName == store
-            && $0.x == location.long
-            && $0.y == location.lat
+        var goodObject: Results<GoodListData>?
+        
+        if viewType == .notSearched {
+            goodObject = realm.objects(GoodListData.self).where {
+                $0.storeName == store
+                && $0.x == location.long
+                && $0.y == location.lat
+            }
+        } else {
+            if let searchedData = searchedData {
+                goodObject = realm.objects(GoodListData.self).where {
+                    $0.storeName == searchedData.storeName
+                    && $0.x == searchedData.x
+                    && $0.y == searchedData.y
+                }
+            }
         }
         
         let myRating = (rating as NSString).doubleValue
         storeRating = myRating
         
-        let goodData = GoodListData(storeName: store, addressName: address, x: location.0, y: location.1, rating: storeRating, isGoodPressed: goodPressed)
+        var goodData: GoodListData?
         
-        if goodPressed {
-            if goodObject.isEmpty {
-                try! realm.write {
-                    realm.add(goodData)
-                }
-            } else {
-                for item in goodObject {
-                    if item.rating != storeRating {
-                        if let update = goodObject.filter(NSPredicate(format: "storeName = %@", store)).first {
-                            try! realm.write {
-                                update.rating = storeRating
+        var currentStoreName: String = ""
+        
+        if viewType == .notSearched {
+            let info = Array(information)
+            currentStoreName = store
+            goodData = GoodListData(storeName: currentStoreName, addressName: address, x: location.0, y: location.1, rating: storeRating, url: info[index].place_url, phone: info[index].phone ,isGoodPressed: goodPressed)
+        } else {
+            if let searchedData = searchedData {
+                currentStoreName = searchedData.storeName
+                goodData = GoodListData(storeName: currentStoreName, addressName: searchedData.addressName, x: searchedData.x, y: searchedData.y, rating: searchedData.rating, url: searchedData.storeName, phone: searchedData.phone ,isGoodPressed: goodPressed)
+            }
+        }
+        
+        if let goodObject = goodObject {
+            if goodPressed {
+                if goodObject.isEmpty, let goodData = goodData {
+                    try! realm.write {
+                        realm.add(goodData)
+                    }
+                } else {
+                    for item in goodObject {
+                        if item.rating != storeRating {
+                            if let update = goodObject.filter(NSPredicate(format: "storeName = %@", currentStoreName)).first {
+                                try! realm.write {
+                                    update.rating = storeRating
+                                }
                             }
                         }
                     }
                 }
-            }
-        } else {
-            if let firstItem = goodObject.first {
-                try! realm.write {
-                    realm.delete(firstItem)
+            } else {
+                if let firstItem = goodObject.first {
+                    try! realm.write {
+                        realm.delete(firstItem)
+                    }
                 }
             }
         }
     }
+
     
     @IBAction func urlButton(_ sender: UIButton) {
-        let info = Array(information)
-        if let url = URL(string: info[index].place_url) {
+        var urlString = ""
+        
+        if viewType == .notSearched {
+            let info = Array(information)
+            urlString = info[index].place_url
+        } else {
+            if let searchedData = searchedData {
+                urlString = searchedData.url
+            }
+        }
+        
+        if !urlString.isEmpty, let url = URL(string: urlString) {
             UIApplication.shared.open(url)
         }
     }
     
     func setPressedValue() {
-        if goodPressed {
-            goodLabel.text = "좋아요 취소"
-            goodImageView.image = CustomImage.thumbsUpBlack
-            isButtonClicked = true
+        if viewType == .searched, let searchedData = searchedData {
+            if searchedData.isGoodPressed {
+                goodLabel.text = "좋아요 취소"
+                goodImageView.image = CustomImage.thumbsUpBlack
+                isButtonClicked = true
+                goodPressed = true
+            } else {
+                goodLabel.text = "좋아요"
+                goodImageView.image = CustomImage.thumbsUpWhite
+                isButtonClicked = false
+                goodPressed = false
+            }
         } else {
-            goodLabel.text = "좋아요"
-            goodImageView.image = CustomImage.thumbsUpWhite
-            isButtonClicked = false
+            if goodPressed {
+                goodLabel.text = "좋아요 취소"
+                goodImageView.image = CustomImage.thumbsUpBlack
+                isButtonClicked = true
+            } else {
+                goodLabel.text = "좋아요"
+                goodImageView.image = CustomImage.thumbsUpWhite
+                isButtonClicked = false
+            }
         }
         
         if myRamenPressed {
@@ -165,7 +229,14 @@ class DetailViewController: UIViewController {
     func getRamenImages() {
         existImageUrlList = []
         let headers: HTTPHeaders = ["Authorization": appid]
-        let params: [String: Any] = ["query": information[index].place_name]
+        var params: [String: Any]
+        
+        if viewType == .notSearched {
+            params = ["query": information[index].place_name]
+        } else {
+            params = ["query": searchedData?.storeName ?? ""]
+        }
+        
         AF.request(imageUrl, method: .get, parameters: params, headers: headers).responseDecodable(of: RamenImage.self) { response in
             if let dataImage = response.value {
                 if dataImage.documents.count >= 2 {
@@ -225,39 +296,72 @@ class DetailViewController: UIViewController {
     }
     
     func setUpLableText() {
-        let info = Array(information)
-        let selectedInfo = info[index]
-        let goodList = realm.objects(GoodListData.self)
-        
         storeLabel.font = .boldSystemFont(ofSize: 35)
-        storeLabel.text = selectedInfo.place_name
         
-        if let distance = distance {
-            distanceLabel.text = "\(distance)km"
-        }
-        
-        for item in goodList {
-            if String(item.x) == selectedInfo.x && String(item.y) == selectedInfo.y {
-                ratingLabel.text = "\(item.rating)"
-                starRatingView.rating = item.rating
-                break
+        if viewType == .notSearched {
+            let info = Array(information)
+            let selectedInfo = info[index]
+            let goodList = realm.objects(GoodListData.self)
+            
+            storeLabel.text = selectedInfo.place_name
+            
+            if let distance = distance {
+                distanceLabel.text = "\(distance)km"
             }
-        }
-        
-        if info[index].place_url.isEmpty {
-            urlButton.setTitle("가게 위치 정보 없음", for: .normal)
-        }
-        
-        if selectedInfo.road_address_name.isEmpty {
-            addressLabel.text = "주소 정보 없음"
+            
+            for item in goodList {
+                if String(item.x) == selectedInfo.x && String(item.y) == selectedInfo.y {
+                    ratingLabel.text = "\(item.rating)"
+                    starRatingView.rating = item.rating
+                    break
+                }
+            }
+            
+            if info[index].place_url.isEmpty {
+                urlButton.setTitle("가게 위치 정보 없음", for: .normal)
+            }
+            
+            if selectedInfo.road_address_name.isEmpty {
+                addressLabel.text = "주소 정보 없음"
+            } else {
+                addressLabel.text = selectedInfo.road_address_name
+            }
+            
+            if selectedInfo.phone.isEmpty {
+                numberLabel.text = "전화번호 정보 없음"
+            } else {
+                numberLabel.text = selectedInfo.phone
+            }
+            
+            if let distance = distance {
+                distanceLabel.text = "\(distance)km"
+            }
         } else {
-            addressLabel.text = selectedInfo.road_address_name
-        }
-        
-        if selectedInfo.phone.isEmpty {
-            numberLabel.text = "전화번호 정보 없음"
-        } else {
-            numberLabel.text = selectedInfo.phone
+            if let info = searchedData {
+                storeLabel.text = info.storeName
+                ratingLabel.text = "\(info.rating)"
+                starRatingView.rating = info.rating
+                
+                if info.url.isEmpty {
+                    urlButton.setTitle("가게 위치 정보 없음", for: .normal)
+                }
+                
+                if info.addressName.isEmpty {
+                    addressLabel.text = "주소 정보 없음"
+                } else {
+                    addressLabel.text = info.addressName
+                }
+                
+                if info.phone.isEmpty {
+                    numberLabel.text = "전화번호 정보 없음 2"
+                } else {
+                    numberLabel.text = info.phone
+                }
+                
+                if let distance = distance {
+                    distanceLabel.text = "\(distance)km"
+                }
+            }
         }
     }
     
@@ -332,7 +436,7 @@ class DetailViewController: UIViewController {
             
             guard let address = addressLabel.text else { return }
             
-            let myRamenData = MyRamenListData(storeName: store, address: address, x: location.long, y: location.lat, myRamenPressed: myRamenPressed)
+            let myRamenData = MyRamenListData(storeName: store, address: address, x: location.long, y: location.lat, url: url, phone: information[index].phone, myRamenPressed: myRamenPressed)
             
             try! realm.write {
                 realm.add(myRamenData)
@@ -354,3 +458,4 @@ extension DetailViewController: RatingViewDelegate {
         ratingLabel.text = String(rating)
     }
 }
+
