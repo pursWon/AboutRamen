@@ -47,36 +47,25 @@ class ReviewListViewController: UIViewController {
 // MARK: - TableView
 extension ReviewListViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        let reviewList = realm.objects(ReviewListData.self)
+        let reviewList = realm.objects(RamenData.self)
         return reviewList.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = reviewListTableView.dequeueReusableCell(withIdentifier: "ReviewListCell", for: indexPath) as? ReviewListCell else { return UITableViewCell() }
-        let reviewList = realm.objects(ReviewListData.self)
-        if reviewList.count != 0 {
-            cell.nameLabel.text = reviewList[indexPath.row].storeName
-            cell.addressLabel.text = reviewList[indexPath.row].addressName
-        }
-        
+        let realmList = realm.objects(RamenData.self).filter{ $0.isReviewed }
+        let item = realmList[indexPath.row]
+        cell.nameLabel.text = item.storeName
+        cell.addressLabel.text = item.addressName
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let reviewVC = self.storyboard?.instantiateViewController(withIdentifier: "ReviewViewController") as? ReviewViewController else { return }
-        let reviewList = realm.objects(ReviewListData.self)
+        let realmList = realm.objects(RamenData.self).filter{ $0.isReviewed }
         
-        if reviewList.count != 0 {
-            let content = reviewList.where {
-                $0.storeName == reviewList[indexPath.row].storeName &&
-                $0.addressName == reviewList[indexPath.row].addressName
-            }.first
-            
-            guard let content = content else { return }
-            
-            reviewVC.storeName = reviewList[indexPath.row].storeName
-            reviewVC.addressName = reviewList[indexPath.row].addressName
-            reviewVC.modifyReview = content.reviewContent
+        if !realmList.isEmpty {
+            reviewVC.selectedRamen = realmList[indexPath.row]
             navigationController?.pushViewController(reviewVC, animated: true)
         }
     }
@@ -89,10 +78,8 @@ extension ReviewListViewController: UITableViewDelegate, UITableViewDataSource {
         return true
     }
     
-    
-    
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        let reviewList = realm.objects(ReviewListData.self)
+        let reviewList = realm.objects(RamenData.self)
         let reviewArray = Array(reviewList)
         
         if editingStyle == .delete {

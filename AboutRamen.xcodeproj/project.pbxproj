@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1C874E6929D1DC8100F4AE4D /* UIViewController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C874E6829D1DC8100F4AE4D /* UIViewController+Extension.swift */; };
 		D01307B1296FF19200672422 /* ReviewListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01307B0296FF19200672422 /* ReviewListViewController.swift */; };
 		D01307B3296FF1BF00672422 /* ReviewListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01307B2296FF1BF00672422 /* ReviewListCell.swift */; };
 		D01307B5296FFB1900672422 /* MyRamenListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01307B4296FFB1900672422 /* MyRamenListViewController.swift */; };
@@ -29,21 +30,18 @@
 		D0B170C7295D39EA002AD35D /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0B170C6295D39EA002AD35D /* SearchViewController.swift */; };
 		D0B171BE2966D738002AD35D /* SearchViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0B171BD2966D738002AD35D /* SearchViewCell.swift */; };
 		D0B171C0296D6C1A002AD35D /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0B171BF296D6C1A002AD35D /* DetailViewController.swift */; };
-		D0B171C2296EA9E0002AD35D /* StarRatingUISlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0B171C1296EA9E0002AD35D /* StarRatingUISlider.swift */; };
 		D0B171C4296ED964002AD35D /* MyListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0B171C3296ED964002AD35D /* MyListViewController.swift */; };
 		D0B171C6296EF4C5002AD35D /* MyListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0B171C5296EF4C5002AD35D /* MyListCell.swift */; };
-		D0BB719429B87037002C47D0 /* MyRamenListData.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0BB719329B87037002C47D0 /* MyRamenListData.swift */; };
-		D0BB719629B8703E002C47D0 /* GoodListData.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0BB719529B8703E002C47D0 /* GoodListData.swift */; };
+		D0BB719629B8703E002C47D0 /* RamenData.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0BB719529B8703E002C47D0 /* RamenData.swift */; };
 		D0BB8AB529C42F95000DE01E /* CustomColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0BB8AB429C42F95000DE01E /* CustomColor.swift */; };
 		D0BB8AB729C979EE000DE01E /* RamenInfo.plist in Resources */ = {isa = PBXBuildFile; fileRef = D0BB8AB629C979EE000DE01E /* RamenInfo.plist */; };
-		D0BB8AB929C97AF7000DE01E /* AboutRamen++Bundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0BB8AB829C97AF7000DE01E /* AboutRamen++Bundle.swift */; };
-		D0D71EB929AC5A0A00D40C62 /* CALayer+.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0D71EB829AC5A0A00D40C62 /* CALayer+.swift */; };
+		D0BB8AB929C97AF7000DE01E /* Bundle+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0BB8AB829C97AF7000DE01E /* Bundle+Extension.swift */; };
+		D0D71EB929AC5A0A00D40C62 /* CALayer+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0D71EB829AC5A0A00D40C62 /* CALayer+Extension.swift */; };
 		D0E23DDC299F3BE9006C1C7C /* Realm in Frameworks */ = {isa = PBXBuildFile; productRef = D0E23DDB299F3BE9006C1C7C /* Realm */; };
 		D0E23DDE299F3BE9006C1C7C /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = D0E23DDD299F3BE9006C1C7C /* RealmSwift */; };
 		D0E23DE429A46D68006C1C7C /* RatingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0E23DE329A46D68006C1C7C /* RatingView.swift */; };
 		D0E8154129978BD7007DBC55 /* UIViewController+.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0E8154029978BD7007DBC55 /* UIViewController+.swift */; };
 		D0E8154F2999E4C7007DBC55 /* RegionData.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0E8154E2999E4C7007DBC55 /* RegionData.swift */; };
-		D0E815512999E4CC007DBC55 /* ReviewListData.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0E815502999E4CC007DBC55 /* ReviewListData.swift */; };
 		D0F15DE72988E4AF00A48EE5 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = D0F15DE62988E4AF00A48EE5 /* Kingfisher */; };
 /* End PBXBuildFile section */
 
@@ -61,6 +59,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		1C874E6829D1DC8100F4AE4D /* UIViewController+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extension.swift"; sourceTree = "<group>"; };
 		D01307B0296FF19200672422 /* ReviewListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewListViewController.swift; sourceTree = "<group>"; };
 		D01307B2296FF1BF00672422 /* ReviewListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewListCell.swift; sourceTree = "<group>"; };
 		D01307B4296FFB1900672422 /* MyRamenListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MyRamenListViewController.swift; path = AboutRamen/Controller/ListTab/MyRamenListViewController.swift; sourceTree = SOURCE_ROOT; };
@@ -84,19 +83,16 @@
 		D0B170C6295D39EA002AD35D /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		D0B171BD2966D738002AD35D /* SearchViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewCell.swift; sourceTree = "<group>"; };
 		D0B171BF296D6C1A002AD35D /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
-		D0B171C1296EA9E0002AD35D /* StarRatingUISlider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StarRatingUISlider.swift; sourceTree = "<group>"; };
 		D0B171C3296ED964002AD35D /* MyListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyListViewController.swift; sourceTree = "<group>"; };
 		D0B171C5296EF4C5002AD35D /* MyListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MyListCell.swift; path = AboutRamen/View/MyListCell.swift; sourceTree = SOURCE_ROOT; };
-		D0BB719329B87037002C47D0 /* MyRamenListData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyRamenListData.swift; sourceTree = "<group>"; };
-		D0BB719529B8703E002C47D0 /* GoodListData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GoodListData.swift; sourceTree = "<group>"; };
+		D0BB719529B8703E002C47D0 /* RamenData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RamenData.swift; sourceTree = "<group>"; };
 		D0BB8AB429C42F95000DE01E /* CustomColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomColor.swift; sourceTree = "<group>"; };
 		D0BB8AB629C979EE000DE01E /* RamenInfo.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = RamenInfo.plist; sourceTree = "<group>"; };
-		D0BB8AB829C97AF7000DE01E /* AboutRamen++Bundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AboutRamen++Bundle.swift"; sourceTree = "<group>"; };
-		D0D71EB829AC5A0A00D40C62 /* CALayer+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CALayer+.swift"; sourceTree = "<group>"; };
+		D0BB8AB829C97AF7000DE01E /* Bundle+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Bundle+Extension.swift"; sourceTree = "<group>"; };
+		D0D71EB829AC5A0A00D40C62 /* CALayer+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CALayer+Extension.swift"; sourceTree = "<group>"; };
 		D0E23DE329A46D68006C1C7C /* RatingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatingView.swift; sourceTree = "<group>"; };
 		D0E8154029978BD7007DBC55 /* UIViewController+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+.swift"; sourceTree = "<group>"; };
 		D0E8154E2999E4C7007DBC55 /* RegionData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegionData.swift; sourceTree = "<group>"; };
-		D0E815502999E4CC007DBC55 /* ReviewListData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReviewListData.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -114,6 +110,34 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1CC21A3729D1D11800331F36 /* API */ = {
+			isa = PBXGroup;
+			children = (
+				D01308522976699000672422 /* RamenStore.swift */,
+				D01308552976B4AF00672422 /* RamenImage.swift */,
+				D0E8154E2999E4C7007DBC55 /* RegionData.swift */,
+			);
+			path = API;
+			sourceTree = "<group>";
+		};
+		1CC21A3829D1D11F00331F36 /* Realm */ = {
+			isa = PBXGroup;
+			children = (
+				D0BB719529B8703E002C47D0 /* RamenData.swift */,
+			);
+			path = Realm;
+			sourceTree = "<group>";
+		};
+		1CC21A3929D1D13000331F36 /* Extension */ = {
+			isa = PBXGroup;
+			children = (
+				D0D71EB829AC5A0A00D40C62 /* CALayer+Extension.swift */,
+				1C874E6829D1DC8100F4AE4D /* UIViewController+Extension.swift */,
+				D0BB8AB829C97AF7000DE01E /* Bundle+Extension.swift */,
+			);
+			path = Extension;
+			sourceTree = "<group>";
+		};
 		D013084F29727CF300672422 /* HomeTab */ = {
 			isa = PBXGroup;
 			children = (
@@ -146,12 +170,8 @@
 		D0130854297669A100672422 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				D01308522976699000672422 /* RamenStore.swift */,
-				D01308552976B4AF00672422 /* RamenImage.swift */,
-				D0E8154E2999E4C7007DBC55 /* RegionData.swift */,
-				D0BB719529B8703E002C47D0 /* GoodListData.swift */,
-				D0E815502999E4CC007DBC55 /* ReviewListData.swift */,
-				D0BB719329B87037002C47D0 /* MyRamenListData.swift */,
+				1CC21A3829D1D11F00331F36 /* Realm */,
+				1CC21A3729D1D11800331F36 /* API */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -159,7 +179,6 @@
 		D0797CEC2959913900B14AC8 = {
 			isa = PBXGroup;
 			children = (
-				D0B171BC2966D46C002AD35D /* Resource */,
 				D0797CF72959913900B14AC8 /* AboutRamen */,
 				D0797CF62959913900B14AC8 /* Products */,
 			);
@@ -178,15 +197,13 @@
 			children = (
 				D0797CFA2959913900B14AC8 /* SceneDelegate.swift */,
 				D0797CF82959913900B14AC8 /* AppDelegate.swift */,
+				D0B171BC2966D46C002AD35D /* Resource */,
 				D0E23DE129A46D38006C1C7C /* Common */,
 				D0130854297669A100672422 /* Model */,
-				D0B171BA2966D449002AD35D /* Controller */,
 				D0B171BB2966D460002AD35D /* View */,
-				D0E8153F29978BA9007DBC55 /* Alert */,
+				D0B171BA2966D449002AD35D /* Controller */,
 				D0797D062959913A00B14AC8 /* Info.plist */,
 				D0BB8AB629C979EE000DE01E /* RamenInfo.plist */,
-				D0BB8AB829C97AF7000DE01E /* AboutRamen++Bundle.swift */,
-				D0BB11F92959C7FF001E33A6 /* Fonts */,
 			);
 			path = AboutRamen;
 			sourceTree = "<group>";
@@ -206,7 +223,6 @@
 			children = (
 				D0797D0C2959936900B14AC8 /* CollectionViewCell.swift */,
 				D0B171BD2966D738002AD35D /* SearchViewCell.swift */,
-				D0B171C1296EA9E0002AD35D /* StarRatingUISlider.swift */,
 				D0B171C5296EF4C5002AD35D /* MyListCell.swift */,
 				D01307B2296FF1BF00672422 /* ReviewListCell.swift */,
 				D01307B6296FFB8E00672422 /* MyRamenListCell.swift */,
@@ -221,8 +237,7 @@
 				D0797D012959913A00B14AC8 /* Assets.xcassets */,
 				D0797D032959913A00B14AC8 /* LaunchScreen.storyboard */,
 			);
-			name = Resource;
-			path = AboutRamen/Resource;
+			path = Resource;
 			sourceTree = "<group>";
 		};
 		D0BB11F92959C7FF001E33A6 /* Fonts */ = {
@@ -237,8 +252,10 @@
 		D0E23DE129A46D38006C1C7C /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				D0E8153F29978BA9007DBC55 /* Alert */,
+				D0BB11F92959C7FF001E33A6 /* Fonts */,
+				1CC21A3929D1D13000331F36 /* Extension */,
 				D0E23DE329A46D68006C1C7C /* RatingView.swift */,
-				D0D71EB829AC5A0A00D40C62 /* CALayer+.swift */,
 				D0BB8AB429C42F95000DE01E /* CustomColor.swift */,
 				D0714EF329CD4EC900CBE609 /* CustomImage.swift */,
 			);
@@ -339,17 +356,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1C874E6929D1DC8100F4AE4D /* UIViewController+Extension.swift in Sources */,
 				D0459DB6298121D700FFE9E3 /* ReviewViewController.swift in Sources */,
 				D01308532976699100672422 /* RamenStore.swift in Sources */,
 				D01307B3296FF1BF00672422 /* ReviewListCell.swift in Sources */,
-				D0D71EB929AC5A0A00D40C62 /* CALayer+.swift in Sources */,
+				D0D71EB929AC5A0A00D40C62 /* CALayer+Extension.swift in Sources */,
 				D0B171C6296EF4C5002AD35D /* MyListCell.swift in Sources */,
-				D0E815512999E4CC007DBC55 /* ReviewListData.swift in Sources */,
 				D01308562976B4B000672422 /* RamenImage.swift in Sources */,
-				D0BB719629B8703E002C47D0 /* GoodListData.swift in Sources */,
-				D0BB719429B87037002C47D0 /* MyRamenListData.swift in Sources */,
+				D0BB719629B8703E002C47D0 /* RamenData.swift in Sources */,
 				D013087A2977C9E600672422 /* RegionPickerController.swift in Sources */,
-				D0BB8AB929C97AF7000DE01E /* AboutRamen++Bundle.swift in Sources */,
+				D0BB8AB929C97AF7000DE01E /* Bundle+Extension.swift in Sources */,
 				D0B170C7295D39EA002AD35D /* SearchViewController.swift in Sources */,
 				D0E23DE429A46D68006C1C7C /* RatingView.swift in Sources */,
 				D0B171BE2966D738002AD35D /* SearchViewCell.swift in Sources */,
@@ -366,7 +382,6 @@
 				D01307B5296FFB1900672422 /* MyRamenListViewController.swift in Sources */,
 				D0797CFB2959913900B14AC8 /* SceneDelegate.swift in Sources */,
 				D0B171C0296D6C1A002AD35D /* DetailViewController.swift in Sources */,
-				D0B171C2296EA9E0002AD35D /* StarRatingUISlider.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -518,11 +533,12 @@
 				DEVELOPMENT_TEAM = 66BU7QGW7Z;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = AboutRamen/Info.plist;
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "\"현재 위치사용을 허용하시겠습니까?\"";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UILaunchStoryboardName = "";
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -530,10 +546,13 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = stu.inu.201802766.AboutRamen;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 				VALIDATE_WORKSPACE = YES;
 			};
 			name = Debug;
@@ -549,11 +568,12 @@
 				DEVELOPMENT_TEAM = 66BU7QGW7Z;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = AboutRamen/Info.plist;
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "\"현재 위치사용을 허용하시겠습니까?\"";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UILaunchStoryboardName = "";
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -561,10 +581,13 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = stu.inu.201802766.AboutRamen;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 				VALIDATE_WORKSPACE = YES;
 			};
 			name = Release;

@@ -5,24 +5,28 @@ class MyListViewController: UIViewController {
     @IBOutlet var myListTableView: UITableView!
     
     // MARK: - Properties
-    let menuItems: [(title: String, icon: UIImage)] = [("좋아요 목록", CustomImage.thumbsUp), ("리뷰 목록", CustomImage.reviewBlack), ("나의 라멘 가게", CustomImage.ramen)]
+    let menuItems: [(title: String, icon: UIImage)] = [
+        ("좋아요 목록", CustomImage.thumbsUp),
+        ("리뷰 목록", CustomImage.reviewBlack),
+        ("나의 라멘 가게", CustomImage.ramen)]
     
     // MARK: - View Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        setUptableView()
+        setuptableView()
         view.backgroundColor = CustomColor.beige
         navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font : UIFont(name: "Recipekorea", size: 20)!]
     }
     
-    func setUptableView() {
+    // MARK: - Set Up
+    func setuptableView() {
         myListTableView.dataSource = self
         myListTableView.delegate = self
     }
 }
 
-// MARK: - TableView
+// MARK: - UITableViewDelegate, UITableViewDataSource
 extension MyListViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return menuItems.count
@@ -37,50 +41,31 @@ extension MyListViewController: UITableViewDelegate, UITableViewDataSource {
         return cell
     }
     
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 100
-    }
-    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         switch indexPath.row {
         case 0:
             guard let goodListVC = self.storyboard?.instantiateViewController(withIdentifier: "MyRamenListVC") as? MyRamenListViewController else { return }
-            
             goodListVC.viewType = .goodList
-            let backButton = UIBarButtonItem(title: "마이 리스트", style: .plain, target: self, action: nil)
-            let attributes = [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 16)]
-            
-            self.navigationItem.backBarButtonItem = backButton
-            self.navigationItem.backBarButtonItem?.tintColor = .black
-            backButton.setTitleTextAttributes(attributes, for: .normal)
-            
+            setCustomBackButton(title: "마이 리스트")
             navigationController?.pushViewController(goodListVC, animated: true)
        
         case 1:
             guard let reviewListVC = self.storyboard?.instantiateViewController(withIdentifier: "ReviewListVC") as? ReviewListViewController else { return }
-            
-            let backButton = UIBarButtonItem(title: "마이 리스트", style: .plain, target: self, action: nil)
-            let attributes = [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 16)]
-            
-            self.navigationItem.backBarButtonItem = backButton
-            self.navigationItem.backBarButtonItem?.tintColor = .black
-            backButton.setTitleTextAttributes(attributes, for: .normal)
-            
+            setCustomBackButton(title: "마이 리스트")
             navigationController?.pushViewController(reviewListVC, animated: true)
         
         case 2:
             guard let myRamenListVC = self.storyboard?.instantiateViewController(withIdentifier: "MyRamenListVC") as? MyRamenListViewController else { return }
-            
-            let backButton = UIBarButtonItem(title: "마이 리스트", style: .plain, target: self, action: nil)
-            let attributes = [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 16)]
-            
-            self.navigationItem.backBarButtonItem = backButton
-            self.navigationItem.backBarButtonItem?.tintColor = .black
-            backButton.setTitleTextAttributes(attributes, for: .normal)
-            
+            myRamenListVC.viewType = .favoriteList
+            setCustomBackButton(title: "마이 리스트")
             navigationController?.pushViewController(myRamenListVC, animated: true)
         default:
-            fatalError()
+            return
         }
     }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 100
+    }
+    
 }

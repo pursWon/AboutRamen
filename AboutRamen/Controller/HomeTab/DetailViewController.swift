@@ -3,6 +3,9 @@ import Alamofire
 import Kingfisher
 import RealmSwift
 
+// TODO: Review 데이터 관리
+// TODO: 별점 정보 저장
+
 // MARK: - Enum
 enum ReviewState: String {
     case yet = "리뷰하기"
@@ -41,39 +44,58 @@ class DetailViewController: UIViewController {
     
     @IBOutlet var starRatingView: RatingView!
     
+    // TODO: case 중 필요없는게 있는지 체크
+    enum ViewType: String {
+        case detail = "가게 정보" // 기본 상세 화면
+        case goodList = "좋아요 가게"// 좋아요 목록
+        case search = "가게 검색" // 가게 검색 상세 화면
+        case favoriteList = "나의 라면 가게" // 나의 라면 가게
+    }
+    
     // MARK: - Properties
     let realm = try! Realm()
     let imageUrl: String = "https://dapi.kakao.com/v2/search/image"
-    let defaultImage: UIImage = CustomImage.ramen ?? UIImage(systemName: "fork.knife")!
     let appid = Bundle.main.apiKey
-    var index: Int = 0
+    let loadingView = UIActivityIndicatorView(style: .medium)
+    
     var searchIndex: Int = 0
-    var information = List<Information>()
     var reviewState: ReviewState = .yet
-    var goodPressed: Bool = false
-    var myRamenPressed: Bool = false
-    var store: String = ""
-    var location: (long: Double, lat: Double) = (0, 0)
-    var storeRating: Double = 0
-    var distance: String?
+    var viewType: ViewType = .detail
+    
     /// DetailVC에서 보여줄 두 개의 이미지 URL을 담는 배열
     var existImageUrlList: [String] = []
+    /// 별점이 수정되었을 경우 true
+    var newRating: Double = 0
+    /// 좋아요, 추가하기 버튼이 놀렸을 경우 true
     var isButtonClicked: Bool = false
+    /// 테이블뷰에서 눌른 셀에 해당하는 데이터 (이전 화면에서 넘겨받은 데이터)
+    var selectedRamen: RamenData?
+    
+    /// 현재 위치로 부터 선택한 가게까지의 거리
+    var distance: String = ""
+    var isReviewed: Bool = false
     
     // MARK: - View Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        setNavigationbar()
         setUpBorder()
         setUpBackgroundColor()
         setUpLableText()
         setUpTabImageView()
         getRamenImages()
-        setPressedValue()
+        initButtonState()
         starRatingView.delegate = self
+        
+        if let selectedRamen = selectedRamen {
+            print(">>> id: \(selectedRamen._id), name: \(selectedRamen.storeName) - rating: \(selectedRamen.rating), fav: \(selectedRamen.isFavorite), good: \(selectedRamen.isGood), review: \(selectedRamen.isReviewed)")
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
         var reviewImage: UIImage?
         
         switch reviewState {
@@ -88,84 +110,105 @@ class DetailViewController: UIViewController {
         }
         
         reviewLabel.text = reviewState.rawValue
-        
-        setPressedValue()
+        initButtonState()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(true)
         
-        guard isButtonClicked else { return }
-        guard let rating = ratingLabel.text else { return }
-        guard let address = addressLabel.text else { return }
+        saveData()
         
-        let goodObject = realm.objects(GoodListData.self).where {
-            $0.storeName == store
-            && $0.x == location.long
-            && $0.y == location.lat
-        }
+        let shouldDeleteItems = realm.objects(RamenData.self).filter { !$0.isGood && !$0.isReviewed && !$0.isReviewed }
         
-        let myRating = (rating as NSString).doubleValue
-        storeRating = myRating
-        
-        let goodData = GoodListData(storeName: store, addressName: address, x: location.0, y: location.1, rating: storeRating, isGoodPressed: goodPressed)
-        
-        if goodPressed {
-            if goodObject.isEmpty {
-                try! realm.write {
-                    realm.add(goodData)
-                }
-            } else {
-                for item in goodObject {
-                    if item.rating != storeRating {
-                        if let update = goodObject.filter(NSPredicate(format: "storeName = %@", store)).first {
-                            try! realm.write {
-                                update.rating = storeRating
-                            }
-                        }
-                    }
-                }
-            }
-        } else {
-            if let firstItem = goodObject.first {
-                try! realm.write {
-                    realm.delete(firstItem)
-                }
+        if !shouldDeleteItems.isEmpty {
+            try! realm.write {
+                realm.delete(shouldDeleteItems)
             }
         }
     }
     
+    // MARK: - Set up
+    func setNavigationbar() {
+        // 타이틀 설정
+        navigationItem.title = viewType.rawValue
+        navigationController?.navigationBar.backgroundColor = CustomColor.beige
+    }
+    
+    func setUpBorder() {
+        [addressView, numberView, urlView, pictureView, buttonsView, ratingLabel].forEach {
+            $0!.layer.borderWidth = 2
+            $0!.layer.borderColor = UIColor.black.cgColor
+        }
+        
+        [buttonsView, ratingLabel, urlButton].forEach { $0.layer.cornerRadius = 10 }
+        pictureImageViewOne.layer.addBorder([.right], color: .black, width: 2)
+    }
+    
+    func setUpBackgroundColor() {
+        [view, addressLabel, numberLabel, urlButton].forEach { $0.backgroundColor = CustomColor.beige }
+    }
+    
+    func addTabGesture(target: UIImageView, action: Selector) {
+        let addTabGesture = UITapGestureRecognizer(target: self, action: action)
+        target.addGestureRecognizer(addTabGesture)
+        target.isUserInteractionEnabled = true
+    }
+    
+    func setUpTabImageView() {
+        addTabGesture(target: goodImageView, action: #selector(goodMark))
+        addTabGesture(target: reviewImageView, action: #selector(reviewMark))
+        addTabGesture(target: myListAddImageView, action:  #selector(addMyListMark))
+    }
+    
+    // MARK: - Action
     @IBAction func urlButton(_ sender: UIButton) {
-        let info = Array(information)
-        if let url = URL(string: info[index].place_url) {
+        var urlString = ""
+        
+        if let selectedRamen = selectedRamen {
+            urlString = selectedRamen.url
+        }
+        
+        if !urlString.isEmpty, let url = URL(string: urlString) {
             UIApplication.shared.open(url)
         }
     }
     
-    func setPressedValue() {
-        if goodPressed {
-            goodLabel.text = "좋아요 취소"
-            goodImageView.image = CustomImage.thumbsUpBlack
-            isButtonClicked = true
-        } else {
-            goodLabel.text = "좋아요"
-            goodImageView.image = CustomImage.thumbsUpWhite
-            isButtonClicked = false
+    // MARK: - Init Data
+    func initButtonState() {
+        guard let selectedRamen = selectedRamen else { return }
+        goodLabel.text = selectedRamen.isGood ? "좋아요 취소" : "좋아요"
+        goodImageView.image = selectedRamen.isGood ? CustomImage.thumbsUpBlack : CustomImage.thumbsUpWhite
+        
+        myListLabel.text = selectedRamen.isFavorite ? "추가하기 취소" : "추가하기"
+        myListAddImageView.image = selectedRamen.isFavorite ? CustomImage.myListBlack : CustomImage.myListWhite
+    }
+    
+    func setUpLableText() {
+        guard let selectedRamen = selectedRamen else { return }
+        
+        storeLabel.font = .boldSystemFont(ofSize: 35)
+        storeLabel.text = selectedRamen.storeName
+        // TODO: distance 계산 해서 대입하기
+        distanceLabel.text = "-- km (구해야 됨)"
+        ratingLabel.text = "\(selectedRamen.rating)"
+        starRatingView.rating = selectedRamen.rating
+        newRating = selectedRamen.rating
+        
+        if selectedRamen.url.isEmpty {
+            urlButton.setTitle("가게 위치 정보 없음", for: .normal)
         }
         
-        if myRamenPressed {
-            myListLabel.text = "추가하기 취소"
-            myListAddImageView.image = CustomImage.myListBlack
-        } else {
-            myListLabel.text = "추가하기"
-            myListAddImageView.image = CustomImage.myListWhite
-        }
+        addressLabel.text = selectedRamen.addressName.isEmpty ? "주소 정보 없음" : selectedRamen.addressName
+        numberLabel.text = selectedRamen.phone.isEmpty ? "전화번호 정보 없음" : selectedRamen.phone
     }
     
     func getRamenImages() {
+        guard let selectedRamen = selectedRamen else { return }
         existImageUrlList = []
+        
         let headers: HTTPHeaders = ["Authorization": appid]
-        let params: [String: Any] = ["query": information[index].place_name]
+        let params: [String: Any] = ["query": selectedRamen.storeName]
+        
         AF.request(imageUrl, method: .get, parameters: params, headers: headers).responseDecodable(of: RamenImage.self) { response in
             if let dataImage = response.value {
                 if dataImage.documents.count >= 2 {
@@ -191,151 +234,105 @@ class DetailViewController: UIViewController {
                 }
                 
                 if let firstUrl = firstUrl {
-                    self.pictureImageViewOne.kf.setImage(with: firstUrl, placeholder: self.defaultImage)
+                    self.pictureImageViewOne.kf.setImage(with: firstUrl, placeholder: CustomImage.ramen)
                 } else {
-                    self.pictureImageViewOne.image = self.defaultImage
+                    self.pictureImageViewOne.image = CustomImage.ramen
                 }
                 
                 if let secondUrl = secondUrl {
-                    self.pictureImageViewTwo.kf.setImage(with: secondUrl, placeholder: self.defaultImage)
+                    self.pictureImageViewTwo.kf.setImage(with: secondUrl, placeholder: CustomImage.ramen)
                 } else {
-                    self.pictureImageViewTwo.image = self.defaultImage
+                    self.pictureImageViewTwo.image = CustomImage.ramen
                 }
             }
         }
     }
-    
-    func setUpBorder() {
-        [addressView, numberView, urlView, pictureView, buttonsView, ratingLabel].forEach {
-            $0!.layer.borderWidth = 2
-            $0!.layer.borderColor = UIColor.black.cgColor
-        }
-        
-        [buttonsView, ratingLabel, urlButton].forEach {
-            $0.layer.cornerRadius = 10
-        }
-        
-        pictureImageViewOne.layer.addBorder([.right], color: .black, width: 2)
-    }
-    
-    func setUpBackgroundColor() {
-        [view, addressLabel, numberLabel, urlButton].forEach {
-            $0.backgroundColor = CustomColor.beige
-        }
-    }
-    
-    func setUpLableText() {
-        let info = Array(information)
-        let selectedInfo = info[index]
-        let goodList = realm.objects(GoodListData.self)
-        
-        storeLabel.font = .boldSystemFont(ofSize: 35)
-        storeLabel.text = selectedInfo.place_name
-        
-        if let distance = distance {
-            distanceLabel.text = "\(distance)km"
-        }
-        
-        for item in goodList {
-            if String(item.x) == selectedInfo.x && String(item.y) == selectedInfo.y {
-                ratingLabel.text = "\(item.rating)"
-                starRatingView.rating = item.rating
-                break
-            }
-        }
-        
-        if info[index].place_url.isEmpty {
-            urlButton.setTitle("가게 위치 정보 없음", for: .normal)
-        }
-        
-        if selectedInfo.road_address_name.isEmpty {
-            addressLabel.text = "주소 정보 없음"
-        } else {
-            addressLabel.text = selectedInfo.road_address_name
-        }
-        
-        if selectedInfo.phone.isEmpty {
-            numberLabel.text = "전화번호 정보 없음"
-        } else {
-            numberLabel.text = selectedInfo.phone
-        }
-    }
-    
-    func setUpTabImageView() {
-        addTabGesture(target: goodImageView, action: #selector(goodMark))
-        addTabGesture(target: reviewImageView, action: #selector(reviewMark))
-        addTabGesture(target: myListAddImageView, action:  #selector(addMyListMark))
-    }
-    
-    func addTabGesture(target: UIImageView, action: Selector) {
-        let addTabGesture = UITapGestureRecognizer(target: self, action: action)
-        target.addGestureRecognizer(addTabGesture)
-        target.isUserInteractionEnabled = true
-    }
-    
+}
+
+// MARK: Objectb Action
+extension DetailViewController {
+    /// '좋아요' 버튼 액션
     @objc func goodMark() {
-        if goodPressed {
-            goodPressed = false
-            goodLabel.text = "좋아요"
-            goodImageView.image = CustomImage.thumbsUpWhite
-        } else {
-            goodPressed = true
+        guard let selectedRamen = selectedRamen else { return }
+        
+        try! realm.write {
+            selectedRamen.isGood.toggle()
+        }
+        
+        if selectedRamen.isGood {
             goodLabel.text = "좋아요 취소"
             goodImageView.image = CustomImage.thumbsUpBlack
+        } else {
+            goodLabel.text = "좋아요"
+            goodImageView.image = CustomImage.thumbsUpWhite
         }
         
         isButtonClicked = true
     }
     
+    /// '리뷰 추가' 버튼 액션
     @objc func reviewMark() {
-        if reviewState == .yet {
-            guard let reviewVC = self.storyboard?.instantiateViewController(withIdentifier: "ReviewViewController") as? ReviewViewController else { return }
-            
-            reviewVC.delegate = self
-            reviewVC.storeName = information[index].place_name
-            reviewVC.addressName = information[index].road_address_name
-            
-            let backButton = UIBarButtonItem(title: "가게 정보", style: .plain, target: self, action: nil)
-            let attributes = [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 16)]
-            
-            self.navigationItem.backBarButtonItem = backButton
-            self.navigationItem.backBarButtonItem?.tintColor = .black
-            backButton.setTitleTextAttributes(attributes, for: .normal)
-            
-            navigationController?.pushViewController(reviewVC, animated: true)
+        guard let selectedRamen = selectedRamen else { return }
+        let realmList = realm.objects(RamenData.self).where {
+            $0.storeName == selectedRamen.storeName
+            && $0.x == selectedRamen.x
+            && $0.y == selectedRamen.y
         }
+        
+        if realmList.filter(NSPredicate(format: "_id == %@", selectedRamen._id)).first == nil {
+            try! realm.write {
+                realm.add(selectedRamen)
+            }
+        }
+        
+        guard let reviewVC = self.storyboard?.instantiateViewController(withIdentifier: "ReviewViewController") as? ReviewViewController else { return }
+        reviewVC.delegate = self
+        reviewVC.selectedRamen = selectedRamen
+        navigationController?.pushViewController(reviewVC, animated: true)
     }
     
+    /// '나의 라면 가게' 버튼 액션
     @objc func addMyListMark() {
-        guard let storeName = storeLabel.text else { return }
         
-        let myListObject = realm.objects(MyRamenListData.self).where {
-            $0.storeName == storeName
-            && $0.x == location.long
-            && $0.y == location.lat
-        }.first
+        guard let selectedRamen = selectedRamen else { return }
         
-        if myRamenPressed {
-            myRamenPressed = false
+        try! realm.write {
+            selectedRamen.isFavorite.toggle()
+        }
+        
+        if selectedRamen.isFavorite {
+            myListLabel.text = "추가하기 취소"
+            myListAddImageView.image = CustomImage.myListBlack
+        } else {
             myListLabel.text = "추가하기"
             myListAddImageView.image = CustomImage.myListWhite
-            guard let myListObject = myListObject else { return }
-            
+        }
+        
+        isButtonClicked = true
+    }
+    
+    func saveData() {
+        guard let selectedRamen = selectedRamen else { return }
+        
+        let realmList = realm.objects(RamenData.self).where {
+            $0.storeName == selectedRamen.storeName
+            && $0.x == selectedRamen.x
+            && $0.y == selectedRamen.y
+        }
+        
+        // 기존에 존재하는 데이터면
+        if let existItem = realmList.filter(NSPredicate(format: "_id == %@", selectedRamen._id)).first {
             try! realm.write {
-                realm.delete(myListObject)
+                print(">>> good update...")
+                existItem.isGood = selectedRamen.isGood
+                existItem.isFavorite = selectedRamen.isFavorite
+                existItem.rating = newRating
             }
         } else {
-            myRamenPressed = true
-            myListLabel.text = "추가하기 취소"
-            
-            myListAddImageView.image = CustomImage.myListBlack
-            
-            guard let address = addressLabel.text else { return }
-            
-            let myRamenData = MyRamenListData(storeName: store, address: address, x: location.long, y: location.lat, myRamenPressed: myRamenPressed)
-            
             try! realm.write {
-                realm.add(myRamenData)
+                print(">>> good add...")
+                selectedRamen.rating = newRating
+                realm.add(selectedRamen)
             }
         }
     }
@@ -352,5 +349,7 @@ extension DetailViewController: ReviewCompleteProtocol {
 extension DetailViewController: RatingViewDelegate {
     func ratingView(_ ratingView: RatingView, isUpdating rating: Double) {
         ratingLabel.text = String(rating)
+        newRating = rating
+        print(">>> rating: \(newRating)")
     }
 }

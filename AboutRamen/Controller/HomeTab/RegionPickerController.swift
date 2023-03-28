@@ -40,13 +40,23 @@ class RegionPickerController: UIViewController {
         
         navigationController?.navigationBar.backItem?.backBarButtonItem?.setTitleTextAttributes(attributes, for: .normal)
         chooseLabel.font = UIFont.boldSystemFont(ofSize: 22)
-        setUpBorder()
+        setupBorder()
         delegateRegion?.sendRegionData(city: "서울시", gu: "강남구")
     }
     
-    func setUpBorder() {
-        regionStackView.layer.borderWidth = 2
-        regionStackView.layer.borderColor = UIColor.black.cgColor
+    // MARK: - Set up
+    func setupNavigationbar() {
+        let backButton = UIBarButtonItem(title: "홈", style: .plain, target: self, action: nil)
+        let attributes = [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 16)]
+        
+        self.navigationItem.backBarButtonItem = backButton
+        self.navigationItem.backBarButtonItem?.tintColor = .black
+        backButton.setTitleTextAttributes(attributes, for: .normal)
+    }
+    
+    func setupBorder() {
+        regionPickerView.layer.borderWidth = 2
+        regionPickerView.layer.borderColor = UIColor.black.cgColor
     }
     
     @IBAction func saveButton(_ sender: UIBarButtonItem) {

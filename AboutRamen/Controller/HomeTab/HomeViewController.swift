@@ -26,48 +26,58 @@ class HomeViewController: UIViewController {
     /// kakao 키워드 이미지 검색 API 주소
     let imageUrl: String = "https://dapi.kakao.com/v2/search/image"
     let appid = Bundle.main.apiKey
+    
     /// API를 통해서 가져온 라멘집 리스트 정보를 담고 있는 배열
     var ramenList: List<Information>?
+    var allRamenData: List<Information>?
     /// 라멘집 이미지들의 image_url 값들의 배열
     var imageUrlList: [String] = []
-    var regionLocation: (long: Double, lat: Double) = (RegionData.list[0].guList[0].location.long, RegionData.list[0].guList[0].location.lat)
     var storeNames: [String] = []
-    var allRamenData: List<Information>?
-    var locationManager = CLLocationManager()
-    var currentLocation: (long: Double?,lat: Double?)
-    var distance: String?
     var goodStoreName: [String] = []
+    var distance: String?
     
+    var regionLocation: CLLocation = .init(latitude: RegionData.list[0].guList[0].location.long, longitude: RegionData.list[0].guList[0].location.lat)
+    var currentLocation: CLLocation?
+    var locationManager = CLLocationManager()
+
     // MARK: - View Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        print(">>> location: \(realm.configuration.fileURL)")
         setUpCollectionView()
-        setUpNavigationBar()
+        setupNavigationbar()
         
         myLocationLabel.text = "\(RegionData.list[0].city.rawValue) \(RegionData.list[0].guList[0].gu)"
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         locationManager.requestWhenInUseAuthorization()
         
-        /// - NOTE : coordinate 확인을 위해 프린트문 유지,,
-        if CLLocationManager.locationServicesEnabled() {
-            // print("위치 서비스 On 상태")
+        switch locationManager.authorizationStatus {
+        case .authorizedAlways, .authorizedWhenInUse:
             locationManager.startUpdatingLocation()
-            // print(locationManager.location?.coordinate)
-        } else {
-            // print("위치 서비스 Off 상태")
+            break
+        default:
+            // TODO: 허용 후에 얼럿뜨는것 해결하기
+            showAlert(title: "위치 권한이 없습니다.", message: "설정에서 권한을 허용해주세요.",alertStyle: .oneButton)
         }
         
         view.backgroundColor = CustomColor.beige
         
-        let goodList = realm.objects(GoodListData.self)
+        let goodList = realm.objects(RamenData.self)
         goodList.forEach { goodStoreName.append($0.storeName) }
         
         getRamenData(url: url, currentLocation: regionLocation)
     }
     
-    func setUpNavigationBar() {
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        collectionView.reloadData()
+    }
+    
+    // MARK: - Set up
+    func setupNavigationbar() {
         title = "어바웃라멘"
         navigationController?.navigationBar.backgroundColor = CustomColor.beige
         
@@ -87,12 +97,13 @@ class HomeViewController: UIViewController {
         collectionView.backgroundColor = CustomColor.beige
     }
     
-    func getRamenData(url: String, currentLocation: (long: Double, lat: Double)) {
+    // MARK: - API
+    func getRamenData(url: String, currentLocation: CLLocation) {
         let headers: HTTPHeaders = ["Authorization": appid]
         let parameters: [String: Any] = [
             "query" : "라멘",
-            "x": "\(currentLocation.long)",
-            "y": "\(currentLocation.lat)",
+            "x": "\(currentLocation.coordinate.longitude)",
+            "y": "\(currentLocation.coordinate.latitude)",
             "radius": 7000,
             "size": 10,
             "page": 1
@@ -136,18 +147,20 @@ class HomeViewController: UIViewController {
         }
     }
     
+    // MARK: - ETC
+    func isReviewExist(item: Information) -> Bool {
+        let reviewList = realm.objects(RamenData.self).filter { $0.isReviewed }.filter {
+            $0.storeName == item.place_name && String($0.x) == item.x && String($0.y) == item.y
+        }
+        
+        return reviewList.isEmpty ? false : true
+    }
+    
+    // MARK: - Action
     @IBAction func regionChangeButton(_ sender: UIBarButtonItem) {
         guard let regionPickerVC = self.storyboard?.instantiateViewController(withIdentifier: "RegionPickerController") as? RegionPickerController else { return }
-        
         regionPickerVC.delegateRegion = self
         regionPickerVC.delegateLocation = self
-        
-        let backButton = UIBarButtonItem(title: "홈", style: .plain, target: self, action: nil)
-        let attributes = [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 16)]
-        
-        self.navigationItem.backBarButtonItem = backButton
-        self.navigationItem.backBarButtonItem?.tintColor = .black
-        backButton.setTitleTextAttributes(attributes, for: .normal)
         navigationController?.pushViewController(regionPickerVC, animated: true)
     }
 }
@@ -164,46 +177,40 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectionViewCell", for: indexPath) as? CollectionViewCell else { return UICollectionViewCell() }
-        guard let ramenList = ramenList else { return UICollectionViewCell() }
+        cell.cellConfigure()
         
-        let goodList = realm.objects(GoodListData.self)
+        guard let ramenList = ramenList else { return UICollectionViewCell() }
+        let ramenData = ramenList[indexPath.row]
+        
+        // 거리
+        let targetLocation = CLLocation(latitude: Double(ramenData.y) ?? 0, longitude: Double(ramenData.x) ?? 0)
+        cell.distanceLabel.text = getDistance(from: currentLocation, to: targetLocation)
+        
+        // 별점
+        let goodList = realm.objects(RamenData.self)
         
         if !goodList.isEmpty {
-            for item in goodList {
-                if ramenList[indexPath.row].x == String(item.x) && ramenList[indexPath.row].y ==
-                    String(item.y) {
-                    cell.starLabel.text = "\(item.rating)"
-                } else {
-                    cell.starLabel.text = "별점 없음"
-                }
+            let existItem = goodList.filter { String($0.x) == ramenData.x && String($0.y) == ramenData.y }
+            
+            if let item = existItem.first {
+                cell.starLabel.text = "\(item.rating)"
+            } else {
+                cell.starLabel.text = "별점 없음"
             }
         } else {
             cell.starLabel.text = "별점 없음"
         }
         
-        let ramenData = ramenList[indexPath.row]
-        let myLocation = CLLocation(latitude: currentLocation.long ?? 0, longitude: currentLocation.lat ?? 0)
-        let storeLocation = CLLocation(latitude: Double(ramenList[indexPath.row].y) ?? 0, longitude: Double(ramenList[indexPath.row].x) ?? 0)
-        
-        distance = String(format: "%.2f" , myLocation.distance(from: storeLocation) / 1000)
-        
-        cell.cellConfigure()
-        cell.nameLabel.text = ramenData.place_name
-        
-        if let distance = distance {
-            cell.distanceLabel.text = "\(distance)km"
-        }
-        
-        cell.ramenImageView.layer.borderWidth = 1.5
-        cell.ramenImageView.layer.borderColor = UIColor.black.cgColor
-        cell.ramenImageView.layer.cornerRadius = 10
-        
+        // 이미지
         if imageUrlList.count == ramenList.count {
             let url = URL(string: imageUrlList[indexPath.row])
             cell.ramenImageView.kf.setImage(with: url)
         } else {
             cell.ramenImageView.image = CustomImage.ramen
         }
+        
+        // 가게 이름
+        cell.nameLabel.text = ramenData.place_name
         
         return cell
     }
@@ -220,47 +227,23 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard let detailVC = self.storyboard?.instantiateViewController(withIdentifier: "DetailViewController") as? DetailViewController else { return }
         guard let ramenList = ramenList else { return }
-        detailVC.store = ramenList[indexPath.row].place_name
+        let ramen = ramenList[indexPath.row]
+        let converted = ramen.toRameDataType()
         
-        if let x = Double(ramenList[indexPath.row].x), let y = Double(ramenList[indexPath.row].y) {
-            detailVC.location = (x,y)
+        let realmList = realm.objects(RamenData.self).where {
+            $0.storeName == ramen.place_name
+            && $0.x == converted.x
+            && $0.y == converted.y
         }
         
-        let goodData = realm.objects(GoodListData.self).filter {
-            $0.storeName == ramenList[indexPath.row].place_name &&
-            $0.x == Double(ramenList[indexPath.row].x) &&
-            $0.y == Double(ramenList[indexPath.row].y)
+        if let matchItem = realmList.first {
+            detailVC.selectedRamen = matchItem
+        } else {
+            detailVC.selectedRamen = converted
         }
         
-        detailVC.goodPressed = goodData.isEmpty ? false : true
-        
-        let myRamenData = realm.objects(MyRamenListData.self).filter {
-            $0.storeName == ramenList[indexPath.row].place_name &&
-            $0.x == Double(ramenList[indexPath.row].x) &&
-            $0.y == Double(ramenList[indexPath.row].y)
-        }
-        
-        detailVC.myRamenPressed = myRamenData.isEmpty ? false : true
-        
-        let reviewListData = realm.objects(ReviewListData.self).filter {
-            $0.storeName == ramenList[indexPath.row].place_name &&
-            $0.addressName == ramenList[indexPath.row].road_address_name
-        }
-        
-        detailVC.reviewState = reviewListData.isEmpty ? .yet : .done
-        detailVC.index = indexPath.row
-        detailVC.information = ramenList
-        if let distance = distance {
-            detailVC.distance = distance
-        }
-        
-        let backButton = UIBarButtonItem(title: "홈", style: .plain, target: self, action: nil)
-        let attributes = [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 16)]
-        
-        self.navigationItem.backBarButtonItem = backButton
-        self.navigationItem.backBarButtonItem?.tintColor = .black
-        backButton.setTitleTextAttributes(attributes, for: .normal)
-        
+        detailVC.reviewState = isReviewExist(item: ramen) ? .done : .yet
+        setCustomBackButton(title: "홈")
         navigationController?.pushViewController(detailVC, animated: true)
     }
 }
@@ -275,7 +258,7 @@ extension HomeViewController: RegionDataProtocol {
 // MARK: - LocationDataProtocol
 extension HomeViewController: LocationDataProtocol {
     func sendCurrentLocation(location: (long: Double, lat: Double)) {
-        regionLocation = location
+        regionLocation = CLLocation(latitude: location.lat, longitude: location.long)
         getRamenData(url: url, currentLocation: regionLocation)
     }
 }
@@ -284,7 +267,7 @@ extension HomeViewController: LocationDataProtocol {
 extension HomeViewController: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         if let location = locations.first {
-            currentLocation = (Double(location.coordinate.latitude), Double(location.coordinate.longitude))
+            currentLocation = location
         }
     }
     
