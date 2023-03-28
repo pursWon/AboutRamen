@@ -110,8 +110,6 @@ extension MyRamenListViewController: UITableViewDelegate, UITableViewDataSource 
             detailVC.viewType = .goodList
             detailVC.selectedRamen = selectedRamen
             
-            // getData(url: url, storeName: goodList[indexPath.row].storeName, x: String(goodList[indexPath.row].x), y: String(goodList[indexPath.row].y))
-            
         case .favoriteList:
             let favoriteList = realm.objects(RamenData.self).filter { $0.isFavorite }
             

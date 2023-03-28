@@ -155,6 +155,8 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
         // 렘에 저장한 라면 리스트
         let storedRamenList = realm.objects(RamenData.self)
         
+        var searchResults: [String] = []
+        
         if isFiltered {
             let goodList = storedRamenList.filter{ $0.isGood }
             let selectedRamen = Array(goodList)[indexPath.row]
