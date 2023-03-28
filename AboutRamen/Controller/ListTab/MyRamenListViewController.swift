@@ -37,8 +37,6 @@ class MyRamenListViewController: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
         myRamenListTableView.reloadData()
     }
     
@@ -53,6 +51,24 @@ class MyRamenListViewController: UIViewController {
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         locationManager.requestWhenInUseAuthorization()
         locationManager.startUpdatingLocation()
+    }
+    
+    // MARK: - API
+    func getData(url: String, storeName: String, x: String, y: String) {
+        let headers: HTTPHeaders = ["Authorization": appid]
+        let parameters: [String: Any] = [
+            "query": storeName,
+            "x": x,
+            "y": y
+        ]
+        
+        AF.request(url, method: .get, parameters: parameters, headers: headers).responseDecodable(of: RamenStore.self) { response in
+            if let data = response.value {
+                self.ramenList = data.documents
+            } else {
+                print("통신 실패")
+            }
+        }
     }
 }
 
@@ -110,6 +126,8 @@ extension MyRamenListViewController: UITableViewDelegate, UITableViewDataSource 
             detailVC.viewType = .goodList
             detailVC.selectedRamen = selectedRamen
             
+            // getData(url: url, storeName: goodList[indexPath.row].storeName, x: String(goodList[indexPath.row].x), y: String(goodList[indexPath.row].y))
+            
         case .favoriteList:
             let favoriteList = realm.objects(RamenData.self).filter { $0.isFavorite }
             
@@ -119,6 +137,9 @@ extension MyRamenListViewController: UITableViewDelegate, UITableViewDataSource 
             detailVC.distance = getDistance(from: currentLocation, to: targetLocation)
             detailVC.viewType = .favoriteList
             detailVC.selectedRamen = selectedRamen
+            
+            // ???: 무슨 함수인지 체크
+            // getData(url: url, storeName: favoriteList[indexPath.row].storeName, x: String(favoriteList[indexPath.row].x), y: String(favoriteList[indexPath.row].y))
         }
         
         navigationController?.pushViewController(detailVC, animated: true)
