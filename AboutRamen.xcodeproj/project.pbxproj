@@ -533,7 +533,7 @@
 				DEVELOPMENT_TEAM = 66BU7QGW7Z;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = AboutRamen/Info.plist;
-				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "\"현재 위치사용을 허용하시겠습니까?\"";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "현재 위치를 기반으로 라멘 가게 목록을 불러오는데 사용됩니다. ";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = "";
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -568,7 +568,7 @@
 				DEVELOPMENT_TEAM = 66BU7QGW7Z;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = AboutRamen/Info.plist;
-				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "\"현재 위치사용을 허용하시겠습니까?\"";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "현재 위치를 기반으로 라멘 가게 목록을 불러오는데 사용됩니다. ";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = "";
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
