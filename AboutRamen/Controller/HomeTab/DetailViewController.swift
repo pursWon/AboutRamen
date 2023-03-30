@@ -325,8 +325,7 @@ extension DetailViewController: RatingViewDelegate {
 
 // MARK: - CLLocationManagerDelegate
 extension DetailViewController: CLLocationManagerDelegate {
-    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation], status: CLAuthorizationStatus) {
-        
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         if let location = locations.first {
             currentLocation = location
         }
@@ -336,5 +335,3 @@ extension DetailViewController: CLLocationManagerDelegate {
         print(error)
     }
 }
-
-

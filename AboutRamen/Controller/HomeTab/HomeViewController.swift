@@ -29,15 +29,7 @@ class HomeViewController: UIViewController {
     let appid = Bundle.main.apiKey
     
     let locationManager = CLLocationManager()
-    var isFirst: Bool = true
-    var currentLocation: CLLocation? {
-        didSet {
-            if isFirst {
-                setInitData()
-                isFirst = false
-            }
-        }
-    }
+    var currentLocation: CLLocation?
     
     /// API를 통해서 가져온 라멘집 리스트 정보를 담고 있는 배열
     var ramenList: List<Information>?
@@ -60,17 +52,7 @@ class HomeViewController: UIViewController {
         setLocationManager()
         setUpCollectionView()
         setupNavigationbar()
-        setBackground()
-        
-        let authorizationStatus: CLAuthorizationStatus
-        
-        if #available(iOS 14.0, *) {
-            authorizationStatus = locationManager.authorizationStatus
-        }else {
-            authorizationStatus = CLLocationManager.authorizationStatus()
-        }
-        
-        checkUserCurrentLocationAuthorization(authorizationStatus)
+        setInitData()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -81,10 +63,8 @@ class HomeViewController: UIViewController {
     }
     
     // MARK: - Set Up
-    func setBackground() {
-        view.backgroundColor = CustomColor.beige
-    }
     func setInitData() {
+        view.backgroundColor = CustomColor.beige
         myLocationLabel.text = "\(RegionData.list[0].city.rawValue) \(RegionData.list[0].guList[0].gu)"
         
         let goodList = realm.objects(RamenData.self)
@@ -304,22 +284,4 @@ extension HomeViewController: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         print(error)
     }
-    
-    func checkUserCurrentLocationAuthorization(_ status: CLAuthorizationStatus) {
-        switch status {
-        case .notDetermined:
-            locationManager.desiredAccuracy = kCLLocationAccuracyBest
-            locationManager.requestWhenInUseAuthorization()
-            
-        case .denied, .restricted:
-            showAlert(title: "위치 권한 없음",message: "설정에서 위치 권한을 설정해주세요.", alertStyle: .oneButton)
-            
-        case .authorizedAlways, .authorizedWhenInUse:
-            locationManager.startUpdatingLocation()
-            
-        default:
-            print("Default")
-        }
-    }
 }
-
