@@ -165,12 +165,33 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
         guard let detailVC = self.storyboard?.instantiateViewController(withIdentifier: "DetailViewController") as? DetailViewController else { return }
         
         if isFiltered {
-            let selectedRamen = searchedList[indexPath.row]
-            detailVC.viewType = .search
-            detailVC.selectedRamen = selectedRamen
+            let realmList = realm.objects(RamenData.self).where {
+                $0.storeName == searchedList[indexPath.row].storeName
+                && $0.x == searchedList[indexPath.row].x
+                && $0.y == searchedList[indexPath.row].y
+            }
+            
+            if let selectedRamen = realmList.first {
+                detailVC.viewType = .search
+                detailVC.selectedRamen = selectedRamen
+            } else {
+                let selectedRamen = searchedList[indexPath.row]
+                detailVC.viewType = .search
+                detailVC.selectedRamen = selectedRamen
+            }
         } else {
-            let selectedRamen = defaultList[indexPath.row]
-            detailVC.selectedRamen = selectedRamen
+            let realmList = realm.objects(RamenData.self).where {
+                $0.storeName == defaultList[indexPath.row].storeName
+                && $0.x == defaultList[indexPath.row].x
+                && $0.y == defaultList[indexPath.row].y
+            }
+            
+            if let selectedRamen = realmList.first {
+                detailVC.selectedRamen = selectedRamen
+            } else {
+                let selectedRamen = defaultList[indexPath.row]
+                detailVC.selectedRamen = selectedRamen
+            }
         }
         
         navigationController?.pushViewController(detailVC, animated: true)
