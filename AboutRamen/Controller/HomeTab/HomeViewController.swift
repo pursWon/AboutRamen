@@ -40,8 +40,8 @@ class HomeViewController: UIViewController {
     var distance: String?
     
     var regionLocation: CLLocation = .init(
-        latitude: RegionData.list[0].guList[0].location.long,
-        longitude: RegionData.list[0].guList[0].location.lat)
+        latitude: RegionData.list[0].guList[0].location.lat,
+        longitude: RegionData.list[0].guList[0].location.long)
     
     // MARK: - View Life Cycle
     override func viewDidLoad() {
