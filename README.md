@@ -35,6 +35,7 @@ https://user-images.githubusercontent.com/99719661/229819564-0ad2ebf0-2f39-49b2-
 
 - 가게의 좋아요, 리뷰, 나의 라멘 가게 여부를 보여줍니다.
 - 가게의 별점을 매길 수 있습니다.
+- 좋아요, 나의 라멘 가게 버튼이 눌려져 있으면 다시 누름에 따라 취소할 수 있습니다. 
 - 가게에 대한 리뷰를 남길 수 있습니다.
 - 나의 라멘 가게 목록에 추가할 수 있습니다. 
 - 가게에 해당되는 이미지를 보여줍니다. 
@@ -71,13 +72,25 @@ width="25%" height="25%" />
 - 보여지는 가게들 내에서 검색이 가능합니다.
 - cell을 누르면 가게 정보 화면으로 넘어갑니다. 
 
-### 8. 
+### 8. 리뷰 목록 화면
 
+<img src = "https://user-images.githubusercontent.com/99719661/229839188-e1cceea9-b560-4e35-81a3-2ca75fbda9d3.png"
+width="25%" height="25%" />
 
+- 리뷰를 마친 가게들을 볼 수 있습니다.
+- cell을 누르면 리뷰 화면으로 넘어가서 리뷰 내용을 수정할 수 있습니다. 
+- 편집 버튼을 누르면 리뷰 목록에서 가게를 삭제할 수 있습니다.
+
+### 9. 나의 라멘 가게 목록 화면
+
+<img src = "https://user-images.githubusercontent.com/99719661/229841637-71f75109-efd2-4ca4-b157-a4fc22d3a821.png" 
+width="25%" height="25%" />
+
+- 나의 라멘 가게 목록에 추가한 가게들을 볼 수 있습니다. 
 
 ## 공수산정표
 
-<img width="700" src="https://user-images.githubusercontent.com/99719661/225807620-7f110a93-5404-455e-884e-4dab3b0bfea6.png">
-<img width="700" src="https://user-images.githubusercontent.com/99719661/225807651-27d6e410-3e18-4f07-b109-a618485da10a.png">
-<img width="700" src="https://user-images.githubusercontent.com/99719661/225807670-58cf68d6-f943-49f1-b6f9-b14d031e4d9d.png">
-<img width="700" src="https://user-images.githubusercontent.com/99719661/225807685-75627a75-8eef-46d0-9859-e84ebe5f2363.png">
+<img width="600" src="https://user-images.githubusercontent.com/99719661/225807620-7f110a93-5404-455e-884e-4dab3b0bfea6.png">
+<img width="600" src="https://user-images.githubusercontent.com/99719661/225807651-27d6e410-3e18-4f07-b109-a618485da10a.png">
+<img width="600" src="https://user-images.githubusercontent.com/99719661/225807670-58cf68d6-f943-49f1-b6f9-b14d031e4d9d.png">
+<img width="600" src="https://user-images.githubusercontent.com/99719661/225807685-75627a75-8eef-46d0-9859-e84ebe5f2363.png">
