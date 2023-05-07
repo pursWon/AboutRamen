@@ -54,23 +54,29 @@ class ReviewListViewController: UIViewController {
 extension ReviewListViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         guard let reviewList = reviewList else { return 0 }
+        
         emptyLabel.isHidden = reviewList.isEmpty ? false : true
         return reviewList.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = reviewListTableView.dequeueReusableCell(withIdentifier: "ReviewListCell", for: indexPath) as? ReviewListCell else { return UITableViewCell() }
+        
         guard let reviewList = reviewList else { return UITableViewCell() }
+        
         let item = reviewList[indexPath.row]
         cell.nameLabel.text = item.storeName
         cell.addressLabel.text = item.addressName
         cell.reviewImageView.tintColor = .systemOrange
+        
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let reviewVC = self.storyboard?.instantiateViewController(withIdentifier: "ReviewViewController") as? ReviewViewController else { return }
+        
         guard let reviewList = reviewList else { return }
+        
         reviewVC.selectedRamen = reviewList[indexPath.row]
         navigationController?.pushViewController(reviewVC, animated: true)
     }
