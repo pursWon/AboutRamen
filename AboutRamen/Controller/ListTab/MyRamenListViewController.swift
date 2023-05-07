@@ -53,12 +53,14 @@ class MyRamenListViewController: UIViewController {
 extension MyRamenListViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         guard let storeList = storeList else { return 0 }
+        
         emptyLabel.isHidden = storeList.isEmpty ? false : true
         return storeList.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "MyRamenListCell", for: indexPath) as? MyRamenListCell else { return UITableViewCell() }
+        
         guard let storeList = storeList else { return UITableViewCell() }
         
         let item = storeList[indexPath.row]
@@ -80,6 +82,7 @@ extension MyRamenListViewController: UITableViewDelegate, UITableViewDataSource 
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let detailVC = self.storyboard?.instantiateViewController(withIdentifier: "DetailViewController") as? DetailViewController else { return }
+        
         guard let storeList = storeList, !storeList.isEmpty else { return }
         let selectedRamen = storeList[indexPath.row]
         
