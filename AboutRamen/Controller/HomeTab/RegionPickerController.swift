@@ -51,8 +51,8 @@ class RegionPickerController: UIViewController {
         navigationController?.navigationBar.backItem?.backBarButtonItem?.setTitleTextAttributes(attributes, for: .normal)
         
         let backButton = UIBarButtonItem(title: "홈", style: .plain, target: self, action: nil)
-        self.navigationItem.backBarButtonItem = backButton
-        self.navigationItem.backBarButtonItem?.tintColor = .black
+        navigationItem.backBarButtonItem = backButton
+        navigationItem.backBarButtonItem?.tintColor = .black
         backButton.setTitleTextAttributes(attributes, for: .normal)
     }
     
