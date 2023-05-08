@@ -23,7 +23,7 @@ struct RegionData {
     }
     
     static let list: [Region] = [
-        Region( city: .seoul,
+        Region(city: .seoul,
                 guList: [
                     ("강남구",  (127.0495556, 37.514575)),
                     ("강동구",  (127.1258639, 37.52736667)),

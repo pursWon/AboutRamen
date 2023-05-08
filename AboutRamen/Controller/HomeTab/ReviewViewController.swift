@@ -43,8 +43,8 @@ class ReviewViewController: UIViewController {
     func setUpNavigationBarButton() {
         let attributes = [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 20)]
         let completeButton = UIBarButtonItem(title: "리뷰 완료", style: .plain, target: self, action: nil)
-        self.navigationItem.rightBarButtonItem = completeButton
-        self.navigationItem.rightBarButtonItem?.tintColor = .black
+        navigationItem.rightBarButtonItem = completeButton
+        navigationItem.rightBarButtonItem?.tintColor = .black
         completeButton.setTitleTextAttributes(attributes, for: .normal)
         completeButton.action = #selector(completeButtonAction)
         completeButton.target = self

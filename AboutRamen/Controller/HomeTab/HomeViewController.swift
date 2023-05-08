@@ -68,7 +68,7 @@ class HomeViewController: UIViewController {
         myLocationLabel.text = "\(RegionData.list[0].city.rawValue) \(RegionData.list[0].guList[0].gu)"
         
         let goodList = realm.objects(RamenData.self)
-        goodList.forEach { goodStoreName.append($0.storeName) }
+        goodList.forEach{ goodStoreName.append($0.storeName) }
         getRamenData(url: url, currentLocation: regionLocation)
     }
     
@@ -111,8 +111,7 @@ class HomeViewController: UIViewController {
             "page": 1
         ]
         
-        AF.request(url, method: .get, parameters: parameters, headers: headers).responseDecodable(of: RamenStore.self) {
-            response in
+        AF.request(url, method: .get, parameters: parameters, headers: headers).responseDecodable(of: RamenStore.self) { response in
             if let data = response.value {
                 self.ramenList = data.documents
                 guard let ramenList = self.ramenList else { return }
@@ -129,16 +128,12 @@ class HomeViewController: UIViewController {
         imageUrlList.removeAll()
         
         let headers: HTTPHeaders = ["Authorization": appid]
+        
         for name in storeNames {
             let params: [String: Any] = ["query": name]
             AF.request(imageUrl, method: .get, parameters: params, headers: headers).responseDecodable(of: RamenImage.self) { response in
                 if let dataImage = response.value {
-                    for i in 0..<dataImage.documents.count {
-                        if i == 0 {
-                            self.imageUrlList.append(dataImage.documents[0].image_url)
-                        }
-                    }
-                    
+                    self.imageUrlList.append(dataImage.documents[0].image_url)
                     self.storeNames.removeAll()
                 }
                 
@@ -152,7 +147,7 @@ class HomeViewController: UIViewController {
     // MARK: - ETC
     /// 평가가 모두 안되어 있는 아이템 삭제
     func deleteNoDataItem() {
-        let shouldDeleteItems = realm.objects(RamenData.self).filter { !$0.isGood && !$0.isReviewed && !$0.isFavorite }
+        let shouldDeleteItems = realm.objects(RamenData.self).filter{ !$0.isGood && !$0.isReviewed && !$0.isFavorite }
         
         if !shouldDeleteItems.isEmpty {
             try! realm.write {
@@ -162,11 +157,13 @@ class HomeViewController: UIViewController {
     }
     
     func isReviewExist(item: Information) -> Bool {
-        let reviewList = realm.objects(RamenData.self).filter { $0.isReviewed }.filter {
-            $0.storeName == item.place_name && String($0.x) == item.x && String($0.y) == item.y
+        let reviewList = realm.objects(RamenData.self).filter{ $0.isReviewed }.filter{
+            $0.storeName == item.place_name
+            && String($0.x) == item.x
+            && String($0.y) == item.y
         }
         
-        return reviewList.isEmpty ? false : true
+        return !reviewList.isEmpty
     }
     
     // MARK: - Action
@@ -186,8 +183,11 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectionViewCell", for: indexPath) as? CollectionViewCell else { return UICollectionViewCell() }
-        guard let ramenList = ramenList else { return UICollectionViewCell() }
+        guard
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectionViewCell", for: indexPath) as? CollectionViewCell,
+            let ramenList = ramenList
+        else { return UICollectionViewCell() }
+        
         let ramenData = ramenList[indexPath.row].toRameDataType()
         
         cell.cellConfigure()
@@ -200,7 +200,10 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
         let goodList = realm.objects(RamenData.self)
         
         if !goodList.isEmpty {
-            let existItem = goodList.filter { $0.x == ramenData.x && $0.y == ramenData.y }
+            let existItem = goodList.filter {
+                $0.x == ramenData.x
+                && $0.y == ramenData.y
+            }
             
             if let item = existItem.first {
                 cell.starLabel.text = "\(item.rating)"
@@ -235,8 +238,11 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        guard let detailVC = self.storyboard?.instantiateViewController(withIdentifier: "DetailViewController") as? DetailViewController else { return }
-        guard let ramenList = ramenList else { return }
+        guard
+            let detailVC = self.storyboard?.instantiateViewController(withIdentifier: "DetailViewController") as? DetailViewController,
+            let ramenList = ramenList
+        else { return }
+        
         let ramen = ramenList[indexPath.row]
         let converted = ramen.toRameDataType()
         

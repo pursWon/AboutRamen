@@ -22,7 +22,7 @@ class DetailViewController: UIViewController {
         case detail = "가게 정보" // 기본 상세 화면
         case goodList = "좋아요 가게"// 좋아요 목록
         case search = "가게 검색" // 가게 검색 상세 화면
-        case favoriteList = "나의 라면 가게" // 나의 라면 가게
+        case favoriteList = "나의 라멘 가게" // 나의 라멘 가게
     }
     
     // MARK: - UI
@@ -124,12 +124,12 @@ class DetailViewController: UIViewController {
             $0!.layer.borderColor = UIColor.black.cgColor
         }
         
-        [buttonsView, ratingLabel, urlButton].forEach { $0.layer.cornerRadius = 10 }
+        [buttonsView, ratingLabel, urlButton].forEach{ $0.layer.cornerRadius = 10 }
         pictureImageViewOne.layer.addBorder([.right], color: .black, width: 2)
     }
     
     func setUpBackgroundColor() {
-        [view, addressLabel, numberLabel, urlButton].forEach { $0.backgroundColor = CustomColor.beige }
+        [view, addressLabel, numberLabel, urlButton].forEach{ $0.backgroundColor = CustomColor.beige }
     }
     
     func setUpTabImageView() {
@@ -263,6 +263,7 @@ extension DetailViewController {
     /// '리뷰 추가' 버튼 액션
     @objc func reviewMark() {
         guard let selectedRamen = selectedRamen else { return }
+        
         let realmList = realm.objects(RamenData.self).where {
             $0.storeName == selectedRamen.storeName
             && $0.x == selectedRamen.x
@@ -276,6 +277,7 @@ extension DetailViewController {
         }
         
         guard let reviewVC = self.storyboard?.instantiateViewController(withIdentifier: "ReviewViewController") as? ReviewViewController else { return }
+        
         reviewVC.delegate = self
         reviewVC.selectedRamen = selectedRamen
         navigationController?.pushViewController(reviewVC, animated: true)

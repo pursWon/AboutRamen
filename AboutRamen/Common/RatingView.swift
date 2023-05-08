@@ -72,9 +72,13 @@ open class RatingView: UIView {
     }
     
     private func initImageViews() {
-        guard emptyImageViews.isEmpty && fullImageViews.isEmpty else { return }
+        guard emptyImageViews.isEmpty, fullImageViews.isEmpty else { return }
         
-        for _ in 0..<maxRating {
+        var count: Int = 0
+        
+        while count < maxRating {
+            count += 1
+            
             let emptyImageView = UIImageView()
             emptyImageView.contentMode = imageContentMode
             emptyImageView.image = emptyImage
@@ -108,7 +112,7 @@ open class RatingView: UIView {
             if rating >= Double(i + 1) {
                 imageView.layer.mask = nil
                 imageView.isHidden = false
-            } else if rating > Double(i) && rating < Double(i + 1) {
+            } else if rating > Double(i), rating < Double(i + 1) {
                 let maskLayer = CALayer()
                 maskLayer.frame = CGRect(
                     x: 0, y: 0,
@@ -125,17 +129,22 @@ open class RatingView: UIView {
     }
     
     private func sizeForImage(_ image: UIImage, inSize size: CGSize) -> CGSize {
-        let imageRatio = image.size.width / image.size.height
-        let viewRatio = size.width / size.height
+        let imageWidth = image.size.width
+        let imageHeight = image.size.height
+        let width = size.width
+        let height = size.height
+        
+        let imageRatio = imageWidth / imageHeight
+        let viewRatio = width / height
         
         if imageRatio < viewRatio {
-            let scale = size.height / image.size.height
-            let width = scale * image.size.width
-            return CGSize(width: width, height: size.height)
+            let scale = height / imageHeight
+            let scaleWidth = scale * imageWidth
+            return CGSize(width: scaleWidth, height: height)
         } else {
-            let scale = size.width / image.size.width
-            let height = scale * image.size.height
-            return CGSize(width: size.width, height: height)
+            let scale = width / imageWidth
+            let scaleHeight = scale * imageHeight
+            return CGSize(width: width, height: scaleHeight)
         }
     }
     

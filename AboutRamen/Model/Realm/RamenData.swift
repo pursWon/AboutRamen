@@ -18,6 +18,7 @@ class RamenData: Object {
     
     convenience init(storeName: String, addressName: String, x: Double, y: Double, url: String, phone: String, rating: Double, isGood: Bool, isReviewed: Bool, isFavorite: Bool, reviewContent: String? = nil) {
         self.init()
+        
         self.storeName = storeName
         self.addressName = addressName
         self.x = x
