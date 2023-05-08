@@ -1,7 +1,7 @@
 # AboutRamen
 현재 위치를 기반으로 주변 라멘 가게를 검색하는 앱
 
-**앱 스토어 링크** : https://apps.apple.com/kr/app/%EC%96%B4%EB%B0%94%EC%9B%83%EB%9D%BC%EB%A9%98/id6446753603
+**앱 스토어 링크** : [어바웃라멘](https://apps.apple.com/kr/app/%EC%96%B4%EB%B0%94%EC%9B%83%EB%9D%BC%EB%A9%98/id6446753603)
 
 <div align="center">
 
@@ -57,15 +57,7 @@ https://user-images.githubusercontent.com/99719661/229819564-0ad2ebf0-2f39-49b2-
 
 <br/>
 
-### 4. 전체 목록 화면 
-
-<img src="https://user-images.githubusercontent.com/99719661/229835955-6cfb74fe-1ff0-4549-a67a-80c3398442d0.png" width="25%" height="25%" />
-
-- 좋아요, 리뷰, 나의 라멘 가게 목록으로 들어갈 수 있는 화면입니다. 
-
-<br/>
-
-### 5. 리뷰 화면
+### 4. 리뷰 화면
 
 <img src = "https://user-images.githubusercontent.com/99719661/229836431-67bd529a-c785-48bb-afd8-be221814cf68.png" width="25%" height="25%" />
 
@@ -74,44 +66,40 @@ https://user-images.githubusercontent.com/99719661/229819564-0ad2ebf0-2f39-49b2-
 
 <br/>
 
-### 6. 좋아요 목록 화면
+### 5. 목록 화면
+<img src="https://user-images.githubusercontent.com/99719661/229835955-6cfb74fe-1ff0-4549-a67a-80c3398442d0.png" width="23%" height="25%" /> | <img src = "https://user-images.githubusercontent.com/99719661/229837239-21f95f4f-5328-4034-a4e5-751ae113f048.png" 
+width="23%" height="25%" /> | <img src = "https://user-images.githubusercontent.com/99719661/229839188-e1cceea9-b560-4e35-81a3-2ca75fbda9d3.png" width="23%" height="25%" /> | <img src = "https://user-images.githubusercontent.com/99719661/229841637-71f75109-efd2-4ca4-b157-a4fc22d3a821.png" width="23%" height="25%" /> 
 
-<img src = "https://user-images.githubusercontent.com/99719661/229837239-21f95f4f-5328-4034-a4e5-751ae113f048.png" 
-width="25%" height="25%" />
-
-- 좋아요를 누른 가게와 별점을 볼 수 있습니다.
-- cell을 누르면 가게 정보 화면으로 넘어갑니다. 
+- **전체 목록 화면**   
+  - 좋아요, 리뷰, 나의 라멘 가게 목록으로 들어갈 수 있는 화면입니다. 
 
 <br/>
 
-### 7. 검색창 화면 
+- **좋아요 목록 화면**
+  - 좋아요를 누른 가게와 별점을 볼 수 있습니다.
+  - 해당 칸을 누르면 가게 정보 화면으로 넘어갑니다.
+  
+<br/>
+
+- **리뷰 목록 화면**
+  - 리뷰를 마친 가게들을 볼 수 있습니다.
+  - 목록에 있는 칸을 누르면 리뷰 화면으로 넘어가서 리뷰 내용을 수정할 수 있습니다. 
+  - 편집 버튼을 누르면 리뷰 목록에서 가게를 삭제할 수 있습니다.  
+<br/>
+
+- **나의 라멘 가게 목록 화면**
+  - 나의 라멘 가게 목록에 추가한 가게들을 볼 수 있습니다. 
+
+<br/>
+
+### 6. 검색창 화면 
 
 <img src = "https://user-images.githubusercontent.com/99719661/229838397-2db731a3-d60a-4636-855f-ffc35b4ba030.png" 
 width="25%" height="25%" />
 
-- 현재 위치를 기반으로 주변 가게들을 cell에 보여줍니다.
+- 현재 위치를 기반으로 주변 가게들을 목록에 있는 칸에 보여줍니다.
 - 보여지는 가게들 내에서 검색이 가능합니다.
 - cell을 누르면 가게 정보 화면으로 넘어갑니다. 
-
-<br/>
-
-### 8. 리뷰 목록 화면
-
-<img src = "https://user-images.githubusercontent.com/99719661/229839188-e1cceea9-b560-4e35-81a3-2ca75fbda9d3.png"
-width="25%" height="25%" />
-
-- 리뷰를 마친 가게들을 볼 수 있습니다.
-- cell을 누르면 리뷰 화면으로 넘어가서 리뷰 내용을 수정할 수 있습니다. 
-- 편집 버튼을 누르면 리뷰 목록에서 가게를 삭제할 수 있습니다.
-
-<br/>
-
-### 9. 나의 라멘 가게 목록 화면
-
-<img src = "https://user-images.githubusercontent.com/99719661/229841637-71f75109-efd2-4ca4-b157-a4fc22d3a821.png" 
-width="25%" height="25%" />
-
-- 나의 라멘 가게 목록에 추가한 가게들을 볼 수 있습니다. 
 
 <br/>
 
