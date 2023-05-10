@@ -53,7 +53,6 @@ class HomeViewController: UIViewController {
             { return }
             
             regionData = regionInformation
-            
             regionLocation = CLLocation(latitude: regionInformation.region[0].local[0].latitude, longitude: regionInformation.region[0].local[0].longtitude)
         } else {
             print("파싱 실패")
@@ -82,6 +81,7 @@ class HomeViewController: UIViewController {
         
         let goodList = realm.objects(RamenData.self)
         goodList.forEach{ goodStoreName.append($0.storeName) }
+        
         guard let regionLocation = regionLocation else { return }
         getRamenData(url: url, currentLocation: regionLocation)
     }
@@ -147,13 +147,10 @@ class HomeViewController: UIViewController {
             AF.request(imageUrl, method: .get, parameters: params, headers: headers).responseDecodable(of: RamenImage.self) { response in
                 
                 if let dataImage = response.value {
-                    
-                    for i in 0..<dataImage.documents.count {
-                        if i == 0 {
-                            self.imageUrlList.append(dataImage.documents[0].image_url)
-                        }
+                    if !dataImage.documents.isEmpty {
+                        self.imageUrlList.append(dataImage.documents[0].image_url)
+                        self.storeNames.removeAll()
                     }
-                    self.storeNames.removeAll()
                 }
                 
                 DispatchQueue.main.async {
@@ -257,10 +254,8 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        guard
-            let detailVC = self.storyboard?.instantiateViewController(withIdentifier: "DetailViewController") as? DetailViewController,
-            let ramenList = ramenList
-        else { return }
+        print(imageUrlList.count)
+        guard let detailVC = self.storyboard?.instantiateViewController(withIdentifier: "DetailViewController") as? DetailViewController, let ramenList = ramenList else { return }
         
         let ramen = ramenList[indexPath.row]
         let converted = ramen.toRameDataType()
@@ -294,6 +289,7 @@ extension HomeViewController: RegionDataProtocol {
 extension HomeViewController: LocationDataProtocol {
     func sendCurrentLocation(location: (long: Double, lat: Double)) {
         regionLocation = CLLocation(latitude: location.lat, longitude: location.long)
+        
         guard let regionLocation = regionLocation else { return }
         getRamenData(url: url, currentLocation: regionLocation)
     }
