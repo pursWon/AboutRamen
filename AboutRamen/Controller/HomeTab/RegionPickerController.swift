@@ -30,14 +30,13 @@ class RegionPickerController: UIViewController {
         super.viewDidLoad()
         
         if let region = region {
-            guard let regionInformation = try? JSONDecoder().decode(RegionInformation.self, from: region) else
-            { return }
+            guard let regionInformation = try? JSONDecoder().decode(RegionInformation.self, from: region) else { return }
             
             regionData = regionInformation
         } else {
             print("파싱 실패")
         }
-
+        
         setInitData()
         setupBorder()
         setupNavigationbar()
@@ -91,7 +90,9 @@ extension RegionPickerController: UIPickerViewDelegate, UIPickerViewDataSource {
     }
     
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        
         guard let regionData = regionData else { return 0 }
+        
         switch component {
         case 0:
             return regionData.region.count
@@ -103,8 +104,11 @@ extension RegionPickerController: UIPickerViewDelegate, UIPickerViewDataSource {
     }
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        
         guard let regionData = regionData else { return "" }
+        
         if pickerView == regionPickerView {
+            
             switch component {
             case 0:
                 return regionData.region[row].city
@@ -119,7 +123,9 @@ extension RegionPickerController: UIPickerViewDelegate, UIPickerViewDataSource {
     }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        
         guard let regionData = regionData else { return }
+        
         switch component {
         case 0:
             firstPickerRow = row
