@@ -2,11 +2,9 @@ import Foundation
 
 func load() -> Data? {
     let fileName: String = ""
-    
     let extensionType: String = "json"
     
-    guard let fileLocation = Bundle.main.url(forResource: fileName, withExtension: extensionType) else
-    { return nil }
+    guard let fileLocation = Bundle.main.url(forResource: fileName, withExtension: extensionType) else { return nil }
     
     do {
     let data = try Data(contentsOf: fileLocation)
@@ -14,7 +12,6 @@ func load() -> Data? {
     return data
     } catch {
         return nil
-    
     }
 }
 
