@@ -7,9 +7,9 @@ func load() -> Data? {
     guard let fileLocation = Bundle.main.url(forResource: fileName, withExtension: extensionType) else { return nil }
     
     do {
-    let data = try Data(contentsOf: fileLocation)
-    
-    return data
+        let data = try Data(contentsOf: fileLocation)
+        
+        return data
     } catch {
         return nil
     }
