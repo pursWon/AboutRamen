@@ -195,6 +195,7 @@ class DetailViewController: UIViewController {
     
     // MARK: - API
     func getRamenImages() {
+        
         guard let selectedRamen = selectedRamen else { return }
         existImageUrlList = []
         
@@ -203,14 +204,12 @@ class DetailViewController: UIViewController {
         
         AF.request(imageUrl, method: .get, parameters: params, headers: headers).responseDecodable(of: RamenImage.self) { response in
             if let dataImage = response.value {
+                
                 if dataImage.documents.count >= 2 {
-                    let firstImageUrl = dataImage.documents[0].image_url
-                    let secondImageUrl = dataImage.documents[1].image_url
-                    self.existImageUrlList.append(firstImageUrl)
-                    self.existImageUrlList.append(secondImageUrl)
+                    self.existImageUrlList.append(dataImage.documents[0].image_url)
+                    self.existImageUrlList.append(dataImage.documents[1].image_url)
                 } else if dataImage.documents.count == 1 {
-                    let firstImageUrl = dataImage.documents[0].image_url
-                    self.existImageUrlList.append(firstImageUrl)
+                    self.existImageUrlList.append(dataImage.documents[0].image_url)
                 }
             }
             

@@ -10,8 +10,7 @@ class RegionPickerController: UIViewController {
     @IBOutlet var saveButton: UIBarButtonItem!
     
     // MARK: - Properties
-    let regionData = RegionData()
-    let list = RegionData.list
+    var regionData: RegionInformation?
     /// 지역명 프로토콜 변수
     var delegateRegion: RegionDataProtocol?
     /// 경도, 위도 프로토콜 변수
@@ -29,6 +28,14 @@ class RegionPickerController: UIViewController {
     // MARK: - View Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        if let region = region {
+            guard let regionInformation = try? JSONDecoder().decode(RegionInformation.self, from: region) else { return }
+            
+            regionData = regionInformation
+        } else {
+            print("파싱 실패")
+        }
         
         setInitData()
         setupBorder()
@@ -83,23 +90,28 @@ extension RegionPickerController: UIPickerViewDelegate, UIPickerViewDataSource {
     }
     
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        guard let regionData = regionData else { return 0 }
+        
         switch component {
         case 0:
-            return list.count
+            return regionData.region.count
         case 1:
-            return list[firstPickerRow].guList.count
+            return regionData.region[firstPickerRow].local.count
         default:
             return 0
         }
     }
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        guard let regionData = regionData else { return "" }
+        
         if pickerView == regionPickerView {
+            
             switch component {
             case 0:
-                return list[row].city.rawValue
+                return regionData.region[row].city
             case 1:
-                return list[firstPickerRow].guList[row].gu
+                return regionData.region[firstPickerRow].local[row].gu
             default:
                 return nil
             }
@@ -109,27 +121,29 @@ extension RegionPickerController: UIPickerViewDelegate, UIPickerViewDataSource {
     }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        guard let regionData = regionData else { return }
+        
         switch component {
         case 0:
             firstPickerRow = row
-            let selectedItem = list[firstPickerRow]
-            let city = selectedItem.city.rawValue
+            let selectedItem = regionData.region[firstPickerRow]
+            let city = selectedItem.city
             address = (city, nil)
             regionPickerView.reloadAllComponents()
             
         case 1:
-            let selectedItem = list[firstPickerRow]
-            address.gu = selectedItem.guList[row].gu
+            let selectedItem = regionData.region[firstPickerRow]
+            address.gu = selectedItem.local[row].gu
             
         default:
             return
         }
         
-        for region in list {
-            if address.city == region.city.rawValue {
-                for index in 0..<region.guList.count {
-                    if address.gu == region.guList[index].gu {
-                        longlat = region.guList[index].location
+        for region in regionData.region {
+            if address.city == region.city {
+                for index in 0..<region.local.count {
+                    if address.gu == region.local[index].gu {
+                        longlat = (region.local[index].longtitude, region.local[index].latitude)
                     }
                 }
             }

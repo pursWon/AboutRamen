@@ -13,6 +13,8 @@ protocol RegionDataProtocol {
     func sendRegionData(city: String, gu: String)
 }
 
+let region = load()
+
 /// 홈 화면
 class HomeViewController: UIViewController {
     // MARK: - UI
@@ -39,13 +41,22 @@ class HomeViewController: UIViewController {
     var goodStoreName: [String] = []
     var distance: String?
     
-    var regionLocation: CLLocation = .init(
-        latitude: RegionData.list[0].guList[0].location.lat,
-        longitude: RegionData.list[0].guList[0].location.long)
+    var regionLocation: CLLocation?
+    var regionData: RegionInformation?
     
     // MARK: - View Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        if let region = region {
+            guard let regionInformation = try? JSONDecoder().decode(RegionInformation.self, from: region) else
+            { return }
+            
+            regionData = regionInformation
+            regionLocation = CLLocation(latitude: regionInformation.region[0].local[0].latitude, longitude: regionInformation.region[0].local[0].longtitude)
+        } else {
+            print("파싱 실패")
+        }
         
         /// - NOTE: Realm 위치 찾을 때 사용
         // print(">>> location: \(realm.configuration.fileURL)")
@@ -65,10 +76,13 @@ class HomeViewController: UIViewController {
     // MARK: - Set Up
     func setInitData() {
         view.backgroundColor = CustomColor.beige
-        myLocationLabel.text = "\(RegionData.list[0].city.rawValue) \(RegionData.list[0].guList[0].gu)"
+        guard let regionData = regionData else { return }
+        myLocationLabel.text = "\(regionData.region[0].city) \(regionData.region[0].local[0].gu)"
         
         let goodList = realm.objects(RamenData.self)
         goodList.forEach{ goodStoreName.append($0.storeName) }
+        
+        guard let regionLocation = regionLocation else { return }
         getRamenData(url: url, currentLocation: regionLocation)
     }
     
@@ -126,15 +140,17 @@ class HomeViewController: UIViewController {
     
     func getRamenImages() {
         imageUrlList.removeAll()
-        
+        storeNames.removeAll()
         let headers: HTTPHeaders = ["Authorization": appid]
         
         for name in storeNames {
             let params: [String: Any] = ["query": name]
             AF.request(imageUrl, method: .get, parameters: params, headers: headers).responseDecodable(of: RamenImage.self) { response in
+                
                 if let dataImage = response.value {
-                    self.imageUrlList.append(dataImage.documents[0].image_url)
-                    self.storeNames.removeAll()
+                    if !dataImage.documents.isEmpty {
+                        self.imageUrlList.append(dataImage.documents[0].image_url)
+                    }
                 }
                 
                 DispatchQueue.main.async {
@@ -275,6 +291,8 @@ extension HomeViewController: RegionDataProtocol {
 extension HomeViewController: LocationDataProtocol {
     func sendCurrentLocation(location: (long: Double, lat: Double)) {
         regionLocation = CLLocation(latitude: location.lat, longitude: location.long)
+        
+        guard let regionLocation = regionLocation else { return }
         getRamenData(url: url, currentLocation: regionLocation)
     }
 }
