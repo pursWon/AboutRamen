@@ -140,6 +140,7 @@ class HomeViewController: UIViewController {
     
     func getRamenImages() {
         imageUrlList.removeAll()
+        storeNames.removeAll()
         let headers: HTTPHeaders = ["Authorization": appid]
         
         for name in storeNames {
@@ -149,7 +150,6 @@ class HomeViewController: UIViewController {
                 if let dataImage = response.value {
                     if !dataImage.documents.isEmpty {
                         self.imageUrlList.append(dataImage.documents[0].image_url)
-                        self.storeNames.removeAll()
                     }
                 }
                 
