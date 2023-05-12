@@ -254,8 +254,10 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        print(imageUrlList.count)
-        guard let detailVC = self.storyboard?.instantiateViewController(withIdentifier: "DetailViewController") as? DetailViewController, let ramenList = ramenList else { return }
+        guard
+            let detailVC = self.storyboard?.instantiateViewController(withIdentifier: "DetailViewController") as? DetailViewController,
+            let ramenList = ramenList
+        else { return }
         
         let ramen = ramenList[indexPath.row]
         let converted = ramen.toRameDataType()
