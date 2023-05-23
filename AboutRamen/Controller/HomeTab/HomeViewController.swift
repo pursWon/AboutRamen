@@ -187,6 +187,7 @@ class HomeViewController: UIViewController {
         guard let regionPickerVC = self.storyboard?.instantiateViewController(withIdentifier: "RegionPickerController") as? RegionPickerController else { return }
         regionPickerVC.delegateRegion = self
         regionPickerVC.delegateLocation = self
+        setCustomBackButton(title: "어바웃라멘")
         navigationController?.pushViewController(regionPickerVC, animated: true)
     }
 }
@@ -222,7 +223,7 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
             }
             
             if let item = existItem.first {
-                cell.starLabel.text = "\(item.rating)"
+                cell.starLabel.text = "⭐️ \(item.rating)"
             } else {
                 cell.starLabel.text = "별점 없음"
             }
