@@ -48,24 +48,20 @@ class RegionPickerController: UIViewController {
         pickerView.backgroundColor = CustomColor.beige
         regionPickerView.backgroundColor = CustomColor.sage
         chooseLabel.textColor = CustomColor.deepGreen
-        chooseLabel.font = UIFont.boldSystemFont(ofSize: 22)
+        chooseLabel.font = UIFont(name: "BlackHanSans-Regular", size: 22)
+        resultLabel.font = UIFont(name: "BlackHanSans-Regular", size: 24)
         delegateRegion?.sendRegionData(city: "서울시", gu: "강남구")
     }
     
     func setupNavigationbar() {
-        let attributes = [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 16)]
+        let attributes = [NSAttributedString.Key.font: UIFont(name: "Recipekorea", size: 16)]
         saveButton.setTitleTextAttributes(attributes, for: .normal)
         navigationController?.navigationBar.backItem?.backBarButtonItem?.setTitleTextAttributes(attributes, for: .normal)
-        
-        let backButton = UIBarButtonItem(title: "홈", style: .plain, target: self, action: nil)
-        navigationItem.backBarButtonItem = backButton
-        navigationItem.backBarButtonItem?.tintColor = .black
-        backButton.setTitleTextAttributes(attributes, for: .normal)
     }
     
     func setupBorder() {
-        regionPickerView.layer.borderWidth = 2
-        regionPickerView.layer.borderColor = UIColor.black.cgColor
+        regionPickerView.clipsToBounds = true
+        regionPickerView.layer.cornerRadius = 10
     }
     
     // MARK: - Action
@@ -150,6 +146,30 @@ extension RegionPickerController: UIPickerViewDelegate, UIPickerViewDataSource {
         }
         
         resultLabel.text = "\(address.city ?? "-") \(address.gu ?? "-")"
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView {
+        var title = UILabel()
+        if let view = view {
+            title = view as! UILabel
+        }
+        
+        guard let regionData = regionData else { return UIView() }
+        
+        switch component {
+        case 0:
+            title.font = UIFont(name: "Recipekorea", size: 20)
+            title.text = regionData.region[row].city
+            title.textAlignment = .center
+        case 1:
+            title.font = UIFont(name: "Recipekorea", size: 20)
+            title.text = regionData.region[firstPickerRow].local[row].gu
+            title.textAlignment = .center
+        default:
+            return UIView()
+        }
+        
+        return title
     }
     
     func pickerView(_ pickerView: UIPickerView, rowHeightForComponent component: Int) -> CGFloat {
