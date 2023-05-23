@@ -62,6 +62,7 @@ class DetailViewController: UIViewController {
             guard let selectedRamen = selectedRamen else { return }
             let targetLocation = CLLocation(latitude: selectedRamen.y, longitude: selectedRamen.x)
             distanceLabel.text = getDistance(from: currentLocation, to: targetLocation)
+            distanceLabel.font = UIFont(name: "Recipekorea", size: 13)
         }
     }
     
@@ -119,7 +120,7 @@ class DetailViewController: UIViewController {
     }
     
     func setUpBorder() {
-        [addressView, numberView, urlView, pictureView, buttonsView, ratingLabel].forEach {
+        [addressView, numberView, urlView, buttonsView, ratingLabel].forEach {
             $0!.layer.borderWidth = 2
             $0!.layer.borderColor = UIColor.black.cgColor
         }
@@ -161,9 +162,11 @@ class DetailViewController: UIViewController {
     func initButtonState() {
         guard let selectedRamen = selectedRamen else { return }
         goodLabel.text = selectedRamen.isGood ? "좋아요 취소" : "좋아요"
+        goodLabel.font = UIFont(name: "Recipekorea", size: 9)
         goodImageView.image = selectedRamen.isGood ? CustomImage.thumbsUpBlack : CustomImage.thumbsUpWhite
         
         myListLabel.text = selectedRamen.isFavorite ? "추가하기 취소" : "추가하기"
+        myListLabel.font = UIFont(name: "Recipekorea", size: 9)
         myListAddImageView.image = selectedRamen.isFavorite ? CustomImage.myListBlack : CustomImage.myListWhite
     }
     
@@ -173,24 +176,30 @@ class DetailViewController: UIViewController {
         reviewState = selectedRamen.isReviewed ? .done : .yet
         reviewImageView.image = reviewState == .yet ? CustomImage.reviewWhite : CustomImage.reviewBlack
         reviewLabel.text = reviewState.rawValue
+        reviewLabel.font = UIFont(name: "Recipekorea", size: 9)
         isReviewed = selectedRamen.isReviewed
     }
     
     func setUpLableText() {
         guard let selectedRamen = selectedRamen else { return }
         
-        storeLabel.font = .boldSystemFont(ofSize: 35)
+        storeLabel.font = UIFont(name: "BlackHanSans-Regular", size: 30)
         storeLabel.text = selectedRamen.storeName
         ratingLabel.text = "\(selectedRamen.rating)"
         starRatingView.rating = selectedRamen.rating
         newRating = selectedRamen.rating
         
+        let attributes = [NSAttributedString.Key.font: UIFont(name: "Recipekorea", size: 9) ?? UIFont()]
+        let text = NSAttributedString(string: "가게 위치 정보 없음", attributes: attributes)
+        
         if selectedRamen.url.isEmpty {
-            urlButton.setTitle("가게 위치 정보 없음", for: .normal)
+            urlButton.setAttributedTitle(text, for: .normal)
         }
         
         addressLabel.text = selectedRamen.addressName.isEmpty ? "주소 정보 없음" : selectedRamen.addressName
+        addressLabel.font = UIFont(name: "S-CoreDream-4Regular", size: 15)
         numberLabel.text = selectedRamen.phone.isEmpty ? "전화번호 정보 없음" : selectedRamen.phone
+        numberLabel.font = UIFont(name: "S-CoreDream-4Regular", size: 15)
     }
     
     // MARK: - API
@@ -279,6 +288,7 @@ extension DetailViewController {
         
         reviewVC.delegate = self
         reviewVC.selectedRamen = selectedRamen
+        setCustomBackButton(title: "가게 정보")
         navigationController?.pushViewController(reviewVC, animated: true)
     }
     
