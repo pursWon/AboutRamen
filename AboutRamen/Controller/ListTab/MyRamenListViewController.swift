@@ -71,9 +71,14 @@ extension MyRamenListViewController: UITableViewDelegate, UITableViewDataSource 
         switch viewType {
         case .goodList:
             cell.ratingLabel.text = String(item.rating)
+            cell.ratingLabel.font = UIFont(name: "S-CoreDream-4Regular", size: 15)
+            cell.nameLabel.font = UIFont(name: "Recipekorea", size: 16)
+            cell.addressLabel.font = UIFont(name: "S-CoreDream-4Regular", size: 10)
             cell.starImage.image = UIImage(systemName: "heart.fill")
             
         case .favoriteList:
+            cell.nameLabel.font = UIFont(name: "Recipekorea", size: 16)
+            cell.addressLabel.font = UIFont(name: "S-CoreDream-4Regular", size: 10)
             cell.ratingLabel.isHidden = true
         }
         
