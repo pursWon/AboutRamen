@@ -51,6 +51,7 @@ class SearchViewController: UIViewController {
         view.backgroundColor = .white
         introduceLabel.font = .boldSystemFont(ofSize: 15)
         introduceLabel.backgroundColor = CustomColor.sage
+        introduceLabel.font = UIFont(name: "Recipekorea", size: 14)
         searchTableView.backgroundColor = .white
     }
     
@@ -154,8 +155,10 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
         
         if isFiltered {
             cell.textLabel?.text = searchedList[indexPath.row].storeName
+            cell.textLabel?.font = UIFont(name: "Recipekorea", size: 15)
         } else {
             cell.textLabel?.text = defaultList[indexPath.row].storeName
+            cell.textLabel?.font = UIFont(name: "Recipekorea", size: 15)
         }
         
         return cell
@@ -194,6 +197,7 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
             }
         }
         
+        setCustomBackButton(title: "가게 검색")
         navigationController?.pushViewController(detailVC, animated: true)
     }
     
