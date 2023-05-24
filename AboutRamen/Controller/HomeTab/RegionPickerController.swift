@@ -33,8 +33,6 @@ class RegionPickerController: UIViewController {
             guard let regionInformation = try? JSONDecoder().decode(RegionInformation.self, from: region) else { return }
             
             regionData = regionInformation
-        } else {
-            print("파싱 실패")
         }
         
         setInitData()

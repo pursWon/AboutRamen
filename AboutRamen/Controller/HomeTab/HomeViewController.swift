@@ -54,8 +54,6 @@ class HomeViewController: UIViewController {
             
             regionData = regionInformation
             regionLocation = CLLocation(latitude: regionInformation.region[0].local[0].latitude, longitude: regionInformation.region[0].local[0].longtitude)
-        } else {
-            print("파싱 실패")
         }
         
         /// - NOTE: Realm 위치 찾을 때 사용
@@ -76,8 +74,8 @@ class HomeViewController: UIViewController {
     // MARK: - Set Up
     func setInitData() {
         view.backgroundColor = CustomColor.beige
+        
         guard let regionData = regionData else { return }
-        print("1111 : \(regionData)")
         myLocationLabel.text = "\(regionData.region[0].city) \(regionData.region[0].local[0].gu)"
         
         let goodList = realm.objects(RamenData.self)
@@ -135,8 +133,6 @@ class HomeViewController: UIViewController {
                 DispatchQueue.main.async {
                     self.getRamenImages()
                 }
-            } else {
-                print("파싱 실패")
             }
         }
     }
@@ -151,7 +147,7 @@ class HomeViewController: UIViewController {
             AF.request(imageUrl, method: .get, parameters: params, headers: headers).responseDecodable(of: RamenImage.self) { response in
                 
                 if let dataImage = response.value {
-                    print(dataImage)
+                    
                     if !dataImage.documents.isEmpty {
                         self.imageUrlList.append(dataImage.documents[0].image_url)
                     }
