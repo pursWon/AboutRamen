@@ -114,6 +114,8 @@ class HomeViewController: UIViewController {
     
     // MARK: - API
     func getRamenData(url: String, currentLocation: CLLocation) {
+        storeNames.removeAll()
+        
         let headers: HTTPHeaders = ["Authorization": appid]
         let parameters: [String: Any] = [
             "query" : "라멘",
@@ -139,7 +141,7 @@ class HomeViewController: UIViewController {
     
     func getRamenImages() {
         imageUrlList.removeAll()
-        storeNames.removeAll()
+        
         let headers: HTTPHeaders = ["Authorization": appid]
         
         for name in storeNames {
