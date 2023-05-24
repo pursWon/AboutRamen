@@ -35,14 +35,22 @@ class SearchViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        setInitData()
+        setLocationManager()
         setupNavigationbar()
         setupSearchController()
         setupTableView()
-        setLocationManager()
+        
+        let status: CLAuthorizationStatus = CLLocationManager.authorizationStatus()
+        
+        if status == .authorizedAlways || status == .authorizedWhenInUse {
+            self.locationManager.startUpdatingLocation()
+            setInitData()
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
         deleteNoDataItem()
     }
     
@@ -51,6 +59,7 @@ class SearchViewController: UIViewController {
         view.backgroundColor = .white
         introduceLabel.font = .boldSystemFont(ofSize: 15)
         introduceLabel.backgroundColor = CustomColor.sage
+        introduceLabel.font = UIFont(name: "Recipekorea", size: 14)
         searchTableView.backgroundColor = .white
     }
     
@@ -58,7 +67,6 @@ class SearchViewController: UIViewController {
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         locationManager.requestWhenInUseAuthorization()
-        locationManager.startUpdatingLocation()
     }
     
     func setupTableView() {
@@ -154,8 +162,10 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
         
         if isFiltered {
             cell.textLabel?.text = searchedList[indexPath.row].storeName
+            cell.textLabel?.font = UIFont(name: "Recipekorea", size: 15)
         } else {
             cell.textLabel?.text = defaultList[indexPath.row].storeName
+            cell.textLabel?.font = UIFont(name: "Recipekorea", size: 15)
         }
         
         return cell
@@ -194,6 +204,7 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
             }
         }
         
+        setCustomBackButton(title: "가게 검색")
         navigationController?.pushViewController(detailVC, animated: true)
     }
     

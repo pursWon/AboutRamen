@@ -71,7 +71,7 @@ extension MyListViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = myListTableView.dequeueReusableCell(withIdentifier: "MyListCell", for: indexPath) as? MyListCell else { return UITableViewCell() }
         cell.selectionStyle = .none
-        cell.contentLabel.font = .boldSystemFont(ofSize: 30)
+        cell.contentLabel.font = UIFont(name: "Recipekorea", size: 17)
         cell.contentLabel.text = menuItems[indexPath.row].title
         cell.listImageView.image = menuItems[indexPath.row].icon
         

@@ -54,8 +54,6 @@ class HomeViewController: UIViewController {
             
             regionData = regionInformation
             regionLocation = CLLocation(latitude: regionInformation.region[0].local[0].latitude, longitude: regionInformation.region[0].local[0].longtitude)
-        } else {
-            print("파싱 실패")
         }
         
         /// - NOTE: Realm 위치 찾을 때 사용
@@ -63,7 +61,6 @@ class HomeViewController: UIViewController {
         setLocationManager()
         setUpCollectionView()
         setupNavigationbar()
-        setInitData()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -76,6 +73,7 @@ class HomeViewController: UIViewController {
     // MARK: - Set Up
     func setInitData() {
         view.backgroundColor = CustomColor.beige
+        
         guard let regionData = regionData else { return }
         myLocationLabel.text = "\(regionData.region[0].city) \(regionData.region[0].local[0].gu)"
         
@@ -90,7 +88,6 @@ class HomeViewController: UIViewController {
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         locationManager.requestWhenInUseAuthorization()
-        locationManager.startUpdatingLocation()
     }
     
     func setupNavigationbar() {
@@ -115,6 +112,8 @@ class HomeViewController: UIViewController {
     
     // MARK: - API
     func getRamenData(url: String, currentLocation: CLLocation) {
+        storeNames.removeAll()
+        
         let headers: HTTPHeaders = ["Authorization": appid]
         let parameters: [String: Any] = [
             "query" : "라멘",
@@ -140,7 +139,7 @@ class HomeViewController: UIViewController {
     
     func getRamenImages() {
         imageUrlList.removeAll()
-        storeNames.removeAll()
+        
         let headers: HTTPHeaders = ["Authorization": appid]
         
         for name in storeNames {
@@ -148,6 +147,7 @@ class HomeViewController: UIViewController {
             AF.request(imageUrl, method: .get, parameters: params, headers: headers).responseDecodable(of: RamenImage.self) { response in
                 
                 if let dataImage = response.value {
+                    
                     if !dataImage.documents.isEmpty {
                         self.imageUrlList.append(dataImage.documents[0].image_url)
                     }
@@ -187,6 +187,7 @@ class HomeViewController: UIViewController {
         guard let regionPickerVC = self.storyboard?.instantiateViewController(withIdentifier: "RegionPickerController") as? RegionPickerController else { return }
         regionPickerVC.delegateRegion = self
         regionPickerVC.delegateLocation = self
+        setCustomBackButton(title: "어바웃라멘")
         navigationController?.pushViewController(regionPickerVC, animated: true)
     }
 }
@@ -222,7 +223,7 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
             }
             
             if let item = existItem.first {
-                cell.starLabel.text = "\(item.rating)"
+                cell.starLabel.text = "⭐️ \(item.rating) "
             } else {
                 cell.starLabel.text = "별점 없음"
             }
@@ -299,6 +300,10 @@ extension HomeViewController: LocationDataProtocol {
 
 // MARK: - CLLocationManagerDelegate
 extension HomeViewController: CLLocationManagerDelegate {
+    func getLocationUsagePermission() {
+        self.locationManager.requestWhenInUseAuthorization()
+    }
+    
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         if let location = locations.first {
             currentLocation = location
@@ -308,4 +313,19 @@ extension HomeViewController: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         print(error)
     }
+    
+    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
+        switch status {
+        case .authorizedAlways, .authorizedWhenInUse:
+            self.locationManager.startUpdatingLocation()
+            setInitData()
+        case .restricted, .notDetermined:
+            getLocationUsagePermission()
+        case .denied:
+            getLocationUsagePermission()
+        default:
+            print("위치 권한 설정 없음")
+        }
+    }
 }
+

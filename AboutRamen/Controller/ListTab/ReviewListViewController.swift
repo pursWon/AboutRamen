@@ -40,11 +40,14 @@ class ReviewListViewController: UIViewController {
     
     // MARK: - Action
     @IBAction func editButton(_ sender: UIButton) {
+        let attributes = [NSAttributedString.Key.font: UIFont(name: "Recipekorea", size: 14) ?? UIFont()]
+        var text = NSAttributedString(string: "편집", attributes: attributes)
         if reviewListTableView.isEditing {
-            editButton.setTitle("편집", for: .normal)
+            editButton.setAttributedTitle(text, for: .normal)
             reviewListTableView.setEditing(false, animated: true)
         } else {
-            editButton.setTitle("완료", for: .normal)
+            text = NSAttributedString(string: "완료", attributes: attributes)
+            editButton.setAttributedTitle(text, for: .normal)
             reviewListTableView.setEditing(true, animated: true)
         }
     }
@@ -66,7 +69,9 @@ extension ReviewListViewController: UITableViewDelegate, UITableViewDataSource {
         
         let item = reviewList[indexPath.row]
         cell.nameLabel.text = item.storeName
+        cell.nameLabel.font = UIFont(name: "Recipekorea", size: 16)
         cell.addressLabel.text = item.addressName
+        cell.addressLabel.font = UIFont(name: "S-CoreDream-4Regular", size: 10)
         cell.reviewImageView.tintColor = .systemOrange
         
         return cell
@@ -78,6 +83,7 @@ extension ReviewListViewController: UITableViewDelegate, UITableViewDataSource {
         guard let reviewList = reviewList else { return }
         
         reviewVC.selectedRamen = reviewList[indexPath.row]
+        setCustomBackButton(title: "리뷰 목록")
         navigationController?.pushViewController(reviewVC, animated: true)
     }
     

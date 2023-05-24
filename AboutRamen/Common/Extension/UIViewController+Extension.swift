@@ -11,7 +11,7 @@ extension UIViewController {
     /// back button을 지정한 title로 커스텀하는 함수
     func setCustomBackButton(title: String) {
         let backButton = UIBarButtonItem(title: title, style: .plain, target: self, action: nil)
-        let attributes = [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 16)]
+        let attributes = [NSAttributedString.Key.font: UIFont(name: "Recipekorea", size: 14) ?? UIFont()]
         
         self.navigationItem.backBarButtonItem = backButton
         self.navigationItem.backBarButtonItem?.tintColor = .black

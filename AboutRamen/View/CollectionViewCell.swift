@@ -10,15 +10,18 @@ class CollectionViewCell: UICollectionViewCell {
     
     func cellConfigure() {
         self.layer.borderColor = UIColor.black.cgColor
-        self.layer.borderWidth = 3
+        self.layer.borderWidth = 2.5
         self.layer.cornerRadius = 10
         
-        self.starLabel.font = .boldSystemFont(ofSize: 15)
-        self.nameLabel.textAlignment = .left
-        self.nameLabel.font = .boldSystemFont(ofSize: 12)
+        self.distanceLabel.clipsToBounds = true
+        self.distanceLabel.layer.cornerRadius = 3
+        self.distanceLabel.font = .boldSystemFont(ofSize: 13)
+        self.distanceLabel.backgroundColor = .black.withAlphaComponent(0.4)
         
-        self.ramenImageView.layer.borderWidth = 1.5
-        self.ramenImageView.layer.borderColor = UIColor.black.cgColor
-        self.ramenImageView.layer.cornerRadius = 10
+        self.starLabel.font = .boldSystemFont(ofSize: 13)
+        self.starLabel.backgroundColor = .black.withAlphaComponent(0.4)
+        
+        self.nameLabel.textAlignment = .left
+        self.nameLabel.font = UIFont(name: "Recipekorea", size: 11.5)
     }
 }
