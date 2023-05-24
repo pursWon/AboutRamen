@@ -77,6 +77,7 @@ class HomeViewController: UIViewController {
     func setInitData() {
         view.backgroundColor = CustomColor.beige
         guard let regionData = regionData else { return }
+        print("1111 : \(regionData)")
         myLocationLabel.text = "\(regionData.region[0].city) \(regionData.region[0].local[0].gu)"
         
         let goodList = realm.objects(RamenData.self)
@@ -134,6 +135,8 @@ class HomeViewController: UIViewController {
                 DispatchQueue.main.async {
                     self.getRamenImages()
                 }
+            } else {
+                print("파싱 실패")
             }
         }
     }
@@ -148,6 +151,7 @@ class HomeViewController: UIViewController {
             AF.request(imageUrl, method: .get, parameters: params, headers: headers).responseDecodable(of: RamenImage.self) { response in
                 
                 if let dataImage = response.value {
+                    print(dataImage)
                     if !dataImage.documents.isEmpty {
                         self.imageUrlList.append(dataImage.documents[0].image_url)
                     }
@@ -223,7 +227,7 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
             }
             
             if let item = existItem.first {
-                cell.starLabel.text = "⭐️ \(item.rating)"
+                cell.starLabel.text = "⭐️ \(item.rating) "
             } else {
                 cell.starLabel.text = "별점 없음"
             }
