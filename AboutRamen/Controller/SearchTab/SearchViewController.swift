@@ -35,14 +35,22 @@ class SearchViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        setInitData()
+        setLocationManager()
         setupNavigationbar()
         setupSearchController()
         setupTableView()
-        setLocationManager()
+        
+        let status: CLAuthorizationStatus = CLLocationManager.authorizationStatus()
+        
+        if status == .authorizedAlways || status == .authorizedWhenInUse {
+            self.locationManager.startUpdatingLocation()
+            setInitData()
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
         deleteNoDataItem()
     }
     
@@ -59,7 +67,6 @@ class SearchViewController: UIViewController {
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         locationManager.requestWhenInUseAuthorization()
-        locationManager.startUpdatingLocation()
     }
     
     func setupTableView() {

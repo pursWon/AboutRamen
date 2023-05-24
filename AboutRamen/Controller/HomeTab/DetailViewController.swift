@@ -90,6 +90,13 @@ class DetailViewController: UIViewController {
         setUpLableText()
         setUpTabImageView()
         getRamenImages()
+        
+        let status: CLAuthorizationStatus = CLLocationManager.authorizationStatus()
+        
+        if status == .authorizedAlways || status == .authorizedWhenInUse {
+            self.locationManager.startUpdatingLocation()
+            setInitData()
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -110,7 +117,6 @@ class DetailViewController: UIViewController {
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         locationManager.requestWhenInUseAuthorization()
-        locationManager.startUpdatingLocation()
     }
     
     func setNavigationbar() {

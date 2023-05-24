@@ -61,7 +61,6 @@ class HomeViewController: UIViewController {
         setLocationManager()
         setUpCollectionView()
         setupNavigationbar()
-        setInitData()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -89,7 +88,6 @@ class HomeViewController: UIViewController {
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         locationManager.requestWhenInUseAuthorization()
-        locationManager.startUpdatingLocation()
     }
     
     func setupNavigationbar() {
@@ -302,6 +300,10 @@ extension HomeViewController: LocationDataProtocol {
 
 // MARK: - CLLocationManagerDelegate
 extension HomeViewController: CLLocationManagerDelegate {
+    func getLocationUsagePermission() {
+        self.locationManager.requestWhenInUseAuthorization()
+    }
+    
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         if let location = locations.first {
             currentLocation = location
@@ -311,4 +313,19 @@ extension HomeViewController: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         print(error)
     }
+    
+    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
+        switch status {
+        case .authorizedAlways, .authorizedWhenInUse:
+            self.locationManager.startUpdatingLocation()
+            setInitData()
+        case .restricted, .notDetermined:
+            getLocationUsagePermission()
+        case .denied:
+            getLocationUsagePermission()
+        default:
+            print("위치 권한 설정 없음")
+        }
+    }
 }
+
