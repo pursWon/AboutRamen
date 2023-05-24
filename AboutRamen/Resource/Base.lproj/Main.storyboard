@@ -26,7 +26,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="49"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <color key="selectedImageTintColor" red="1" green="0.90602928670000005" blue="0.79993090990000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="selectedImageTintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <tabBarAppearance key="standardAppearance" backgroundImage="house" catalog="system"/>
                     </tabBar>
                     <connections>
@@ -310,21 +310,21 @@
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="ReviewListCell" id="DaX-kj-b5k" customClass="ReviewListCell" customModule="AboutRamen" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="50" width="428" height="38.666667938232422"/>
+                                        <rect key="frame" x="0.0" y="50" width="428" height="36.666667938232422"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="DaX-kj-b5k" id="BOK-5Q-NHa">
-                                            <rect key="frame" x="0.0" y="0.0" width="397.66666666666669" height="38.666667938232422"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="397.66666666666669" height="36.666667938232422"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="book.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="z6z-fD-0cY">
-                                                    <rect key="frame" x="10" y="0.99999999999999645" width="40" height="37.000000000000014"/>
+                                                    <rect key="frame" x="10" y="-3.5527136788005009e-15" width="40" height="37"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" secondItem="z6z-fD-0cY" secondAttribute="height" multiplier="1:1" id="D7z-Ea-fO5"/>
                                                         <constraint firstAttribute="height" constant="40" id="Mx2-w3-o61"/>
                                                     </constraints>
                                                 </imageView>
                                                 <stackView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" axis="vertical" spacing="3" translatesAutoresizingMaskIntoConstraints="NO" id="o6k-N1-yUj">
-                                                    <rect key="frame" x="59.999999999999986" y="1" width="217.66666666666663" height="36.666666666666671"/>
+                                                    <rect key="frame" x="59.999999999999986" y="0.0" width="217.66666666666663" height="36.666666666666664"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" text="가게 이름" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YnK-YZ-Tt4">
                                                             <rect key="frame" x="0.0" y="0.0" width="217.66666666666666" height="18"/>
@@ -341,7 +341,7 @@
                                                     </subviews>
                                                 </stackView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="리뷰 수정" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mdh-NK-y04">
-                                                    <rect key="frame" x="287.66666666666669" y="10.000000000000002" width="100" height="18.666666666666671"/>
+                                                    <rect key="frame" x="287.66666666666669" y="10.000000000000002" width="100" height="16.666666666666671"/>
                                                     <fontDescription key="fontDescription" name="RecipekoreaM" family="Recipekorea" pointSize="14"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
@@ -369,7 +369,7 @@
                                 </prototypes>
                             </tableView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="목록이 비어있어요 :( 리뷰를 작성해보세요!" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lHd-bQ-Kzh">
-                                <rect key="frame" x="10" y="465.66666666666669" width="408" height="52.000000000000057"/>
+                                <rect key="frame" x="10" y="468.33333333333331" width="408" height="46.666666666666686"/>
                                 <fontDescription key="fontDescription" name="RecipekoreaM" family="Recipekorea" pointSize="20"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -502,7 +502,7 @@
                                 </prototypes>
                             </tableView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="목록이 비어있어요 :( 가게를 추가해보세요!" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nKz-im-9vs">
-                                <rect key="frame" x="10" y="465.66666666666669" width="408" height="52.000000000000057"/>
+                                <rect key="frame" x="10" y="468.33333333333331" width="408" height="46.666666666666686"/>
                                 <fontDescription key="fontDescription" name="RecipekoreaM" family="Recipekorea" pointSize="20"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
