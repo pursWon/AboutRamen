@@ -147,22 +147,17 @@ extension RegionPickerController: UIPickerViewDelegate, UIPickerViewDataSource {
     }
     
     func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView {
-        var title = UILabel()
-        if let view = view {
-            title = view as! UILabel
-        }
-        
         guard let regionData = regionData else { return UIView() }
+        
+        var title = UILabel()
+        title.font = UIFont(name: "Recipekorea", size: 20)
+        title.textAlignment = .center
         
         switch component {
         case 0:
-            title.font = UIFont(name: "Recipekorea", size: 20)
             title.text = regionData.region[row].city
-            title.textAlignment = .center
         case 1:
-            title.font = UIFont(name: "Recipekorea", size: 20)
             title.text = regionData.region[firstPickerRow].local[row].gu
-            title.textAlignment = .center
         default:
             return UIView()
         }
