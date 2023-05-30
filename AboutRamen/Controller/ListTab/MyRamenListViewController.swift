@@ -93,9 +93,11 @@ extension MyRamenListViewController: UITableViewDelegate, UITableViewDataSource 
         
         switch viewType {
         case .goodList:
+            setCustomBackButton(title: "좋아요 목록")
             detailVC.viewType = .goodList
             
         case .favoriteList:
+            setCustomBackButton(title: "나의 라멘 가게")
             detailVC.viewType = .favoriteList
         }
         
