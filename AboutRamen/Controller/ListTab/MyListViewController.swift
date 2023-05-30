@@ -82,6 +82,7 @@ extension MyListViewController: UITableViewDelegate, UITableViewDataSource {
         switch indexPath.row {
         case 0:
             guard let vc = self.storyboard?.instantiateViewController(withIdentifier: "MyRamenListVC") as? MyRamenListViewController else { return }
+            
             vc.viewType = .goodList
             vc.storeList = goodList
             setCustomBackButton(title: "마이 리스트")
@@ -89,12 +90,14 @@ extension MyListViewController: UITableViewDelegate, UITableViewDataSource {
             
         case 1:
             guard let vc = self.storyboard?.instantiateViewController(withIdentifier: "ReviewListVC") as? ReviewListViewController else { return }
+            
             vc.reviewList = reviewList
             setCustomBackButton(title: "마이 리스트")
             navigationController?.pushViewController(vc, animated: true)
             
         case 2:
             guard let vc = self.storyboard?.instantiateViewController(withIdentifier: "MyRamenListVC") as? MyRamenListViewController else { return }
+            
             vc.viewType = .favoriteList
             vc.storeList = favoriteList
             setCustomBackButton(title: "마이 리스트")
