@@ -42,6 +42,7 @@ class ReviewListViewController: UIViewController {
     @IBAction func editButton(_ sender: UIButton) {
         let attributes = [NSAttributedString.Key.font: UIFont(name: "Recipekorea", size: 14) ?? UIFont()]
         var text = NSAttributedString(string: "편집", attributes: attributes)
+        
         if reviewListTableView.isEditing {
             editButton.setAttributedTitle(text, for: .normal)
             reviewListTableView.setEditing(false, animated: true)
