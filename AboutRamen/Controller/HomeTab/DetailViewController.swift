@@ -167,6 +167,7 @@ class DetailViewController: UIViewController {
     // MARK: - Init Data
     func initButtonState() {
         guard let selectedRamen = selectedRamen else { return }
+    
         goodLabel.text = selectedRamen.isGood ? "좋아요 취소" : "좋아요"
         goodLabel.font = UIFont(name: "Recipekorea", size: 9)
         goodImageView.image = selectedRamen.isGood ? CustomImage.thumbsUpBlack : CustomImage.thumbsUpWhite
