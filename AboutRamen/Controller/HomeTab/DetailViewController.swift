@@ -203,9 +203,9 @@ class DetailViewController: UIViewController {
         }
         
         addressLabel.text = selectedRamen.addressName.isEmpty ? "주소 정보 없음" : selectedRamen.addressName
-        addressLabel.font = UIFont(name: "S-CoreDream-4Regular", size: 15)
+        addressLabel.font = UIFont(name: "S-CoreDream-7ExtraBold", size: 15)
         numberLabel.text = selectedRamen.phone.isEmpty ? "전화번호 정보 없음" : selectedRamen.phone
-        numberLabel.font = UIFont(name: "S-CoreDream-4Regular", size: 15)
+        numberLabel.font = UIFont(name: "S-CoreDream-7ExtraBold", size: 15)
     }
     
     // MARK: - API
