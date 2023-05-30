@@ -225,10 +225,10 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
             if let item = existItem.first {
                 cell.starLabel.text = "⭐️ \(item.rating) "
             } else {
-                cell.starLabel.text = "별점 없음"
+                cell.starLabel.text = "별점 없음 "
             }
         } else {
-            cell.starLabel.text = "별점 없음"
+            cell.starLabel.text = "별점 없음 "
         }
         
         // 이미지
