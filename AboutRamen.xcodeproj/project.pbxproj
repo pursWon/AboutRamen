@@ -20,7 +20,6 @@
 		D01308C529799D6200672422 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = D01308C429799D6200672422 /* Alamofire */; };
 		D0459DB6298121D700FFE9E3 /* ReviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0459DB5298121D700FFE9E3 /* ReviewViewController.swift */; };
 		D05678412A1CE69300D63C6B /* S-CoreDream-4Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = D05678402A1CE69300D63C6B /* S-CoreDream-4Regular.otf */; };
-		D05678432A1EF76300D63C6B /* SCDream7.otf in Resources */ = {isa = PBXBuildFile; fileRef = D05678422A1EF76300D63C6B /* SCDream7.otf */; };
 		D0714EF429CD4EC900CBE609 /* CustomImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0714EF329CD4EC900CBE609 /* CustomImage.swift */; };
 		D0797CF92959913900B14AC8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0797CF82959913900B14AC8 /* AppDelegate.swift */; };
 		D0797CFB2959913900B14AC8 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0797CFA2959913900B14AC8 /* SceneDelegate.swift */; };
@@ -74,7 +73,6 @@
 		D01308792977C9E600672422 /* RegionPickerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegionPickerController.swift; sourceTree = "<group>"; };
 		D0459DB5298121D700FFE9E3 /* ReviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewViewController.swift; sourceTree = "<group>"; };
 		D05678402A1CE69300D63C6B /* S-CoreDream-4Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "S-CoreDream-4Regular.otf"; sourceTree = "<group>"; };
-		D05678422A1EF76300D63C6B /* SCDream7.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = SCDream7.otf; sourceTree = "<group>"; };
 		D0714EF329CD4EC900CBE609 /* CustomImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomImage.swift; sourceTree = "<group>"; };
 		D0797CF52959913900B14AC8 /* AboutRamen.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AboutRamen.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D0797CF82959913900B14AC8 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -253,7 +251,6 @@
 				D013084B2972747800672422 /* BlackHanSans-Regular.ttf */,
 				D05678402A1CE69300D63C6B /* S-CoreDream-4Regular.otf */,
 				D013084D2972748300672422 /* Recipekorea.ttf */,
-				D05678422A1EF76300D63C6B /* SCDream7.otf */,
 			);
 			path = Fonts;
 			sourceTree = "<group>";
@@ -352,7 +349,6 @@
 				D013084C2972747800672422 /* BlackHanSans-Regular.ttf in Resources */,
 				D0797D052959913A00B14AC8 /* LaunchScreen.storyboard in Resources */,
 				D0BB8AB729C979EE000DE01E /* RamenInfo.plist in Resources */,
-				D05678432A1EF76300D63C6B /* SCDream7.otf in Resources */,
 				D05678412A1CE69300D63C6B /* S-CoreDream-4Regular.otf in Resources */,
 				D013084E2972748300672422 /* Recipekorea.ttf in Resources */,
 				D0797D022959913A00B14AC8 /* Assets.xcassets in Resources */,
