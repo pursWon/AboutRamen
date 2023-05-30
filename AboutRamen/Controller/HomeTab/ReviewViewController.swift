@@ -45,7 +45,7 @@ class ReviewViewController: UIViewController {
         let completeButton = UIBarButtonItem(title: "리뷰 완료", style: .plain, target: self, action: nil)
         navigationItem.rightBarButtonItem = completeButton
         navigationItem.rightBarButtonItem?.tintColor = .black
-        completeButton.setTitleTextAttributes(attributes, for: .normal)
+        completeButton.setTitleTextAttributes(attributes as [NSAttributedString.Key : Any], for: .normal)
         completeButton.action = #selector(completeButtonAction)
         completeButton.target = self
     }
