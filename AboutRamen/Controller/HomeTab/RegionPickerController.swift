@@ -53,8 +53,8 @@ class RegionPickerController: UIViewController {
     
     func setupNavigationbar() {
         let attributes = [NSAttributedString.Key.font: UIFont(name: "Recipekorea", size: 16)]
-        saveButton.setTitleTextAttributes(attributes, for: .normal)
-        navigationController?.navigationBar.backItem?.backBarButtonItem?.setTitleTextAttributes(attributes, for: .normal)
+        saveButton.setTitleTextAttributes(attributes as [NSAttributedString.Key : Any], for: .normal)
+        navigationController?.navigationBar.backItem?.backBarButtonItem?.setTitleTextAttributes(attributes as [NSAttributedString.Key : Any], for: .normal)
     }
     
     func setupBorder() {
@@ -100,7 +100,6 @@ extension RegionPickerController: UIPickerViewDelegate, UIPickerViewDataSource {
         guard let regionData = regionData else { return "" }
         
         if pickerView == regionPickerView {
-            
             switch component {
             case 0:
                 return regionData.region[row].city
@@ -133,13 +132,10 @@ extension RegionPickerController: UIPickerViewDelegate, UIPickerViewDataSource {
             return
         }
         
-        for region in regionData.region {
-            if address.city == region.city {
-                for index in 0..<region.local.count {
-                    if address.gu == region.local[index].gu {
-                        longlat = (region.local[index].longtitude, region.local[index].latitude)
-                    }
-                }
+        let regionFilter = regionData.region.filter{ $0.city == address.city }
+        regionFilter.forEach{
+            $0.local.filter{ $0.gu == address.gu }.forEach{
+                longlat = ($0.longtitude, $0.latitude)
             }
         }
         
@@ -149,7 +145,7 @@ extension RegionPickerController: UIPickerViewDelegate, UIPickerViewDataSource {
     func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView {
         guard let regionData = regionData else { return UIView() }
         
-        var title = UILabel()
+        let title = UILabel()
         title.font = UIFont(name: "Recipekorea", size: 20)
         title.textAlignment = .center
         
