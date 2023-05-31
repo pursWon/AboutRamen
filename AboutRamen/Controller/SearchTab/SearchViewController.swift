@@ -197,9 +197,11 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
             }
             
             if let selectedRamen = realmList.first {
+                detailVC.viewType = .search
                 detailVC.selectedRamen = selectedRamen
             } else {
                 let selectedRamen = defaultList[indexPath.row]
+                detailVC.viewType = .search
                 detailVC.selectedRamen = selectedRamen
             }
         }
