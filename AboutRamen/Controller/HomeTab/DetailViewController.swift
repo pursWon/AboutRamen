@@ -107,7 +107,7 @@ class DetailViewController: UIViewController {
     }
     
     override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(true)
+        super.viewWillDisappear(animated)
         
         saveData()
     }
@@ -320,7 +320,6 @@ extension DetailViewController {
         guard let selectedRamen = selectedRamen else { return }
         
         try! realm.write {
-            selectedRamen.rating = newRating
             realm.add(selectedRamen)
         }
     }
@@ -336,8 +335,13 @@ extension DetailViewController: ReviewCompleteProtocol {
 // MARK: - RatingViewDelegate
 extension DetailViewController: RatingViewDelegate {
     func ratingView(_ ratingView: RatingView, isUpdating rating: Double) {
+        guard let selectedRamen = selectedRamen else { return }
+        
         ratingLabel.text = String(rating)
-        newRating = rating
+        
+        try! realm.write {
+            selectedRamen.rating = rating
+        }
     }
 }
 

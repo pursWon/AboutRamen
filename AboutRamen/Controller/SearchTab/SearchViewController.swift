@@ -52,6 +52,10 @@ class SearchViewController: UIViewController {
         super.viewWillAppear(animated)
         
         deleteNoDataItem()
+        
+        if let coordinate = currentLocation?.coordinate {
+            getRamenData(url: url, currentLocation: (coordinate.latitude, coordinate.longitude))
+        }
     }
     
     // MARK: - Set Up
@@ -104,6 +108,9 @@ class SearchViewController: UIViewController {
         
         AF.request(url, method: .get, parameters: parameters, headers: headers).responseDecodable(of: RamenStore.self) { response in
             if let data = response.value {
+                self.defaultList = []
+                self.searchedList = []
+                
                 for ramen in data.documents {
                     self.defaultList.append(ramen.toRameDataType())
                 }
