@@ -1,8 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "엄지 척 리스트버전.png",
-      "idiom" : "universal"
+      "filename" : "ThumbsUp.png",
+      "idiom" : "universal",
+      "scale" : "1x"
+    },
+    {
+      "idiom" : "universal",
+      "scale" : "2x"
+    },
+    {
+      "idiom" : "universal",
+      "scale" : "3x"
     }
   ],
   "info" : {
