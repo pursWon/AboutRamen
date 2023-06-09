@@ -110,11 +110,11 @@ class SearchViewController: UIViewController {
             if let data = response.value {
                 self.defaultList = []
                 self.searchedList = []
-                
+            
                 for ramen in data.documents {
                     self.defaultList.append(ramen.toRameDataType())
                 }
-                
+                    
                 DispatchQueue.main.async {
                     self.searchTableView.reloadData()
                 }
