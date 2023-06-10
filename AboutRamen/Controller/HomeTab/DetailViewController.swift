@@ -60,6 +60,7 @@ class DetailViewController: UIViewController {
     var currentLocation: CLLocation? {
         didSet {
             guard let selectedRamen = selectedRamen else { return }
+            
             let targetLocation = CLLocation(latitude: selectedRamen.y, longitude: selectedRamen.x)
             distanceLabel.text = getDistance(from: currentLocation, to: targetLocation)
             distanceLabel.font = UIFont(name: "Recipekorea", size: 13)

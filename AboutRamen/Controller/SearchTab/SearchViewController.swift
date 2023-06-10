@@ -81,11 +81,15 @@ class SearchViewController: UIViewController {
     func setupNavigationbar() {
         navigationController?.navigationBar.backgroundColor = CustomColor.beige
         navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font : UIFont(name: "Recipekorea", size: 20)!]
+        let attributes: [NSAttributedString.Key: Any] = [.font: UIFont(name: "Recipekorea", size: 14)!]
+        UIBarButtonItem.appearance(whenContainedInInstancesOf: [UISearchBar.self]).setTitleTextAttributes(attributes, for: .normal)
     }
     
     func setupSearchController() {
         let searchController = UISearchController()
-        searchController.searchBar.placeholder = "가게 이름을 입력해주세요"
+        let atrString = NSAttributedString(string: "가게 이름을 입력해주세요", attributes: [.font: UIFont(name: "S-CoreDream-4Regular", size: 13)!])
+        
+        searchController.searchBar.searchTextField.attributedPlaceholder = atrString
         searchController.searchResultsUpdater = self
         searchController.hidesNavigationBarDuringPresentation = true
         
@@ -110,11 +114,11 @@ class SearchViewController: UIViewController {
             if let data = response.value {
                 self.defaultList = []
                 self.searchedList = []
-            
+                
                 for ramen in data.documents {
                     self.defaultList.append(ramen.toRameDataType())
                 }
-                    
+                
                 DispatchQueue.main.async {
                     self.searchTableView.reloadData()
                 }

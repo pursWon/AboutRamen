@@ -58,6 +58,7 @@ class HomeViewController: UIViewController {
         
         /// - NOTE: Realm 위치 찾을 때 사용
         // print(">>> location: \(realm.configuration.fileURL)")
+        setInitData()
         setLocationManager()
         setUpCollectionView()
         setupNavigationbar()
@@ -127,6 +128,7 @@ class HomeViewController: UIViewController {
         AF.request(url, method: .get, parameters: parameters, headers: headers).responseDecodable(of: RamenStore.self) { response in
             if let data = response.value {
                 self.ramenList = data.documents
+                
                 guard let ramenList = self.ramenList else { return }
                 ramenList.forEach{ self.storeNames.append($0.place_name) }
                 
@@ -316,7 +318,7 @@ extension HomeViewController: CLLocationManagerDelegate {
     
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
         switch status {
-        case .authorizedAlways, .authorizedWhenInUse:
+        case .authorizedWhenInUse, .authorizedAlways:
             self.locationManager.startUpdatingLocation()
             setInitData()
         case .restricted, .notDetermined:
