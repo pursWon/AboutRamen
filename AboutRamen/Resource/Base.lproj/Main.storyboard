@@ -155,7 +155,7 @@
                                 </cells>
                             </collectionView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="나의 지역" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6TO-fZ-Igz">
-                                <rect key="frame" x="90" y="101" width="248" height="20.333333333333314"/>
+                                <rect key="frame" x="90" y="101" width="248" height="20.333333333333329"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -1054,7 +1054,7 @@
                                 <rect key="frame" x="0.0" y="91" width="428" height="801"/>
                                 <subviews>
                                     <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="S9g-tA-zpv" userLabel="RegionPicker">
-                                        <rect key="frame" x="10" y="292.66666666666669" width="408" height="216.00000000000006"/>
+                                        <rect key="frame" x="10" y="292.66666666666669" width="408" height="216"/>
                                         <color key="backgroundColor" systemColor="systemOrangeColor"/>
                                         <constraints>
                                             <constraint firstAttribute="width" secondItem="S9g-tA-zpv" secondAttribute="height" multiplier="17:9" id="BFI-5l-VIi"/>
@@ -1065,13 +1065,13 @@
                                         </connections>
                                     </pickerView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="- -" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="t0G-wY-1Wv">
-                                        <rect key="frame" x="10" y="184" width="408" height="19.333333333333343"/>
+                                        <rect key="frame" x="10" y="123.99999999999999" width="408" height="19.333333333333329"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                         <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="[ 선택 지역 ]" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2wD-tn-8fi">
-                                        <rect key="frame" x="10" y="120" width="408" height="24"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="[ 선택 지역 ]" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2wD-tn-8fi">
+                                        <rect key="frame" x="10" y="70" width="408" height="24"/>
                                         <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="20"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
@@ -1079,11 +1079,11 @@
                                 </subviews>
                                 <color key="backgroundColor" red="1" green="0.71260461129999997" blue="0.3550941339" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 <constraints>
-                                    <constraint firstItem="t0G-wY-1Wv" firstAttribute="top" secondItem="2wD-tn-8fi" secondAttribute="bottom" constant="40" id="3oS-iO-e85"/>
                                     <constraint firstItem="S9g-tA-zpv" firstAttribute="leading" secondItem="UxI-cz-180" secondAttribute="leading" constant="10" id="8cH-Tx-9id"/>
                                     <constraint firstAttribute="trailing" secondItem="S9g-tA-zpv" secondAttribute="trailing" constant="10" id="H07-Ik-kcr"/>
-                                    <constraint firstItem="2wD-tn-8fi" firstAttribute="top" secondItem="UxI-cz-180" secondAttribute="top" constant="120" id="KEa-zA-Jg3"/>
+                                    <constraint firstItem="2wD-tn-8fi" firstAttribute="top" secondItem="UxI-cz-180" secondAttribute="top" constant="70" id="KEa-zA-Jg3"/>
                                     <constraint firstItem="t0G-wY-1Wv" firstAttribute="leading" secondItem="UxI-cz-180" secondAttribute="leading" constant="10" id="dB2-KF-zmM"/>
+                                    <constraint firstItem="t0G-wY-1Wv" firstAttribute="top" secondItem="2wD-tn-8fi" secondAttribute="bottom" constant="30" id="fzt-su-EM9"/>
                                     <constraint firstItem="S9g-tA-zpv" firstAttribute="centerY" secondItem="UxI-cz-180" secondAttribute="centerY" id="i8q-6G-ZpL"/>
                                     <constraint firstAttribute="trailing" secondItem="t0G-wY-1Wv" secondAttribute="trailing" constant="10" id="k6I-ns-98p"/>
                                     <constraint firstAttribute="trailing" secondItem="2wD-tn-8fi" secondAttribute="trailing" constant="10" id="kUD-G5-zHG"/>
