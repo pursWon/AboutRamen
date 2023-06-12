@@ -40,9 +40,7 @@ class SearchViewController: UIViewController {
         setupSearchController()
         setupTableView()
         
-        let status: CLAuthorizationStatus = CLLocationManager.authorizationStatus()
-        
-        if status == .authorizedAlways || status == .authorizedWhenInUse {
+        if locationManager.authorizationStatus == .authorizedAlways || locationManager.authorizationStatus == .authorizedWhenInUse {
             self.locationManager.startUpdatingLocation()
             setInitData()
         }
@@ -61,9 +59,6 @@ class SearchViewController: UIViewController {
     // MARK: - Set Up
     func setInitData() {
         view.backgroundColor = .white
-        introduceLabel.font = .boldSystemFont(ofSize: 15)
-        introduceLabel.backgroundColor = CustomColor.sage
-        introduceLabel.font = UIFont(name: "Recipekorea", size: 14)
         searchTableView.backgroundColor = .white
     }
     

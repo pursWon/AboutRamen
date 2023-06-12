@@ -92,9 +92,7 @@ class DetailViewController: UIViewController {
         setUpTabImageView()
         getRamenImages()
         
-        let status: CLAuthorizationStatus = CLLocationManager.authorizationStatus()
-        
-        if status == .authorizedAlways || status == .authorizedWhenInUse {
+        if locationManager.authorizationStatus == .authorizedAlways || locationManager.authorizationStatus == .authorizedWhenInUse {
             self.locationManager.startUpdatingLocation()
             setInitData()
         }
