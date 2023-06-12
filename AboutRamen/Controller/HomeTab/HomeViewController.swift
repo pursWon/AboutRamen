@@ -58,7 +58,11 @@ class HomeViewController: UIViewController {
         
         /// - NOTE: Realm 위치 찾을 때 사용
         // print(">>> location: \(realm.configuration.fileURL)")
-        setInitData()
+        if locationManager.authorizationStatus == .authorizedAlways || locationManager.authorizationStatus == .authorizedWhenInUse {
+            locationManager.startUpdatingLocation()
+            setInitData()
+        }
+        
         setLocationManager()
         setUpCollectionView()
         setupNavigationbar()
