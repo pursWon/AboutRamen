@@ -143,6 +143,7 @@ class SearchViewController: UIViewController {
 extension SearchViewController: UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
         guard let text = searchController.searchBar.text else { return }
+        
         searchedList = defaultList.filter { $0.storeName.contains(text) }
         
         if text.isEmpty {
