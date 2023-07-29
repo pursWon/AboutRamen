@@ -3,10 +3,11 @@
 
 **앱 스토어 링크** : [어바웃라멘](https://apps.apple.com/kr/app/%EC%96%B4%EB%B0%94%EC%9B%83%EB%9D%BC%EB%A9%98/id6446753603)
 
+
 <div align="center">
 
-https://user-images.githubusercontent.com/99719661/229819564-0ad2ebf0-2f39-49b2-91b7-b4001acca89a.mp4
-  
+[동영상](https://github.com/pursWon/AboutRamen/assets/99719661/d09492b7-723c-423e-ac9e-27ea8302456c)
+
 </div>
 
 ## 기능명세서 표 및 공수산정
