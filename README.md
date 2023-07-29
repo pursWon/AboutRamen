@@ -22,6 +22,16 @@
 
 <br/>
 
+## 사용한 API
+
+- Kakao Map
+
+## 사용한 라이브러리
+
+- Alamofire
+- Realm
+- KingFisher
+
 ## 화면별 기능 요약
 
 ### 1. 홈 화면 
@@ -123,3 +133,11 @@ width="25%" height="25%" />
     - `getRamenData` 함수 안 `storeNames`의 배열에
         
 가게 이름이 모두 담은 후에 `getRamenImages` 함수를 실행함으로써 문제를 해결함.
+
+<br/>
+
+## 업데이트 사항(ver 1.1)
+
+1. UI 업데이트
+
+2. 검색 시 발생하는 버그 수정
