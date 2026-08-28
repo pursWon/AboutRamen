@@ -8,6 +8,10 @@ workflows:
       xcode: 16.2
 
     scripts:
+      - name: 더미 API 키 파일 준비
+        script: |
+          cp AboutRamen/RamenInfo.plist.example AboutRamen/RamenInfo.plist
+
       - name: 상세 에러 확인 빌드
         script: |
           set -o pipefail
@@ -18,4 +22,4 @@ workflows:
             -configuration Debug \
             CODE_SIGNING_REQUIRED=NO \
             CODE_SIGNING_ALLOWED=NO \
-            2>&1 | grep -E "error:|warning: will never|cannot find|no such module" || true
+            2>&1 | grep -E "error:|cannot find|no such module" || true
