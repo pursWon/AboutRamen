@@ -42,6 +42,7 @@
 		D0E23DDC299F3BE9006C1C7C /* Realm in Frameworks */ = {isa = PBXBuildFile; productRef = D0E23DDB299F3BE9006C1C7C /* Realm */; };
 		D0E23DDE299F3BE9006C1C7C /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = D0E23DDD299F3BE9006C1C7C /* RealmSwift */; };
 		D0E23DE429A46D68006C1C7C /* RatingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0E23DE329A46D68006C1C7C /* RatingView.swift */; };
+		E9EEB15FD4F3D07ACE22BE83 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B69DCD8D1E07364DC69B3AF /* MapViewController.swift */; };
 		D0E8154129978BD7007DBC55 /* UIViewController+.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0E8154029978BD7007DBC55 /* UIViewController+.swift */; };
 		D0E8154F2999E4C7007DBC55 /* RegionData.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0E8154E2999E4C7007DBC55 /* RegionData.swift */; };
 		D0F15DE72988E4AF00A48EE5 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = D0F15DE62988E4AF00A48EE5 /* Kingfisher */; };
@@ -95,6 +96,7 @@
 		D0BB8AB829C97AF7000DE01E /* Bundle+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Bundle+Extension.swift"; sourceTree = "<group>"; };
 		D0D71EB829AC5A0A00D40C62 /* CALayer+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CALayer+Extension.swift"; sourceTree = "<group>"; };
 		D0E23DE329A46D68006C1C7C /* RatingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatingView.swift; sourceTree = "<group>"; };
+		8B69DCD8D1E07364DC69B3AF /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 		D0E8154029978BD7007DBC55 /* UIViewController+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+.swift"; sourceTree = "<group>"; };
 		D0E8154E2999E4C7007DBC55 /* RegionData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegionData.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -149,6 +151,7 @@
 				D0B171BF296D6C1A002AD35D /* DetailViewController.swift */,
 				D01308792977C9E600672422 /* RegionPickerController.swift */,
 				D0459DB5298121D700FFE9E3 /* ReviewViewController.swift */,
+				8B69DCD8D1E07364DC69B3AF /* MapViewController.swift */,
 			);
 			path = HomeTab;
 			sourceTree = "<group>";
@@ -366,6 +369,7 @@
 			files = (
 				1C874E6929D1DC8100F4AE4D /* UIViewController+Extension.swift in Sources */,
 				D0459DB6298121D700FFE9E3 /* ReviewViewController.swift in Sources */,
+				E9EEB15FD4F3D07ACE22BE83 /* MapViewController.swift in Sources */,
 				D01308532976699100672422 /* RamenStore.swift in Sources */,
 				D01307B3296FF1BF00672422 /* ReviewListCell.swift in Sources */,
 				D0D71EB929AC5A0A00D40C62 /* CALayer+Extension.swift in Sources */,

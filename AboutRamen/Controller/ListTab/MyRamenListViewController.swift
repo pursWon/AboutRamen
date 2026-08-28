@@ -26,26 +26,43 @@ class MyRamenListViewController: UIViewController {
     // MARK: - View Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         setInitData()
         setUpTableView()
+        setupNavigationbar()
     }
-    
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
+
         myRamenListTableView.reloadData()
     }
-    
+
     // MARK: - Set up
     func setInitData() {
         title = viewType.rawValue
         view.backgroundColor = CustomColor.beige
     }
-    
+
     func setUpTableView() {
         myRamenListTableView.delegate = self
         myRamenListTableView.dataSource = self
+    }
+
+    func setupNavigationbar() {
+        let mapButton = UIBarButtonItem(image: UIImage(systemName: "map"), style: .plain, target: self, action: #selector(mapButtonTapped))
+        navigationItem.rightBarButtonItem = mapButton
+    }
+
+    // MARK: - Action
+    @objc func mapButtonTapped() {
+        guard let storeList = storeList, !storeList.isEmpty else { return }
+
+        let mapVC = MapViewController()
+        mapVC.stores = Array(storeList)
+
+        setCustomBackButton(title: viewType.rawValue)
+        navigationController?.pushViewController(mapVC, animated: true)
     }
 }
 

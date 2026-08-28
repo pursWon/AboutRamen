@@ -3,6 +3,16 @@ import RealmSwift
 
 class RamenStore: Object, Decodable {
     var documents = List<Information>()
+    var meta: RamenStoreMeta?
+}
+
+/// 검색 결과 페이지 정보 (더 불러올 결과가 있는지 여부)
+struct RamenStoreMeta: Decodable {
+    let isEnd: Bool
+
+    enum CodingKeys: String, CodingKey {
+        case isEnd = "is_end"
+    }
 }
 
 /// API에서 가져오는 데이터 모델
