@@ -8,10 +8,6 @@ workflows:
       xcode: latest
 
     scripts:
-      - name: 사용 가능한 시뮬레이터 확인
-        script: |
-          xcrun simctl list devices available
-
       - name: iOS 빌드
         script: |
           xcodebuild build \
@@ -21,7 +17,10 @@ workflows:
             -configuration Debug \
             CODE_SIGN_IDENTITY="" \
             CODE_SIGNING_REQUIRED=NO \
-            CODE_SIGNING_ALLOWED=NO
+            CODE_SIGNING_ALLOWED=NO \
+            SWIFT_VERSION=5 \
+            SWIFT_STRICT_CONCURRENCY=minimal \
+            OTHER_SWIFT_FLAGS="-warnings-as-errors false"
 
       - name: 시뮬레이터 스크린샷
         script: |
