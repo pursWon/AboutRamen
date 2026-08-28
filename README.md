@@ -126,6 +126,8 @@ width="25%" height="25%" />
 
 ## 트러블 슈팅
 
+> Windows + Codemagic CI 환경으로 넘어오면서 겪은 빌드 관련 트러블슈팅은 [README_TROUBLESHOOTING.md](./README_TROUBLESHOOTING.md)에 따로 정리했습니다.
+
 문제 : 라멘 이미지들을 데이터 통신을 하여 가져오는 것이 어려웠음
 
 - 가게 이미지를 가져오는 API의 파라미터로 가게이름(`storeName`)이 필요했음.
