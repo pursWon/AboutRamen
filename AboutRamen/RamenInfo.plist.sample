@@ -3,6 +3,6 @@
 <plist version="1.0">
 <dict>
 	<key>API_KEY</key>
-	<string>KakaoAK d8b066a3dbb0e888b857f37b667d96d2</string>
+	<string>KakaoAK YOUR_KAKAO_REST_API_KEY_HERE</string>
 </dict>
 </plist>

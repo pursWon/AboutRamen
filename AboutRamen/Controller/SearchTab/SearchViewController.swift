@@ -161,11 +161,11 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
         guard let cell = searchTableView.dequeueReusableCell(withIdentifier: "SearchViewCell", for: indexPath) as? SearchViewCell else { return UITableViewCell() }
         
         if isFiltered {
-            cell.textLabel?.text = searchedList[indexPath.row].storeName
-            cell.textLabel?.font = UIFont(name: "Recipekorea", size: 15)
+            cell.searchResultLabel?.text = searchedList[indexPath.row].storeName
+            cell.searchResultLabel?.font = UIFont(name: "Recipekorea", size: 15)
         } else {
-            cell.textLabel?.text = defaultList[indexPath.row].storeName
-            cell.textLabel?.font = UIFont(name: "Recipekorea", size: 15)
+            cell.searchResultLabel?.text = defaultList[indexPath.row].storeName
+            cell.searchResultLabel?.font = UIFont(name: "Recipekorea", size: 15)
         }
         
         return cell

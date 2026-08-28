@@ -1,7 +1,7 @@
 import Foundation
 
 func load() -> Data? {
-    let fileName: String = ""
+    let fileName: String = "RegionInformation"
     let extensionType: String = "json"
     
     guard let fileLocation = Bundle.main.url(forResource: fileName, withExtension: extensionType) else { return nil }

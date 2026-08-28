@@ -1,3 +1,9 @@
+# API Keys
+#
+# 실제 Kakao API 키가 담긴 plist는 커밋하지 않습니다.
+# AboutRamen/RamenInfo.plist.sample을 복사해서 AboutRamen/RamenInfo.plist를 만들고 키를 채워넣으세요.
+AboutRamen/RamenInfo.plist
+
 # Xcode
 #
 # gitignore contributors: remember to update Global/Xcode.gitignore, Objective-C.gitignore & Swift.gitignore

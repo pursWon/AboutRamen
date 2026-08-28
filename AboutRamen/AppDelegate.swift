@@ -1,9 +1,17 @@
 import UIKit
+import RealmSwift
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        Realm.Configuration.defaultConfiguration = Realm.Configuration(
+            schemaVersion: 1,
+            migrationBlock: { _, oldSchemaVersion in
+                // schemaVersion 1: RamenData 스키마 버전 관리 시작 (이전 버전은 마이그레이션 불필요)
+            }
+        )
+
         sleep(1)
         return true
     }
