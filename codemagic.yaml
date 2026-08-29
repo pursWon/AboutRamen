@@ -6,11 +6,20 @@ workflows:
 
     environment:
       xcode: 16.2
+      groups:
+        - kakao_secrets   # Codemagic 대시보드 > Environment variables 에 KAKAO_API_KEY(암호화)를 이 그룹으로 등록
 
     scripts:
-      - name: 더미 API 키 파일 준비
+      - name: API 키 파일 준비
         script: |
           cp AboutRamen/RamenInfo.plist.example AboutRamen/RamenInfo.plist
+
+          if [ -n "$KAKAO_API_KEY" ]; then
+            echo "KAKAO_API_KEY 감지됨 - 실제 키로 교체합니다."
+            /usr/libexec/PlistBuddy -c "Set :API_KEY $KAKAO_API_KEY" AboutRamen/RamenInfo.plist
+          else
+            echo "KAKAO_API_KEY 미설정 - 더미 키로 빌드합니다 (라멘 목록은 비어있게 나옴)."
+          fi
 
       - name: iOS 빌드
         script: |
@@ -42,8 +51,17 @@ workflows:
           sleep 2
           BUNDLE_ID=$(defaults read "$APP_PATH/Info" CFBundleIdentifier)
           echo "번들 ID: $BUNDLE_ID"
+
+          # 위치 권한 팝업이 뜨지 않도록 실행 전에 미리 허용 + 가상 GPS 좌표 설정 (서울시청)
+          # 팝업이 떠버리면 이후 idb 탭이 전부 씹힘 (시스템 알림이 떠 있는 동안은
+          # 알림 버튼 외의 영역은 앱으로 터치가 전달되지 않음)
+          xcrun simctl privacy booted grant location "$BUNDLE_ID"
+          xcrun simctl location booted set 37.5665,126.9780
+
           xcrun simctl launch booted "$BUNDLE_ID"
-          sleep 3
+          # 위치 확정 -> Kakao 키워드 검색 -> 가게별 이미지 검색까지 순차 네트워크 호출이라
+          # 목록이 다 채워질 때까지 넉넉히 대기
+          sleep 8
 
           mkdir -p screenshots
 
