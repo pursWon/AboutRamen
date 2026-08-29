@@ -86,7 +86,7 @@ class HomeViewController: UIViewController {
     
     // MARK: - Set Up
     func setInitData() {
-        view.backgroundColor = CustomColor.beige
+        view.backgroundColor = CustomColor.homeBackground
 
         if isUsingLiveLocation {
             myLocationLabel.text = "현재 위치 주변"
@@ -109,7 +109,7 @@ class HomeViewController: UIViewController {
     
     func setupNavigationbar() {
         title = "어바웃라멘"
-        navigationController?.navigationBar.backgroundColor = CustomColor.beige
+        navigationController?.navigationBar.backgroundColor = CustomColor.homeBackground
 
         let attributes = [NSAttributedString.Key.font: UIFont(name: "BlackHanSans-Regular", size: 20)!]
         regionChangeButton.setTitleTextAttributes(attributes, for: .normal)
@@ -172,7 +172,7 @@ class HomeViewController: UIViewController {
     func setUpCollectionView() {
         collectionView.dataSource = self
         collectionView.delegate = self
-        collectionView.backgroundColor = CustomColor.beige
+        collectionView.backgroundColor = CustomColor.homeBackground
     }
     
     // MARK: - API
