@@ -22,10 +22,20 @@ workflows:
             CODE_SIGNING_REQUIRED=NO \
             CODE_SIGNING_ALLOWED=NO
 
-      - name: 시뮬레이터 스크린샷
+      - name: idb 설치 (탭 이벤트 주입용)
+        script: |
+          brew tap facebook/fb
+          brew install idb-companion
+          pip3 install fb-idb
+
+      - name: 시뮬레이터 스크린샷 (탭바 3개 화면)
         script: |
           xcrun simctl boot "iPhone 16" || true
           sleep 5
+
+          UDID=$(xcrun simctl list devices | grep "iPhone 16 (" | grep -Eo '[0-9A-F]{8}-([0-9A-F]{4}-){3}[0-9A-F]{12}' | head -1)
+          echo "시뮬레이터 UDID: $UDID"
+
           APP_PATH=$(find ~/Library/Developer/Xcode/DerivedData -name "*.app" -not -path "*/PlugIns/*" | head -1)
           echo "앱 경로: $APP_PATH"
           xcrun simctl install booted "$APP_PATH"
@@ -34,8 +44,29 @@ workflows:
           echo "번들 ID: $BUNDLE_ID"
           xcrun simctl launch booted "$BUNDLE_ID"
           sleep 3
+
           mkdir -p screenshots
-          xcrun simctl io booted screenshot screenshots/screen1.png
+
+          # 화면 1: 홈 (기본 진입 탭)
+          xcrun simctl io booted screenshot screenshots/screen1_home.png
+
+          # idb 데몬 연결 (탭 이벤트 주입은 simctl로 불가능해서 idb를 사용)
+          idb_companion --udid "$UDID" &
+          sleep 3
+          idb connect "$UDID"
+
+          # 탭바 좌표는 iPhone 16 시뮬레이터(393x852pt) 기준 근사치.
+          # 다른 기기/OS로 바꾸면 좌표를 다시 맞춰야 할 수 있음.
+
+          # 화면 2: 마이 리스트 탭
+          idb ui tap 196 810 --udid "$UDID"
+          sleep 2
+          xcrun simctl io booted screenshot screenshots/screen2_mylist.png
+
+          # 화면 3: 검색하기 탭
+          idb ui tap 327 810 --udid "$UDID"
+          sleep 2
+          xcrun simctl io booted screenshot screenshots/screen3_search.png
 
     artifacts:
       - screenshots/**
