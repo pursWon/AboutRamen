@@ -29,12 +29,8 @@ class RegionPickerController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        if let region = region {
-            guard let regionInformation = try? JSONDecoder().decode(RegionInformation.self, from: region) else { return }
-            
-            regionData = regionInformation
-        }
-        
+        regionData = RegionStore.shared.information
+
         setInitData()
         setupBorder()
         setupNavigationbar()
@@ -42,24 +38,24 @@ class RegionPickerController: UIViewController {
     
     // MARK: - Set up
     func setInitData() {
-        view.backgroundColor = CustomColor.beige
-        pickerView.backgroundColor = CustomColor.beige
-        regionPickerView.backgroundColor = CustomColor.sage
-        chooseLabel.textColor = CustomColor.deepGreen
-        chooseLabel.font = UIFont(name: "BlackHanSans-Regular", size: 22)
-        resultLabel.font = UIFont(name: "BlackHanSans-Regular", size: 24)
-        delegateRegion?.sendRegionData(city: "서울시", gu: "강남구")
+        view.backgroundColor = CustomColor.ground
+        pickerView.backgroundColor = CustomColor.ground
+        regionPickerView.backgroundColor = CustomColor.surface
+        chooseLabel.textColor = CustomColor.inkSoft
+        chooseLabel.font = AppFont.title(17)
+        resultLabel.textColor = CustomColor.ink
+        resultLabel.font = AppFont.display(24)
     }
-    
+
     func setupNavigationbar() {
-        let attributes = [NSAttributedString.Key.font: UIFont(name: "Recipekorea", size: 16)]
+        let attributes = [NSAttributedString.Key.font: AppFont.barButton]
         saveButton.setTitleTextAttributes(attributes, for: .normal)
         navigationController?.navigationBar.backItem?.backBarButtonItem?.setTitleTextAttributes(attributes, for: .normal)
     }
-    
+
     func setupBorder() {
         regionPickerView.clipsToBounds = true
-        regionPickerView.layer.cornerRadius = 10
+        regionPickerView.layer.cornerRadius = 14
     }
     
     // MARK: - Action
@@ -149,8 +145,9 @@ extension RegionPickerController: UIPickerViewDelegate, UIPickerViewDataSource {
     func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView {
         guard let regionData = regionData else { return UIView() }
         
-        var title = UILabel()
-        title.font = UIFont(name: "Recipekorea", size: 20)
+        let title = UILabel()
+        title.font = AppFont.title(20)
+        title.textColor = CustomColor.ink
         title.textAlignment = .center
         
         switch component {

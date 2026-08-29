@@ -52,17 +52,34 @@ class SearchViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        // 외형 설정은 권한과 무관하게 항상 적용한다.
+        // (전에는 아래 권한 블록 안에 있어서, 권한을 거부하면 배경색·폰트가 통째로 빠졌다)
+        setInitData()
         setLocationManager()
         setupNavigationbar()
         setupSearchController()
         setupTableView()
 
-        let status: CLAuthorizationStatus = CLLocationManager.authorizationStatus()
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(regionDidChange),
+            name: RegionStore.didChangeNotification,
+            object: nil
+        )
+
+        let status = locationManager.authorizationStatus
 
         if status == .authorizedAlways || status == .authorizedWhenInUse {
-            self.locationManager.startUpdatingLocation()
-            setInitData()
+            locationManager.startUpdatingLocation()
         }
+    }
+
+    /// 홈 탭에서 지역을 바꾸면 검색 탭의 기본 목록도 같은 지역으로 다시 불러온다
+    @objc func regionDidChange() {
+        guard let location = RegionStore.shared.selectedLocation else { return }
+
+        currentLocation = location
+        getRamenData(url: url, currentLocation: (location.coordinate.latitude, location.coordinate.longitude))
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -73,11 +90,14 @@ class SearchViewController: UIViewController {
 
     // MARK: - Set Up
     func setInitData() {
-        view.backgroundColor = .white
-        introduceLabel.font = .boldSystemFont(ofSize: 15)
-        introduceLabel.backgroundColor = CustomColor.sage
-        introduceLabel.font = UIFont(name: "Recipekorea", size: 14)
-        searchTableView.backgroundColor = .white
+        // 다른 탭과 같은 배경을 쓴다 (전에는 이 화면만 흰 배경이라 탭을 옮길 때 배경이 튀었다)
+        view.backgroundColor = CustomColor.ground
+        searchTableView.backgroundColor = CustomColor.ground
+
+        introduceLabel.font = AppFont.title(14)
+        introduceLabel.textColor = CustomColor.ink
+        introduceLabel.backgroundColor = .clear
+        introduceLabel.text = "현재 지역을 중심으로 가게를 검색합니다."
     }
 
     func setLocationManager() {
@@ -92,8 +112,8 @@ class SearchViewController: UIViewController {
     }
 
     func setupNavigationbar() {
-        navigationController?.navigationBar.backgroundColor = CustomColor.beige
-        navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font : UIFont(name: "Recipekorea", size: 20)!]
+        navigationController?.navigationBar.backgroundColor = CustomColor.ground
+        navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font: AppFont.title(20)]
 
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "map"), style: .plain, target: self, action: #selector(mapButtonTapped))
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "arrow.up.arrow.down"), menu: makeSortMenu())
@@ -167,8 +187,11 @@ class SearchViewController: UIViewController {
             "page": 1
         ]
 
-        AF.request(url, method: .get, parameters: parameters, headers: headers).responseDecodable(of: RamenStore.self) { response in
-            if let data = response.value {
+        AF.request(url, method: .get, parameters: parameters, headers: headers).responseDecodable(of: RamenStore.self) { [weak self] response in
+            guard let self = self else { return }
+
+            switch response.result {
+            case .success(let data):
                 for ramen in data.documents {
                     self.defaultList.append(ramen.toRameDataType())
                 }
@@ -176,6 +199,18 @@ class SearchViewController: UIViewController {
                 self.sortList(&self.defaultList)
 
                 DispatchQueue.main.async {
+                    self.introduceLabel.text = self.defaultList.isEmpty
+                        ? "이 지역에는 라멘 가게가 없습니다."
+                        : "현재 지역을 중심으로 가게를 검색합니다."
+                    self.searchTableView.reloadData()
+                }
+
+            case .failure(let error):
+                print("가게 목록 조회 실패: \(error)")
+
+                DispatchQueue.main.async {
+                    self.introduceLabel.text = "가게 정보를 불러오지 못했습니다. 연결을 확인해 주세요."
+                    self.introduceLabel.textColor = CustomColor.inkSoft
                     self.searchTableView.reloadData()
                 }
             }
@@ -204,7 +239,8 @@ class SearchViewController: UIViewController {
 
             guard keyword == self.lastSearchKeyword else { return }
 
-            if let data = response.value {
+            switch response.result {
+            case .success(let data):
                 if page == 1 {
                     self.searchedList.removeAll()
                 }
@@ -221,29 +257,41 @@ class SearchViewController: UIViewController {
                     self.updateIntroduceLabel(resultCount: self.searchedList.count)
                     self.searchTableView.reloadData()
                 }
+
+            case .failure(let error):
+                print("검색 실패: \(error)")
+
+                DispatchQueue.main.async {
+                    self.introduceLabel.text = "검색하지 못했습니다. 연결을 확인해 주세요."
+                    self.introduceLabel.textColor = CustomColor.inkSoft
+                }
             }
         }
     }
 
     func updateIntroduceLabel(resultCount: Int) {
         if resultCount == 0 {
-            introduceLabel.text = "검색결과가 없습니다. 다시 시도해 주세요."
-            introduceLabel.backgroundColor = .gray
+            introduceLabel.text = "검색 결과가 없습니다. 다른 이름으로 찾아보세요."
+            introduceLabel.textColor = CustomColor.inkSoft
         } else {
-            introduceLabel.text = "검색 결과: \(resultCount)개"
-            introduceLabel.backgroundColor = CustomColor.sage
+            introduceLabel.text = "검색 결과 \(resultCount)개"
+            introduceLabel.textColor = CustomColor.ink
         }
     }
 
     // MARK: - ETC
     /// 평가가 모두 안되어 있는 아이템 삭제
     func deleteNoDataItem() {
-        let shouldDeleteItems = realm.objects(RamenData.self).filter { !$0.isGood && !$0.isReviewed && !$0.isFavorite }
+        let shouldDeleteItems = realm.objects(RamenData.self).filter { $0.hasNoUserData }
 
-        if !shouldDeleteItems.isEmpty {
-            try! realm.write {
+        guard !shouldDeleteItems.isEmpty else { return }
+
+        do {
+            try realm.write {
                 realm.delete(shouldDeleteItems)
             }
+        } catch {
+            print("정리 대상 삭제 실패: \(error)")
         }
     }
 }
@@ -255,7 +303,7 @@ extension SearchViewController: UISearchResultsUpdating {
 
         if text.isEmpty {
             introduceLabel.text = "현재 지역을 중심으로 가게를 검색합니다."
-            introduceLabel.backgroundColor = CustomColor.sage
+            introduceLabel.textColor = CustomColor.ink
             searchDebounceTimer?.invalidate()
             searchTableView.reloadData()
             return
@@ -283,7 +331,9 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
 
         let storeName = isFiltered ? searchedList[indexPath.row].storeName : defaultList[indexPath.row].storeName
         cell.searchResultLabel?.text = storeName
-        cell.searchResultLabel?.font = UIFont(name: "Recipekorea", size: 15)
+        cell.searchResultLabel?.font = AppFont.title(15)
+        cell.searchResultLabel?.textColor = CustomColor.ink
+        cell.backgroundColor = CustomColor.surface
 
         return cell
     }

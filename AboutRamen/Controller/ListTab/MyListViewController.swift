@@ -34,24 +34,30 @@ class MyListViewController: UIViewController {
     
     // MARK: - Set Up
     func setInitData() {
-        view.backgroundColor = CustomColor.beige
-        navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font : UIFont(name: "Recipekorea", size: 20)!]
+        view.backgroundColor = CustomColor.ground
+        navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font: AppFont.title(20)]
     }
-    
+
     func setuptableView() {
         myListTableView.dataSource = self
         myListTableView.delegate = self
+        myListTableView.backgroundColor = CustomColor.ground
+        myListTableView.separatorColor = CustomColor.hairline
     }
     
     // MARK: - ETC
     /// 평가가 모두 안되어 있는 아이템 삭제
     func deleteNoDataItem() {
-        let shouldDeleteItems = realm.objects(RamenData.self).filter { !$0.isGood && !$0.isReviewed && !$0.isFavorite }
-        
-        if !shouldDeleteItems.isEmpty {
-            try! realm.write {
+        let shouldDeleteItems = realm.objects(RamenData.self).filter { $0.hasNoUserData }
+
+        guard !shouldDeleteItems.isEmpty else { return }
+
+        do {
+            try realm.write {
                 realm.delete(shouldDeleteItems)
             }
+        } catch {
+            print("정리 대상 삭제 실패: \(error)")
         }
     }
     
@@ -71,10 +77,12 @@ extension MyListViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = myListTableView.dequeueReusableCell(withIdentifier: "MyListCell", for: indexPath) as? MyListCell else { return UITableViewCell() }
         cell.selectionStyle = .none
-        cell.contentLabel.font = UIFont(name: "Recipekorea", size: 17)
+        cell.backgroundColor = CustomColor.surface
+        cell.contentLabel.font = AppFont.title(17)
+        cell.contentLabel.textColor = CustomColor.ink
         cell.contentLabel.text = menuItems[indexPath.row].title
         cell.listImageView.image = menuItems[indexPath.row].icon
-        
+
         return cell
     }
     

@@ -29,18 +29,27 @@ class ReviewListViewController: UIViewController {
     // MARK: - Set Up
     func setInitData() {
         title = "리뷰 목록"
-        view.backgroundColor = CustomColor.beige
-        editButton.titleLabel?.font = .boldSystemFont(ofSize: 20)
+        view.backgroundColor = CustomColor.ground
+        editButton.titleLabel?.font = AppFont.title(15)
+        editButton.setTitleColor(CustomColor.accent, for: .normal)
+
+        emptyLabel.font = AppFont.caption
+        emptyLabel.textColor = CustomColor.inkSoft
+        emptyLabel.numberOfLines = 0
+        emptyLabel.textAlignment = .center
+        emptyLabel.text = "아직 작성한 리뷰가 없습니다.\n가게 정보에서 리뷰를 남겨보세요."
     }
-    
+
     func setUpTableView() {
         reviewListTableView.dataSource = self
         reviewListTableView.delegate = self
+        reviewListTableView.backgroundColor = CustomColor.ground
+        reviewListTableView.separatorColor = CustomColor.hairline
     }
     
     // MARK: - Action
     @IBAction func editButton(_ sender: UIButton) {
-        let attributes = [NSAttributedString.Key.font: UIFont(name: "Recipekorea", size: 14) ?? UIFont()]
+        let attributes = [NSAttributedString.Key.font: AppFont.title(15)]
         var text = NSAttributedString(string: "편집", attributes: attributes)
         if reviewListTableView.isEditing {
             editButton.setAttributedTitle(text, for: .normal)
@@ -68,12 +77,16 @@ extension ReviewListViewController: UITableViewDelegate, UITableViewDataSource {
         guard let reviewList = reviewList else { return UITableViewCell() }
         
         let item = reviewList[indexPath.row]
+
+        cell.backgroundColor = CustomColor.surface
         cell.nameLabel.text = item.storeName
-        cell.nameLabel.font = UIFont(name: "Recipekorea", size: 16)
+        cell.nameLabel.font = AppFont.storeName
+        cell.nameLabel.textColor = CustomColor.ink
         cell.addressLabel.text = item.addressName
-        cell.addressLabel.font = UIFont(name: "S-CoreDream-4Regular", size: 10)
-        cell.reviewImageView.tintColor = .systemOrange
-        
+        cell.addressLabel.font = AppFont.address
+        cell.addressLabel.textColor = CustomColor.inkSoft
+        cell.reviewImageView.tintColor = CustomColor.accent
+
         return cell
     }
     
@@ -100,11 +113,16 @@ extension ReviewListViewController: UITableViewDelegate, UITableViewDataSource {
         
         if editingStyle == .delete {
             let item = reviewList[indexPath.row]
-            
-            try! realm.write {
-                realm.delete(item)
+
+            do {
+                try realm.write {
+                    realm.delete(item)
+                }
+            } catch {
+                print("리뷰 삭제 실패: \(error)")
+                showAlert(title: "삭제하지 못했습니다", message: "잠시 후 다시 시도해 주세요.", alertStyle: .oneButton)
             }
-            
+
             reviewListTableView.reloadData()
         }
     }

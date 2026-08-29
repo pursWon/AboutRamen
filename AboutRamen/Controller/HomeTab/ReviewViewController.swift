@@ -9,7 +9,8 @@ class ReviewViewController: UIViewController {
     
     //MARK: - Properties
     let realm = try! Realm()
-    var delegate: ReviewCompleteProtocol?
+    /// 순환 참조를 막기 위해 weak으로 잡는다 (프로토콜은 AnyObject로 제한)
+    weak var delegate: ReviewCompleteProtocol?
     var selectedRamen: RamenData?
     var modifiedReview: String = ""
     
@@ -25,29 +26,42 @@ class ReviewViewController: UIViewController {
     
     // MARK: - Set Up
     func setInitData() {
-        view.backgroundColor = CustomColor.beige
-        reviewView.backgroundColor = CustomColor.beige
-        
+        view.backgroundColor = CustomColor.ground
+        reviewView.backgroundColor = CustomColor.ground
+
         guard let selectedRamen = selectedRamen else { return }
         reviewTextView.text = selectedRamen.reviewContent
         modifiedReview = selectedRamen.reviewContent ?? ""
     }
-    
+
     func setUpTextView() {
         reviewTextView.delegate = self
-        reviewTextView.layer.borderColor = UIColor.black.cgColor
-        reviewTextView.layer.borderWidth = 2.5
-        reviewTextView.layer.cornerRadius = 10
+
+        // 2.5pt 검정 테두리 대신 흰 카드 + 헤어라인
+        reviewTextView.backgroundColor = CustomColor.surface
+        reviewTextView.textColor = CustomColor.ink
+        reviewTextView.font = AppFont.body(15)
+        reviewTextView.layer.borderColor = CustomColor.hairline.cgColor
+        reviewTextView.layer.borderWidth = 1
+        reviewTextView.layer.cornerRadius = 14
+        reviewTextView.textContainerInset = UIEdgeInsets(top: 14, left: 12, bottom: 14, right: 12)
     }
-    
+
     func setUpNavigationBarButton() {
-        let attributes = [NSAttributedString.Key.font: UIFont(name: "Recipekorea", size: 15)]
+        let attributes = [NSAttributedString.Key.font: AppFont.barButton]
         let completeButton = UIBarButtonItem(title: "리뷰 완료", style: .plain, target: self, action: nil)
         navigationItem.rightBarButtonItem = completeButton
-        navigationItem.rightBarButtonItem?.tintColor = .black
+        navigationItem.rightBarButtonItem?.tintColor = CustomColor.accent
         completeButton.setTitleTextAttributes(attributes, for: .normal)
         completeButton.action = #selector(completeButtonAction)
         completeButton.target = self
+    }
+
+    override func traitCollectionDidChange(_ previous: UITraitCollection?) {
+        super.traitCollectionDidChange(previous)
+
+        guard traitCollection.hasDifferentColorAppearance(comparedTo: previous) else { return }
+        reviewTextView.layer.borderColor = CustomColor.hairline.cgColor
     }
     
     // MARK: - Actions
@@ -55,17 +69,23 @@ class ReviewViewController: UIViewController {
         guard let selectedRamen = selectedRamen else { return }
         
         if reviewTextView.text.isEmpty {
-            showAlert(title: "저장 실패", message: "내용이 비어있습니다.",alertStyle: .oneButton)
-        } else {
-            try! realm.write {
+            showAlert(title: "저장 실패", message: "내용이 비어있습니다.", alertStyle: .oneButton)
+            return
+        }
+
+        do {
+            try realm.write {
                 selectedRamen.isReviewed = true
                 selectedRamen.reviewContent = reviewTextView.text
-                
-                realm.add(selectedRamen)
+
+                realm.add(selectedRamen, update: .modified)
             }
-            
+
             delegate?.sendReview(state: .done)
             navigationController?.popViewController(animated: true)
+        } catch {
+            print("리뷰 저장 실패: \(error)")
+            showAlert(title: "저장하지 못했습니다", message: "잠시 후 다시 시도해 주세요.", alertStyle: .oneButton)
         }
     }
 }

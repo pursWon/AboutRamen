@@ -11,10 +11,11 @@ extension UIViewController {
     /// back button을 지정한 title로 커스텀하는 함수
     func setCustomBackButton(title: String) {
         let backButton = UIBarButtonItem(title: title, style: .plain, target: self, action: nil)
-        let attributes = [NSAttributedString.Key.font: UIFont(name: "Recipekorea", size: 13) ?? UIFont.boldSystemFont(ofSize: 13)]
-        
+        let attributes = [NSAttributedString.Key.font: AppFont.title(13)]
+
         self.navigationItem.backBarButtonItem = backButton
-        self.navigationItem.backBarButtonItem?.tintColor = .black
+        // 검정 고정 대신 다크 모드를 따라가는 토큰을 쓴다
+        self.navigationItem.backBarButtonItem?.tintColor = CustomColor.ink
         backButton.setTitleTextAttributes(attributes, for: .normal)
     }
 }

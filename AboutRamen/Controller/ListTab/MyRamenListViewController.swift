@@ -41,12 +41,22 @@ class MyRamenListViewController: UIViewController {
     // MARK: - Set up
     func setInitData() {
         title = viewType.rawValue
-        view.backgroundColor = CustomColor.beige
+        view.backgroundColor = CustomColor.ground
+
+        emptyLabel.font = AppFont.caption
+        emptyLabel.textColor = CustomColor.inkSoft
+        emptyLabel.numberOfLines = 0
+        emptyLabel.textAlignment = .center
+        emptyLabel.text = viewType == .goodList
+            ? "아직 좋아요한 가게가 없습니다.\n마음에 드는 가게에 좋아요를 눌러보세요."
+            : "아직 추가한 가게가 없습니다.\n가게 정보에서 나의 라멘 가게에 추가해보세요."
     }
 
     func setUpTableView() {
         myRamenListTableView.delegate = self
         myRamenListTableView.dataSource = self
+        myRamenListTableView.backgroundColor = CustomColor.ground
+        myRamenListTableView.separatorColor = CustomColor.hairline
     }
 
     func setupNavigationbar() {
@@ -81,24 +91,34 @@ extension MyRamenListViewController: UITableViewDelegate, UITableViewDataSource 
         guard let storeList = storeList else { return UITableViewCell() }
         
         let item = storeList[indexPath.row]
+
+        cell.backgroundColor = CustomColor.surface
         cell.nameLabel.text = item.storeName
+        cell.nameLabel.font = AppFont.storeName
+        cell.nameLabel.textColor = CustomColor.ink
         cell.addressLabel.text = item.addressName
-        cell.starImage.tintColor = .systemOrange
-        
+        cell.addressLabel.font = AppFont.address
+        cell.addressLabel.textColor = CustomColor.inkSoft
+
+        // 별점 표기는 모든 화면에서 star.fill + accent로 통일한다
+        cell.starImage.tintColor = CustomColor.accent
+
         switch viewType {
         case .goodList:
-            cell.ratingLabel.text = String(item.rating)
-            cell.ratingLabel.font = UIFont(name: "S-CoreDream-4Regular", size: 15)
-            cell.nameLabel.font = UIFont(name: "Recipekorea", size: 16)
-            cell.addressLabel.font = UIFont(name: "S-CoreDream-4Regular", size: 10)
-            cell.starImage.image = UIImage(systemName: "heart.fill")
-            
+            let hasRating = item.rating > 0
+            cell.ratingLabel.isHidden = !hasRating
+            cell.starImage.isHidden = !hasRating
+            cell.ratingLabel.text = hasRating ? String(format: "%.1f", item.rating) : nil
+            cell.ratingLabel.font = AppFont.body(15)
+            cell.ratingLabel.textColor = CustomColor.ink
+            cell.starImage.image = UIImage(systemName: "star.fill")
+
         case .favoriteList:
-            cell.nameLabel.font = UIFont(name: "Recipekorea", size: 16)
-            cell.addressLabel.font = UIFont(name: "S-CoreDream-4Regular", size: 10)
             cell.ratingLabel.isHidden = true
+            cell.starImage.isHidden = false
+            cell.starImage.image = UIImage(systemName: "bookmark.fill")
         }
-        
+
         return cell
     }
     
