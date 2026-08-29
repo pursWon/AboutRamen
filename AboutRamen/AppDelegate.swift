@@ -12,7 +12,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
         )
 
-        sleep(1)
+        // sleep(1)을 두면 메인 스레드가 통째로 멈춰 앱 실행이 1초 느려진다.
+        // 스플래시 연출이 필요하면 첫 화면에서 애니메이션으로 처리한다.
         return true
     }
 

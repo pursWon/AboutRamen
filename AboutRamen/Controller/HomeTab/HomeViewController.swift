@@ -13,8 +13,6 @@ protocol RegionDataProtocol {
     func sendRegionData(city: String, gu: String)
 }
 
-let region = load()
-
 /// 홈 화면
 class HomeViewController: UIViewController {
     // MARK: - Sort Option
@@ -41,15 +39,28 @@ class HomeViewController: UIViewController {
 
     /// API를 통해서 가져온 라멘집 리스트 정보를 담고 있는 배열
     var ramenList: List<Information>?
-    /// 라멘집 이미지들의 image_url 값들의 배열
-    var imageUrlList: [String] = []
+    /// 라멘집 이미지 URL. ramenList와 같은 길이를 유지하며, 사진이 없는 가게는 nil로 남는다
+    var imageUrlList: [String?] = []
     var storeNames: [String] = []
-    var goodStoreName: [String] = []
     var distance: String?
 
     var regionLocation: CLLocation?
     var regionData: RegionInformation?
-    var sortOption: SortOption = .distance
+    var sortOption: SortOption = .distance {
+        didSet { invalidateSortCache() }
+    }
+
+    /// 정렬 결과 캐시 (cellForItemAt마다 전체 정렬이 도는 것을 막는다)
+    private var cachedSortedIndices: [Int]?
+
+    /// 네트워크 요청 진행 여부
+    private var isLoading: Bool = false {
+        didSet { updateLoadingIndicator() }
+    }
+
+    /// 로딩·빈 상태·에러를 한곳에서 알려주는 뷰 (코드로 생성해 컬렉션뷰 위에 얹는다)
+    private let statusLabel = UILabel()
+    private let loadingIndicator = UIActivityIndicatorView(style: .medium)
 
     /// GPS 위치를 우선 사용했는지 여부 (지역선택은 GPS를 못 받거나 사용자가 직접 고를 때의 보조 수단)
     private var isUsingLiveLocation: Bool = false
@@ -62,31 +73,29 @@ class HomeViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        if let region = region {
-            guard let regionInformation = try? JSONDecoder().decode(RegionInformation.self, from: region) else
-            { return }
-
-            regionData = regionInformation
-            regionLocation = CLLocation(latitude: regionInformation.region[0].local[0].latitude, longitude: regionInformation.region[0].local[0].longtitude)
-        }
+        regionData = RegionStore.shared.information
+        regionLocation = RegionStore.shared.defaultLocation
 
         /// - NOTE: Realm 위치 찾을 때 사용
         // print(">>> location: \(realm.configuration.fileURL)")
         setLocationManager()
         setUpCollectionView()
         setupNavigationbar()
+        setUpStatusViews()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         deleteNoDataItem()
+        // 상세 화면에서 별점이 바뀌었을 수 있으므로 평점순 정렬 결과를 다시 계산한다
+        invalidateSortCache()
         collectionView.reloadData()
     }
     
     // MARK: - Set Up
     func setInitData() {
-        view.backgroundColor = CustomColor.homeBackground
+        view.backgroundColor = CustomColor.ground
 
         if isUsingLiveLocation {
             myLocationLabel.text = "현재 위치 주변"
@@ -94,35 +103,96 @@ class HomeViewController: UIViewController {
             myLocationLabel.text = "\(regionData.region[0].city) \(regionData.region[0].local[0].gu)"
         }
 
-        let goodList = realm.objects(RamenData.self)
-        goodList.forEach{ goodStoreName.append($0.storeName) }
-
         guard let regionLocation = regionLocation else { return }
         getRamenData(url: url, currentLocation: regionLocation)
     }
-    
+
     func setLocationManager() {
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         locationManager.requestWhenInUseAuthorization()
     }
-    
+
     func setupNavigationbar() {
         title = "어바웃라멘"
-        navigationController?.navigationBar.backgroundColor = CustomColor.homeBackground
+        navigationController?.navigationBar.backgroundColor = CustomColor.ground
 
-        let attributes = [NSAttributedString.Key.font: UIFont(name: "BlackHanSans-Regular", size: 20)!]
+        let attributes = [NSAttributedString.Key.font: AppFont.barButton]
         regionChangeButton.setTitleTextAttributes(attributes, for: .normal)
 
         if let navigationBar = self.navigationController?.navigationBar {
-            navigationBar.titleTextAttributes = [NSAttributedString.Key.font : UIFont(name: "BlackHanSans-Regular", size: 30)!]
+            navigationBar.titleTextAttributes = [NSAttributedString.Key.font: AppFont.navigationTitle]
         }
 
-        myLocationLabel.font = UIFont.init(name: "RecipeKorea", size: 17)
+        // 폰트 파일명은 Recipekorea.ttf — 대문자 K로 적으면 nil이 되어 조용히 시스템 폰트로 떨어진다
+        myLocationLabel.font = AppFont.title(17)
+        myLocationLabel.textColor = CustomColor.ink
 
         let mapButton = UIBarButtonItem(image: UIImage(systemName: "map"), style: .plain, target: self, action: #selector(mapButtonTapped))
         let sortButton = UIBarButtonItem(image: UIImage(systemName: "arrow.up.arrow.down"), menu: makeSortMenu())
         navigationItem.leftBarButtonItems = [mapButton, sortButton]
+    }
+
+    /// 로딩 스피너와 상태 문구를 컬렉션뷰 중앙에 얹는다
+    func setUpStatusViews() {
+        statusLabel.font = AppFont.caption
+        statusLabel.textColor = CustomColor.inkSoft
+        statusLabel.textAlignment = .center
+        statusLabel.numberOfLines = 0
+        statusLabel.isHidden = true
+        statusLabel.translatesAutoresizingMaskIntoConstraints = false
+
+        loadingIndicator.hidesWhenStopped = true
+        loadingIndicator.color = CustomColor.inkSoft
+        loadingIndicator.translatesAutoresizingMaskIntoConstraints = false
+
+        view.addSubview(statusLabel)
+        view.addSubview(loadingIndicator)
+
+        NSLayoutConstraint.activate([
+            statusLabel.centerXAnchor.constraint(equalTo: collectionView.centerXAnchor),
+            statusLabel.centerYAnchor.constraint(equalTo: collectionView.centerYAnchor),
+            statusLabel.leadingAnchor.constraint(greaterThanOrEqualTo: view.leadingAnchor, constant: 32),
+            statusLabel.trailingAnchor.constraint(lessThanOrEqualTo: view.trailingAnchor, constant: -32),
+
+            loadingIndicator.centerXAnchor.constraint(equalTo: collectionView.centerXAnchor),
+            loadingIndicator.centerYAnchor.constraint(equalTo: collectionView.centerYAnchor)
+        ])
+    }
+
+    private func updateLoadingIndicator() {
+        if isLoading {
+            statusLabel.isHidden = true
+            loadingIndicator.startAnimating()
+        } else {
+            loadingIndicator.stopAnimating()
+        }
+    }
+
+    /// 결과가 없거나 요청이 실패했을 때 무엇 때문인지 구분해서 알려준다
+    private func updateStatusView(error: Error?) {
+        let isEmpty = (ramenList?.isEmpty ?? true)
+
+        if let error = error {
+            // 연결 자체가 안 되는 경우와 서버가 응답을 준 경우를 구분해서 알린다
+            let isConnectivityError: Bool
+
+            if let afError = error.asAFError, case .sessionTaskFailed = afError {
+                isConnectivityError = true
+            } else {
+                isConnectivityError = false
+            }
+
+            statusLabel.text = isConnectivityError
+                ? "네트워크에 연결할 수 없습니다.\n연결 상태를 확인해 주세요."
+                : "가게 정보를 불러오지 못했습니다.\n잠시 후 다시 시도해 주세요."
+            statusLabel.isHidden = false
+        } else if isEmpty {
+            statusLabel.text = "이 지역에는 라멘 가게가 없습니다.\n지역을 바꿔서 찾아보세요."
+            statusLabel.isHidden = false
+        } else {
+            statusLabel.isHidden = true
+        }
     }
 
     // MARK: - Sort
@@ -138,21 +208,32 @@ class HomeViewController: UIViewController {
         return UIMenu(title: "정렬 기준", children: actions)
     }
 
-    /// 현재 정렬 기준에 맞춰 ramenList를 재배열한 인덱스 순서를 반환한다
+    /// 정렬 결과를 다시 계산하도록 캐시를 비운다 (목록 갱신·정렬 기준 변경 시)
+    func invalidateSortCache() {
+        cachedSortedIndices = nil
+    }
+
+    /// 현재 정렬 기준에 맞춰 ramenList를 재배열한 인덱스 순서를 반환한다.
+    /// 셀마다 호출되므로 결과를 캐시해 전체 정렬이 반복되지 않게 한다.
     func sortedIndices() -> [Int] {
+        if let cached = cachedSortedIndices { return cached }
+
         guard let ramenList = ramenList else { return [] }
         let indices = Array(0..<ramenList.count)
+        let sorted: [Int]
 
         switch sortOption {
         case .distance:
-            return indices.sorted { lhs, rhs in
-                distanceValue(ramenList[lhs]) < distanceValue(ramenList[rhs])
-            }
+            // 거리 계산을 미리 한 번씩만 해두고 그 값으로 정렬한다
+            let distances = indices.map { distanceValue(ramenList[$0]) }
+            sorted = indices.sorted { distances[$0] < distances[$1] }
         case .rating:
-            return indices.sorted { lhs, rhs in
-                ratingValue(ramenList[lhs]) > ratingValue(ramenList[rhs])
-            }
+            let ratings = indices.map { ratingValue(ramenList[$0]) }
+            sorted = indices.sorted { ratings[$0] > ratings[$1] }
         }
+
+        cachedSortedIndices = sorted
+        return sorted
     }
 
     func distanceValue(_ item: Information) -> Double {
@@ -172,7 +253,7 @@ class HomeViewController: UIViewController {
     func setUpCollectionView() {
         collectionView.dataSource = self
         collectionView.delegate = self
-        collectionView.backgroundColor = CustomColor.homeBackground
+        collectionView.backgroundColor = CustomColor.ground
     }
     
     // MARK: - API
@@ -189,51 +270,79 @@ class HomeViewController: UIViewController {
             "page": 1
         ]
         
-        AF.request(url, method: .get, parameters: parameters, headers: headers).responseDecodable(of: RamenStore.self) { response in
-            if let data = response.value {
+        isLoading = true
+
+        AF.request(url, method: .get, parameters: parameters, headers: headers).responseDecodable(of: RamenStore.self) { [weak self] response in
+            guard let self = self else { return }
+
+            switch response.result {
+            case .success(let data):
                 self.ramenList = data.documents
-                guard let ramenList = self.ramenList else { return }
-                ramenList.forEach{ self.storeNames.append($0.place_name) }
-                
+                data.documents.forEach { self.storeNames.append($0.place_name) }
+                self.invalidateSortCache()
+
                 DispatchQueue.main.async {
+                    // 이미지가 도착하기 전에도 가게 이름/거리/별점은 먼저 보여준다
+                    self.collectionView.reloadData()
                     self.getRamenImages()
+                }
+
+            case .failure(let error):
+                DispatchQueue.main.async {
+                    self.isLoading = false
+                    self.updateStatusView(error: error)
                 }
             }
         }
     }
-    
+
     func getRamenImages() {
-        imageUrlList.removeAll()
-        
+        guard let ramenList = ramenList else {
+            isLoading = false
+            updateStatusView(error: nil)
+            return
+        }
+
+        // 응답 순서가 요청 순서와 다르기 때문에 append가 아니라 인덱스로 채워 넣는다.
+        // (append 방식은 이미지가 없는 가게에서 한 칸씩 밀려 가게-사진 짝이 어긋난다)
+        imageUrlList = Array(repeating: nil, count: ramenList.count)
+
         let headers: HTTPHeaders = ["Authorization": appid]
-        
-        for name in storeNames {
+        let group = DispatchGroup()
+
+        for (index, name) in storeNames.enumerated() {
+            group.enter()
+
             let params: [String: Any] = ["query": name]
-            AF.request(imageUrl, method: .get, parameters: params, headers: headers).responseDecodable(of: RamenImage.self) { response in
-                
-                if let dataImage = response.value {
-                    
-                    if !dataImage.documents.isEmpty {
-                        self.imageUrlList.append(dataImage.documents[0].image_url)
-                    }
-                }
-                
-                DispatchQueue.main.async {
-                    self.collectionView.reloadData()
-                }
+            AF.request(imageUrl, method: .get, parameters: params, headers: headers).responseDecodable(of: RamenImage.self) { [weak self] response in
+                defer { group.leave() }
+                guard let self = self, index < self.imageUrlList.count else { return }
+
+                self.imageUrlList[index] = response.value?.documents.first?.image_url
             }
+        }
+
+        group.notify(queue: .main) { [weak self] in
+            guard let self = self else { return }
+            self.isLoading = false
+            self.updateStatusView(error: nil)
+            self.collectionView.reloadData()
         }
     }
     
     // MARK: - ETC
     /// 평가가 모두 안되어 있는 아이템 삭제
     func deleteNoDataItem() {
-        let shouldDeleteItems = realm.objects(RamenData.self).filter{ !$0.isGood && !$0.isReviewed && !$0.isFavorite }
-        
-        if !shouldDeleteItems.isEmpty {
-            try! realm.write {
+        let shouldDeleteItems = realm.objects(RamenData.self).filter { $0.hasNoUserData }
+
+        guard !shouldDeleteItems.isEmpty else { return }
+
+        do {
+            try realm.write {
                 realm.delete(shouldDeleteItems)
             }
+        } catch {
+            print("정리 대상 삭제 실패: \(error)")
         }
     }
     
@@ -290,29 +399,20 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
         let targetLocation = CLLocation(latitude: ramenData.y, longitude: ramenData.x)
         cell.distanceLabel.text = getDistance(from: currentLocation, to: targetLocation)
 
-        // 별점
-        let goodList = realm.objects(RamenData.self)
+        // 별점 — 매겨진 값이 없으면 "별점 없음" 문구 대신 배지를 숨긴다 (배지 폭이 들쭉날쭉해지는 것 방지)
+        let rated = realm.objects(RamenData.self).filter {
+            $0.x == ramenData.x && $0.y == ramenData.y
+        }.first
 
-        if !goodList.isEmpty {
-            let existItem = goodList.filter {
-                $0.x == ramenData.x
-                && $0.y == ramenData.y
-            }
+        cell.setRating(rated?.rating)
 
-            if let item = existItem.first {
-                cell.starLabel.text = "⭐️ \(item.rating) "
-            } else {
-                cell.starLabel.text = "별점 없음"
-            }
+        // 이미지 — imageUrlList는 ramenList와 길이가 같고, 사진이 없는 가게는 nil이다
+        if originalIndex < imageUrlList.count,
+           let urlString = imageUrlList[originalIndex],
+           let url = URL(string: urlString) {
+            cell.ramenImageView.kf.setImage(with: url, placeholder: CustomImage.ramen)
         } else {
-            cell.starLabel.text = "별점 없음"
-        }
-
-        // 이미지
-        if imageUrlList.count == ramenList.count {
-            let url = URL(string: imageUrlList[originalIndex])
-            cell.ramenImageView.kf.setImage(with: url)
-        } else {
+            cell.ramenImageView.kf.cancelDownloadTask()
             cell.ramenImageView.image = CustomImage.ramen
         }
 
@@ -369,10 +469,17 @@ extension HomeViewController: RegionDataProtocol {
 // MARK: - LocationDataProtocol
 extension HomeViewController: LocationDataProtocol {
     func sendCurrentLocation(location: (long: Double, lat: Double)) {
-        regionLocation = CLLocation(latitude: location.lat, longitude: location.long)
-        
-        guard let regionLocation = regionLocation else { return }
-        getRamenData(url: url, currentLocation: regionLocation)
+        let selected = CLLocation(latitude: location.lat, longitude: location.long)
+        regionLocation = selected
+
+        // 사용자가 지역을 직접 골랐으므로 더 이상 GPS 기준이 아니다
+        isUsingLiveLocation = false
+        invalidateSortCache()
+
+        // 검색 탭도 같은 지역을 보도록 공유 저장소에 반영한다
+        RegionStore.shared.update(location: selected, title: myLocationLabel.text ?? "")
+
+        getRamenData(url: url, currentLocation: selected)
     }
 }
 
@@ -385,6 +492,8 @@ extension HomeViewController: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         guard let location = locations.first else { return }
         currentLocation = location
+        // 거리순 정렬은 현재 위치에 의존하므로 위치가 바뀌면 다시 계산한다
+        invalidateSortCache()
 
         guard !hasResolvedInitialLocation else { return }
         hasResolvedInitialLocation = true
@@ -397,21 +506,22 @@ extension HomeViewController: CLLocationManagerDelegate {
     }
 
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-        print(error)
+        print("위치 확인 실패: \(error)")
+        useRegionDefaultIfNeeded()
     }
 
-    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
-        switch status {
+    /// iOS 14부터의 권한 변경 콜백 (구 didChangeAuthorization은 deprecated)
+    func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
+        switch manager.authorizationStatus {
         case .authorizedAlways, .authorizedWhenInUse:
-            self.locationManager.startUpdatingLocation()
+            manager.startUpdatingLocation()
             scheduleInitialLocationFallback()
-        case .restricted, .notDetermined:
+        case .notDetermined:
             getLocationUsagePermission()
-        case .denied:
-            getLocationUsagePermission()
+        case .restricted, .denied:
             useRegionDefaultIfNeeded()
-        default:
-            print("위치 권한 설정 없음")
+        @unknown default:
+            useRegionDefaultIfNeeded()
         }
     }
 

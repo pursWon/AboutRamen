@@ -71,7 +71,7 @@ extension MapViewController: MKMapViewDelegate {
 
         annotationView.annotation = annotation
         annotationView.canShowCallout = true
-        annotationView.markerTintColor = CustomColor.deepGreen
+        annotationView.markerTintColor = CustomColor.accent
         annotationView.rightCalloutAccessoryView = UIButton(type: .detailDisclosure)
 
         return annotationView
