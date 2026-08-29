@@ -8,7 +8,6 @@ class ReviewViewController: UIViewController {
     @IBOutlet var reviewView: UIView!
     
     //MARK: - Properties
-    let realm = try! Realm()
     /// 순환 참조를 막기 위해 weak으로 잡는다 (프로토콜은 AnyObject로 제한)
     weak var delegate: ReviewCompleteProtocol?
     var selectedRamen: RamenData?
@@ -73,20 +72,22 @@ class ReviewViewController: UIViewController {
             return
         }
 
-        do {
-            try realm.write {
-                selectedRamen.isReviewed = true
-                selectedRamen.reviewContent = reviewTextView.text
+        let reviewText = reviewTextView.text ?? ""
 
-                realm.add(selectedRamen, update: .modified)
-            }
+        let didSave = RamenStorage.write { realm in
+            selectedRamen.isReviewed = true
+            selectedRamen.reviewContent = reviewText
 
-            delegate?.sendReview(state: .done)
-            navigationController?.popViewController(animated: true)
-        } catch {
-            print("리뷰 저장 실패: \(error)")
-            showAlert(title: "저장하지 못했습니다", message: "잠시 후 다시 시도해 주세요.", alertStyle: .oneButton)
+            realm.add(selectedRamen, update: .modified)
         }
+
+        guard didSave else {
+            showAlert(title: "저장하지 못했습니다", message: "잠시 후 다시 시도해 주세요.", alertStyle: .oneButton)
+            return
+        }
+
+        delegate?.sendReview(state: .done)
+        navigationController?.popViewController(animated: true)
     }
 }
 

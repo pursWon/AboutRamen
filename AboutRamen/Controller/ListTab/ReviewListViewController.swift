@@ -9,7 +9,6 @@ class ReviewListViewController: UIViewController {
     @IBOutlet var emptyLabel: UILabel!
     
     // MARK: - Properties
-    let realm = try! Realm()
     var reviewList: Results<RamenData>?
     
     // MARK: - View Life Cycle
@@ -114,12 +113,11 @@ extension ReviewListViewController: UITableViewDelegate, UITableViewDataSource {
         if editingStyle == .delete {
             let item = reviewList[indexPath.row]
 
-            do {
-                try realm.write {
-                    realm.delete(item)
-                }
-            } catch {
-                print("리뷰 삭제 실패: \(error)")
+            let didDelete = RamenStorage.write { realm in
+                realm.delete(item)
+            }
+
+            if !didDelete {
                 showAlert(title: "삭제하지 못했습니다", message: "잠시 후 다시 시도해 주세요.", alertStyle: .oneButton)
             }
 

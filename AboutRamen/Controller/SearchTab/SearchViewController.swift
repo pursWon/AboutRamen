@@ -17,7 +17,6 @@ class SearchViewController: UIViewController {
 
     // MARK: - Properties
     let url: String = "https://dapi.kakao.com/v2/local/search/keyword.json"
-    let realm = try! Realm()
     let appid = Bundle.main.apiKey
 
     var locationManager = CLLocationManager()
@@ -46,7 +45,16 @@ class SearchViewController: UIViewController {
     /// 검색 결과 페이지네이션 상태
     private var searchPage: Int = 1
     private var isSearchEnd: Bool = false
-    private var isSearchLoading: Bool = false
+    private var isSearchLoading: Bool = false {
+        didSet { updateLoadingIndicator() }
+    }
+
+    /// 기본 목록을 불러오는 중인지 여부 (최초 진입·지역 변경 시)
+    private var isDefaultListLoading: Bool = false {
+        didSet { updateLoadingIndicator() }
+    }
+
+    private let loadingIndicator = UIActivityIndicatorView(style: .medium)
 
     // MARK: - ViewLifeCycle
     override func viewDidLoad() {
@@ -59,6 +67,7 @@ class SearchViewController: UIViewController {
         setupNavigationbar()
         setupSearchController()
         setupTableView()
+        setUpLoadingIndicator()
 
         NotificationCenter.default.addObserver(
             self,
@@ -109,6 +118,32 @@ class SearchViewController: UIViewController {
     func setupTableView() {
         searchTableView.dataSource = self
         searchTableView.delegate = self
+    }
+
+    /// 목록을 불러오는 동안 테이블뷰 중앙에 스피너를 띄운다
+    func setUpLoadingIndicator() {
+        loadingIndicator.hidesWhenStopped = true
+        loadingIndicator.color = CustomColor.inkSoft
+        loadingIndicator.translatesAutoresizingMaskIntoConstraints = false
+
+        view.addSubview(loadingIndicator)
+
+        NSLayoutConstraint.activate([
+            loadingIndicator.centerXAnchor.constraint(equalTo: searchTableView.centerXAnchor),
+            loadingIndicator.centerYAnchor.constraint(equalTo: searchTableView.centerYAnchor)
+        ])
+    }
+
+    private func updateLoadingIndicator() {
+        // 첫 페이지를 기다리는 중일 때만 보여준다.
+        // 다음 페이지를 이어 받는 중에는 이미 목록이 차 있어서 스피너가 방해가 된다.
+        let isWaitingForFirstResults = isDefaultListLoading || (isSearchLoading && searchedList.isEmpty)
+
+        if isWaitingForFirstResults {
+            loadingIndicator.startAnimating()
+        } else {
+            loadingIndicator.stopAnimating()
+        }
     }
 
     func setupNavigationbar() {
@@ -176,6 +211,7 @@ class SearchViewController: UIViewController {
     // MARK: - API
     func getRamenData(url: String, currentLocation: (Double, Double)) {
         defaultList.removeAll()
+        isDefaultListLoading = true
 
         let headers: HTTPHeaders = ["Authorization": appid]
         let parameters: [String: Any] = [
@@ -199,6 +235,7 @@ class SearchViewController: UIViewController {
                 self.sortList(&self.defaultList)
 
                 DispatchQueue.main.async {
+                    self.isDefaultListLoading = false
                     self.introduceLabel.text = self.defaultList.isEmpty
                         ? "이 지역에는 라멘 가게가 없습니다."
                         : "현재 지역을 중심으로 가게를 검색합니다."
@@ -209,6 +246,7 @@ class SearchViewController: UIViewController {
                 print("가게 목록 조회 실패: \(error)")
 
                 DispatchQueue.main.async {
+                    self.isDefaultListLoading = false
                     self.introduceLabel.text = "가게 정보를 불러오지 못했습니다. 연결을 확인해 주세요."
                     self.introduceLabel.textColor = CustomColor.inkSoft
                     self.searchTableView.reloadData()
@@ -282,17 +320,7 @@ class SearchViewController: UIViewController {
     // MARK: - ETC
     /// 평가가 모두 안되어 있는 아이템 삭제
     func deleteNoDataItem() {
-        let shouldDeleteItems = realm.objects(RamenData.self).filter { $0.hasNoUserData }
-
-        guard !shouldDeleteItems.isEmpty else { return }
-
-        do {
-            try realm.write {
-                realm.delete(shouldDeleteItems)
-            }
-        } catch {
-            print("정리 대상 삭제 실패: \(error)")
-        }
+        RamenStorage.deleteItemsWithNoUserData()
     }
 }
 
@@ -352,13 +380,13 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
         let list = isFiltered ? searchedList : defaultList
         let selected = list[indexPath.row]
 
-        let realmList = realm.objects(RamenData.self).where {
+        let saved = RamenStorage.allStores?.where {
             $0.storeName == selected.storeName
             && $0.x == selected.x
             && $0.y == selected.y
         }
 
-        if let selectedRamen = realmList.first {
+        if let selectedRamen = saved?.first {
             if isFiltered { detailVC.viewType = .search }
             detailVC.selectedRamen = selectedRamen
         } else {

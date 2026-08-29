@@ -53,7 +53,6 @@ class DetailViewController: UIViewController {
     @IBOutlet var starRatingView: RatingView!
     
     // MARK: - Properties
-    let realm = try! Realm()
     let imageUrl: String = "https://dapi.kakao.com/v2/search/image"
     let appid = Bundle.main.apiKey
     
@@ -322,24 +321,23 @@ class DetailViewController: UIViewController {
 
 // MARK: Objectb Action
 extension DetailViewController {
-    /// Realm 쓰기를 한곳에서 처리한다. 실패해도 앱이 죽지 않고 사용자에게 알린다.
+    /// 저장에 실패하면 사용자에게 알린다. 실제 쓰기는 RamenStorage가 담당한다.
     @discardableResult
-    private func writeToRealm(_ block: () -> Void) -> Bool {
-        do {
-            try realm.write { block() }
-            return true
-        } catch {
-            print("저장 실패: \(error)")
+    private func writeToRealm(_ block: (Realm) -> Void) -> Bool {
+        let didWrite = RamenStorage.write(block)
+
+        if !didWrite {
             showAlert(title: "저장하지 못했습니다", message: "잠시 후 다시 시도해 주세요.", alertStyle: .oneButton)
-            return false
         }
+
+        return didWrite
     }
 
     /// '좋아요' 버튼 액션
     @objc func goodMark() {
         guard let selectedRamen = selectedRamen else { return }
 
-        guard writeToRealm({ selectedRamen.isGood.toggle() }) else { return }
+        guard writeToRealm({ _ in selectedRamen.isGood.toggle() }) else { return }
         playToggleFeedback()
 
         if selectedRamen.isGood {
@@ -355,14 +353,16 @@ extension DetailViewController {
     @objc func reviewMark() {
         guard let selectedRamen = selectedRamen else { return }
 
-        let realmList = realm.objects(RamenData.self).where {
+        let saved = RamenStorage.allStores?.where {
             $0.storeName == selectedRamen.storeName
             && $0.x == selectedRamen.x
             && $0.y == selectedRamen.y
         }
 
-        if realmList.filter(NSPredicate(format: "_id == %@", selectedRamen._id)).first == nil {
-            guard writeToRealm({ realm.add(selectedRamen) }) else { return }
+        let alreadySaved = saved?.filter(NSPredicate(format: "_id == %@", selectedRamen._id)).first != nil
+
+        if !alreadySaved {
+            guard writeToRealm({ realm in realm.add(selectedRamen) }) else { return }
         }
 
         guard let reviewVC = self.storyboard?.instantiateViewController(withIdentifier: "ReviewViewController") as? ReviewViewController else { return }
@@ -377,7 +377,7 @@ extension DetailViewController {
     @objc func addMyListMark() {
         guard let selectedRamen = selectedRamen else { return }
 
-        guard writeToRealm({ selectedRamen.isFavorite.toggle() }) else { return }
+        guard writeToRealm({ _ in selectedRamen.isFavorite.toggle() }) else { return }
         playToggleFeedback()
 
         if selectedRamen.isFavorite {
@@ -396,8 +396,10 @@ extension DetailViewController {
         // (빈 레코드를 만들어두면 다음 화면에서 정리 대상으로 잡혔다가 지워지는 왕복이 생긴다)
         guard newRating > 0 || selectedRamen.isGood || selectedRamen.isReviewed || selectedRamen.isFavorite else { return }
 
-        writeToRealm {
-            selectedRamen.rating = newRating
+        let rating = newRating
+
+        writeToRealm { realm in
+            selectedRamen.rating = rating
             realm.add(selectedRamen, update: .modified)
         }
     }

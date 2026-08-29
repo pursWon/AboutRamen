@@ -27,7 +27,6 @@ class HomeViewController: UIViewController {
     @IBOutlet var myLocationLabel: UILabel!
 
     // MARK: - Properties
-    let realm = try! Realm()
     /// kakao 키워드 검색 API 주소
     let url: String = "https://dapi.kakao.com/v2/local/search/keyword.json"
     /// kakao 키워드 이미지 검색 API 주소
@@ -77,7 +76,7 @@ class HomeViewController: UIViewController {
         regionLocation = RegionStore.shared.defaultLocation
 
         /// - NOTE: Realm 위치 찾을 때 사용
-        // print(">>> location: \(realm.configuration.fileURL)")
+        // print(">>> location: \(RamenStorage.realm?.configuration.fileURL as Any)")
         setLocationManager()
         setUpCollectionView()
         setupNavigationbar()
@@ -242,8 +241,9 @@ class HomeViewController: UIViewController {
     }
 
     func ratingValue(_ item: Information) -> Double {
-        let goodList = realm.objects(RamenData.self)
-        let matched = goodList.filter {
+        guard let stores = RamenStorage.allStores else { return 0 }
+
+        let matched = stores.filter {
             $0.x == (Double(item.x) ?? 0) && $0.y == (Double(item.y) ?? 0)
         }
 
@@ -333,26 +333,18 @@ class HomeViewController: UIViewController {
     // MARK: - ETC
     /// 평가가 모두 안되어 있는 아이템 삭제
     func deleteNoDataItem() {
-        let shouldDeleteItems = realm.objects(RamenData.self).filter { $0.hasNoUserData }
-
-        guard !shouldDeleteItems.isEmpty else { return }
-
-        do {
-            try realm.write {
-                realm.delete(shouldDeleteItems)
-            }
-        } catch {
-            print("정리 대상 삭제 실패: \(error)")
-        }
+        RamenStorage.deleteItemsWithNoUserData()
     }
-    
+
     func isReviewExist(item: Information) -> Bool {
-        let reviewList = realm.objects(RamenData.self).filter{ $0.isReviewed }.filter{
+        guard let stores = RamenStorage.allStores else { return false }
+
+        let reviewList = stores.filter { $0.isReviewed }.filter {
             $0.storeName == item.place_name
             && String($0.x) == item.x
             && String($0.y) == item.y
         }
-        
+
         return !reviewList.isEmpty
     }
     
@@ -400,7 +392,7 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
         cell.distanceLabel.text = getDistance(from: currentLocation, to: targetLocation)
 
         // 별점. 매겨진 값이 없으면 "별점 없음" 문구 대신 배지를 숨긴다 (배지 폭이 들쭉날쭉해지는 것 방지)
-        let rated = realm.objects(RamenData.self).filter {
+        let rated = RamenStorage.allStores?.filter {
             $0.x == ramenData.x && $0.y == ramenData.y
         }.first
 
@@ -441,13 +433,13 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
         let ramen = ramenList[originalIndex]
         let converted = ramen.toRameDataType()
         
-        let realmList = realm.objects(RamenData.self).where {
+        let saved = RamenStorage.allStores?.where {
             $0.storeName == ramen.place_name
             && $0.x == converted.x
             && $0.y == converted.y
         }
-        
-        if let matchItem = realmList.first {
+
+        if let matchItem = saved?.first {
             detailVC.selectedRamen = matchItem
         } else {
             detailVC.selectedRamen = converted

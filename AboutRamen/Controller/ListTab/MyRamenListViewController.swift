@@ -16,7 +16,6 @@ class MyRamenListViewController: UIViewController {
     @IBOutlet var myRamenListTableView: UITableView!
     
     // MARK: - Properties
-    let realm = try! Realm()
     let url: String = "https://dapi.kakao.com/v2/local/search/keyword.json"
     let appid = Bundle.main.apiKey
     

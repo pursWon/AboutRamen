@@ -7,7 +7,6 @@ class MyListViewController: UIViewController {
     @IBOutlet var myListTableView: UITableView!
     
     // MARK: - Properties
-    let realm = try! Realm()
     let menuItems: [(title: String, icon: UIImage)] = [
         ("좋아요 목록", CustomImage.thumbsUp),
         ("리뷰 목록", CustomImage.reviewBlack),
@@ -48,23 +47,15 @@ class MyListViewController: UIViewController {
     // MARK: - ETC
     /// 평가가 모두 안되어 있는 아이템 삭제
     func deleteNoDataItem() {
-        let shouldDeleteItems = realm.objects(RamenData.self).filter { $0.hasNoUserData }
-
-        guard !shouldDeleteItems.isEmpty else { return }
-
-        do {
-            try realm.write {
-                realm.delete(shouldDeleteItems)
-            }
-        } catch {
-            print("정리 대상 삭제 실패: \(error)")
-        }
+        RamenStorage.deleteItemsWithNoUserData()
     }
-    
+
     func getList() {
-        goodList = realm.objects(RamenData.self).filter("isGood == true")
-        reviewList = realm.objects(RamenData.self).filter("isReviewed == true")
-        favoriteList = realm.objects(RamenData.self).filter("isFavorite == true")
+        guard let stores = RamenStorage.allStores else { return }
+
+        goodList = stores.filter("isGood == true")
+        reviewList = stores.filter("isReviewed == true")
+        favoriteList = stores.filter("isFavorite == true")
     }
 }
 
