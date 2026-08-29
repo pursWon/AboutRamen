@@ -124,7 +124,7 @@ class HomeViewController: UIViewController {
             navigationBar.titleTextAttributes = [NSAttributedString.Key.font: AppFont.navigationTitle]
         }
 
-        // 폰트 파일명은 Recipekorea.ttf — 대문자 K로 적으면 nil이 되어 조용히 시스템 폰트로 떨어진다
+        // 폰트 파일명은 Recipekorea.ttf. 대문자 K로 적으면 nil이 되어 조용히 시스템 폰트로 떨어진다
         myLocationLabel.font = AppFont.title(17)
         myLocationLabel.textColor = CustomColor.ink
 
@@ -399,14 +399,14 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
         let targetLocation = CLLocation(latitude: ramenData.y, longitude: ramenData.x)
         cell.distanceLabel.text = getDistance(from: currentLocation, to: targetLocation)
 
-        // 별점 — 매겨진 값이 없으면 "별점 없음" 문구 대신 배지를 숨긴다 (배지 폭이 들쭉날쭉해지는 것 방지)
+        // 별점. 매겨진 값이 없으면 "별점 없음" 문구 대신 배지를 숨긴다 (배지 폭이 들쭉날쭉해지는 것 방지)
         let rated = realm.objects(RamenData.self).filter {
             $0.x == ramenData.x && $0.y == ramenData.y
         }.first
 
         cell.setRating(rated?.rating)
 
-        // 이미지 — imageUrlList는 ramenList와 길이가 같고, 사진이 없는 가게는 nil이다
+        // 이미지. imageUrlList는 ramenList와 길이가 같고, 사진이 없는 가게는 nil이다
         if originalIndex < imageUrlList.count,
            let urlString = imageUrlList[originalIndex],
            let url = URL(string: urlString) {
