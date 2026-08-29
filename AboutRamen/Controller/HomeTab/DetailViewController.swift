@@ -280,17 +280,19 @@ class DetailViewController: UIViewController {
         let headers: HTTPHeaders = ["Authorization": appid]
         let params: [String: Any] = ["query": selectedRamen.storeName]
         
-        AF.request(imageUrl, method: .get, parameters: params, headers: headers).responseDecodable(of: RamenImage.self) { response in
-            if let dataImage = response.value {
-                
-                if dataImage.documents.count >= 2 {
-                    self.existImageUrlList.append(dataImage.documents[0].image_url)
-                    self.existImageUrlList.append(dataImage.documents[1].image_url)
-                } else if dataImage.documents.count == 1 {
-                    self.existImageUrlList.append(dataImage.documents[0].image_url)
-                }
+        AF.request(imageUrl, method: .get, parameters: params, headers: headers).responseDecodable(of: RamenImage.self) { [weak self] response in
+            guard let self = self else { return }
+
+            switch response.result {
+            case .success(let dataImage):
+                // 최대 두 장까지만 보여준다
+                self.existImageUrlList = dataImage.documents.prefix(2).map { $0.image_url }
+
+            case .failure(let error):
+                // 실패해도 기본 이미지로 채워지므로 화면이 비지는 않는다
+                print("가게 이미지 조회 실패: \(error)")
             }
-            
+
             DispatchQueue.main.async {
                 var firstUrl: URL?
                 var secondUrl: URL?
